@@ -1,11 +1,11 @@
-# Photo Math Solver - an offline skill for Google AI Edge Gallery
+# Photo Equation Solver
 
-Take a photo of a math problem and get an **exact** answer from the on-device
-**Gemma 4 E4B** model - no internet, no cloud, no API key.
+Exact, offline maths for AI models. The model *reads* the maths, from a photo or from text; a self-contained
+solver does all the *calculating* with exact fractions and symbolic expressions, and echoes how the input was
+read so a misread digit is easy to spot. No internet, no cloud, no API key.
 
-The model uses its vision to *read* the math; a self-contained solver bundled in the
-skill does all the *calculating* (exact fractions and symbolic expressions), and echoes
-how the picture was read so a misread digit is easy to spot.
+It started as a skill for **Gemma 4 E4B** on a phone (Google AI Edge Gallery) and now comes in three editions
+(see [Editions](#editions)): one for phones, one for local models, one for capable agents.
 
 It covers equations, systems and inequalities, calculus (integrals, derivatives, limits,
 series, tangent lines, curve study, areas and volumes), several-variable calculus, linear
@@ -49,7 +49,7 @@ For fully offline use, install the skill so the app copies it into its own stora
 **Load skill from URL** only remember the URL and re-download `scripts/index.html` on every run.
 
 To use the URL route, make this repository public, enable GitHub Pages (deploy from the
-`main` branch, root), and enter `https://callmesobhan.github.io/photo-equation-solver-gemma4-e4b-it/photo-equation-solver`
+`main` branch, root), and enter `https://callmesobhan.github.io/photo-equation-solver/photo-equation-solver`
 in *Skills → (+) → Load skill from URL*. Check that `<that url>/SKILL.md` shows plain text.
 The empty `.nojekyll` file in this repo keeps Pages from rewriting the Markdown.
 
@@ -67,3 +67,10 @@ Edit `dev/src/*.js`, never the generated `index.html`. See [`dev/README.md`](dev
 Tested on a desktop against independent oracles (sympy, scipy, numpy, pint, periodictable,
 numpy-financial), with fuzzing, and with the page loaded in offline Chromium exactly as the
 app calls it (details in the skill README).
+
+Tried on an iPhone with Gemma-4-E4B-it in Google AI Edge Gallery (GPU), by importing the folder, with typed
+problems and simulated handwritten photos.
+
+The Local and Agent packages and the MCP server are covered by automated tests (a real stdio session with the
+MCP server, every documented command line), but have not yet been run inside particular agent products or with
+particular local models.
