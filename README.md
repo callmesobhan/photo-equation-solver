@@ -43,7 +43,7 @@ For marketplaces that deliver text files only, [`packages/agensi`](packages/agen
 ## Licence
 
 This is **not** free software. The source is public so that you can read it and try it for up to 30 days; using it
-beyond that, or sharing it, needs a paid licence. See [`LICENSE`](LICENSE) for the exact terms. The install steps
+beyond that, or sharing it, needs a paid licence. See [`LICENSE`](LICENSE) for the exact terms, and [`LICENSING.md`](LICENSING.md) for how to ask for a licence. The install steps
 below are for evaluation or for licensed use.
 
 ## Install in AI Edge Gallery

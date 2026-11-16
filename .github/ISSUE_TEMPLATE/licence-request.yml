@@ -1,0 +1,49 @@
+name: Licence request
+description: Ask for a licence, or for permission, to use Photo Equation Solver beyond the 30-day trial
+title: "Licence request: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for asking. Please read [LICENSING.md](https://github.com/callmesobhan/photo-equation-solver/blob/main/LICENSING.md) first.
+
+        **Do not post private details** (email address, phone number, postal address, payment data) in this public issue. The author will reply here and, if needed, arrange a private way to continue. This is a one-person project: replies can take days.
+  - type: dropdown
+    id: use
+    attributes:
+      label: What will you use it for?
+      options:
+        - Personal use
+        - Teaching or a class
+        - Assessment or grading
+        - A company or business
+        - An institution (school, university, lab)
+        - Client work
+        - Something else
+    validations:
+      required: true
+  - type: dropdown
+    id: edition
+    attributes:
+      label: Which edition?
+      multiple: true
+      options:
+        - Phone skill for Google AI Edge Gallery
+        - Local-model package
+        - Agent package (Claude Code, Cursor, Antigravity and others)
+        - MCP server or command line
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: scale
+    attributes:
+      label: How many people or devices, and for how long?
+      placeholder: "For example: 1 person, a year; or a class of 30, one term"
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Anything else the author should know?
+      description: For example, if you need permission for something the LICENSE does not allow.
