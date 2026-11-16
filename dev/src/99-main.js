@@ -123,7 +123,7 @@ function helpHint(data) {
 }
 
 // Shown in the app's "View Console Logs" (a page, not a test run): the build number first, so a stale install is obvious.
-const BUILD = '2026-10-26.1';
+const BUILD = '2026-11-16.1';
 function logCall(...parts) {
   if (typeof document === 'undefined') return;
   try { console.log('[photo-equation-solver ' + BUILD + '] ' + parts.join(' | ')); } catch (e) { /* logging never breaks a result */ }

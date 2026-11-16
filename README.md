@@ -19,7 +19,15 @@ conversion, finance, chemistry (molar mass, balancing equations), physics formul
 |---|---|
 | Skill folder | [`photo-equation-solver/`](photo-equation-solver) - `SKILL.md`, `scripts/index.html`, `README.md` |
 | Full docs (what it can do, install, notation, limits) | [`photo-equation-solver/README.md`](photo-equation-solver/README.md) |
+| MCP server and command line tool (for agents and editors) | [`mcp-server/`](mcp-server) |
 | Source, build and tests | [`dev/`](dev) |
+| Licence | [`LICENSE`](LICENSE): proprietary, not free to use |
+
+## Licence
+
+This is **not** free software. The source is public so that you can read it and try it for up to 30 days; using it
+beyond that, or sharing it, needs a paid licence. See [`LICENSE`](LICENSE) for the exact terms. The install steps
+below are for evaluation or for licensed use.
 
 ## Install in AI Edge Gallery
 

@@ -1,0 +1,17 @@
+{
+  "name": "photo-equation-solver-mcp",
+  "version": "0.1.0",
+  "description": "Exact, offline maths for AI agents: an MCP server and a command line tool (equations, calculus, matrices, statistics, finance, geometry, units, chemistry, graphs).",
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
+  "author": "Sobhan Shahbazi",
+  "main": "lib/mcp.js",
+  "bin": {
+    "photo-equation-solver-mcp": "bin/server.js",
+    "photo-equation-solver": "bin/cli.js"
+  },
+  "files": ["bin", "lib", "LICENSE", "README.md"],
+  "engines": { "node": ">=18" },
+  "optionalDependencies": { "@napi-rs/canvas": "^1.1.0" },
+  "keywords": ["mcp", "model-context-protocol", "math", "solver", "calculus", "algebra", "agent-skill"]
+}

@@ -1,0 +1,100 @@
+Photo Equation Solver - Proprietary Licence
+
+Copyright (c) 2026 Sobhan Shahbazi. All rights reserved.
+
+This is NOT free software and NOT open source. The source code is visible so that
+you can read it and judge it. Seeing it does not give you the right to use it.
+
+1. WHAT THIS COVERS
+
+"Software" means everything in this repository and in any package, folder, zip,
+app skill or build made from it: the source code, built files (for example
+index.html and solver.cjs), SKILL.md and every other instruction or reference
+text, the MCP server, the tests, the test images and the documentation. It does
+not include Third-Party Material (section 8).
+
+"Licensor" means Sobhan Shahbazi. "You" means the person or organisation using
+the Software.
+
+2. NO FREE USE
+
+Except as sections 3 and 4 say, you may NOT use, run, copy, modify, translate,
+distribute, publish, sublicense, host, rent, lend or sell the Software, in whole
+or in part, without a paid licence or the Licensor's written permission. Making
+the source code visible on a public website is not a grant of any licence.
+
+Earlier versions of this repository were published without any licence. No right
+to use them was ever granted either.
+
+3. READING AND EVALUATION
+
+You may, without payment:
+(a) read the source code and documentation;
+(b) run the Software on devices you control for up to 30 days, only to decide
+    whether to buy a licence. This does not include production use, teaching,
+    assessment or grading, client work, or any use in a business or institution;
+(c) run its tests as part of that evaluation.
+
+4. PAID LICENCE
+
+A paid licence is available from the Licensor, directly or through a marketplace
+the Licensor names. The terms that come with the purchase (price, number of
+users or devices, duration) apply together with this file; where they conflict,
+the purchase terms win. Unless they say otherwise, a paid licence is personal,
+non-exclusive, non-transferable and non-sublicensable, and lets you use the
+Software, unchanged, on devices you own or control, for your own use.
+
+The Licensor may grant other licences to other people on other terms. Doing so
+does not change your licence.
+
+5. LIMITS THAT ALSO APPLY WITH A LICENCE
+
+Unless a written agreement with the Licensor says otherwise, you may not:
+(a) copy or share the Software, or any licence key or purchased copy, with
+    anyone who has not bought their own licence;
+(b) publish the Software, or a modified or derived version of it, anywhere;
+(c) offer the Software, or its results at scale, as a service, API or product
+    to other people;
+(d) remove or change copyright, licence or attribution notices;
+(e) use the Software, its source, its tests or its outputs to build, train or
+    improve a competing product or an AI model.
+
+6. OWNERSHIP
+
+The Licensor keeps all rights, title and interest in the Software. You get only
+the rights written here. Ideas, bug reports and suggestions you send may be used
+by the Licensor without payment or credit.
+
+7. TERMINATION
+
+Your rights end automatically, without notice, if you break this licence. You
+must then stop using the Software and delete every copy. Sections 5, 6, 8, 9 and
+10 survive termination.
+
+8. THIRD-PARTY MATERIAL
+
+This licence does not cover third-party material that you get or run alongside
+the Software: AI models (for example Gemma), apps (for example Google AI Edge
+Gallery), agents and editors, fonts downloaded by the test-image kit, and
+optional libraries such as @napi-rs/canvas. Each stays under its own licence.
+
+9. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING FITNESS FOR A PARTICULAR PURPOSE, ACCURACY AND NON-INFRINGEMENT.
+Its answers can be wrong, and a picture of a problem can be misread by the model
+that reads it. Check results that matter. Do not rely on it for financial,
+medical, legal, structural or safety decisions.
+
+10. LIMIT OF LIABILITY
+
+TO THE EXTENT THE LAW ALLOWS, THE LICENSOR IS NOT LIABLE FOR ANY INDIRECT,
+INCIDENTAL, SPECIAL OR CONSEQUENTIAL LOSS, OR FOR LOST PROFIT OR DATA, ARISING
+FROM THE SOFTWARE OR ITS USE. TOTAL LIABILITY FOR ANY CLAIM IS LIMITED TO THE
+AMOUNT YOU PAID FOR THE LICENCE IN THE 12 MONTHS BEFORE THE CLAIM. NOTHING HERE
+LIMITS LIABILITY THAT CANNOT BE LIMITED BY LAW.
+
+11. CONTACT
+
+To ask for a licence or permission, contact the Licensor through the GitHub
+profile "callmesobhan".

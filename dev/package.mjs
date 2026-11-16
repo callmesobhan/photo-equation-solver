@@ -29,7 +29,8 @@ else {
   if (!/window\['ai_edge_gallery_get_result'\]/.test(html)) problems.push('index.html does not define ai_edge_gallery_get_result');
   if (/(?:src|href)=["']https?:/.test(html)) problems.push('index.html loads something from the web');
 }
-const shipped = ['SKILL.md', 'scripts/index.html'];
+const shipped = ['SKILL.md', 'scripts/index.html', 'LICENSE'];
+if (!fs.existsSync(path.join(skillDir, 'LICENSE'))) problems.push('LICENSE is missing from the skill folder');
 if (md.length > 2500) problems.push('SKILL.md is ' + md.length + ' bytes; the app re-reads it for every question (keep it under about 2500)');
 if (problems.length) { problems.forEach((p) => console.log('✗ ' + p)); process.exit(1); }
 fs.rmSync(out, { force: true });

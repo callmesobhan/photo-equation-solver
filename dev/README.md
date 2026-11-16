@@ -101,6 +101,8 @@ Edit `src/`, then run `./run-all.sh`. Never edit the generated `index.html` by h
 | `linalg2-battery.mjs`, `gen_linalg2.py` | QR, Cholesky, definiteness, pinv, least squares, SVD, expm, Jordan form against numpy / scipy.linalg / sympy (printed matrices are parsed back and compared) |
 | `applied-battery.mjs`, `gen_applied.py` | geometry, triangles, units, chemistry, finance, complex numbers against pint / periodictable / numpy-financial / Python `complex` |
 | `fuzz.mjs`, `fuzz-cmds.mjs` | random garbage text, and every command with random arguments: never crash, hang or print `NaN` |
+| `build-node.mjs` | builds `../mcp-server/lib/solver.cjs`: the solver as a Node module for the MCP server and the command line tool (same source as the page, via `lib-body.mjs`) |
+| `mcp-test.mjs` | the MCP server over a real stdio session (with and without a canvas) and parity: every hand-written case gives the same text through the Node module as through the Gallery page |
 | `../package.mjs` | not a test: checks the skill folder the way the app needs it (SKILL.md at the folder root with a matching name, `scripts/index.html`, no web references, SKILL.md under 2500 bytes) and writes the zip to import on the phone: `node dev/package.mjs out.zip` |
 | `photo-kit/` | ten handwritten-style test pictures for the phone (generator, four finished images, expected answers, how to run them); `photo-kit/check.mjs` checks the expected answers against the solver |
 | `browser-test.cjs` | the built page in real Chromium, offline, called the way the app calls it (needs Playwright) |

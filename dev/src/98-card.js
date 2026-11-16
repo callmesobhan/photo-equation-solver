@@ -45,6 +45,7 @@ function wrapCardLine(g, line, maxW) {
 
 /** Base64 PNG of the Read as / Answer lines, or null when there is no canvas (or nothing worth showing). */
 function answerCardImage(text) {
+  if (window.__noAnswerCard) return null;
   try {
     const lines = cardLines(text);
     if (!lines.length) return null;

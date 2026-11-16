@@ -6,6 +6,8 @@ and no cloud service.
 
 ![JS](https://img.shields.io/badge/JS-0a9396) ![Image](https://img.shields.io/badge/Vision-0466c8) ![Offline](https://img.shields.io/badge/Offline-2dc653)
 
+> **Licence:** proprietary, see [`LICENSE`](LICENSE). The source is readable and you may try it for 30 days; use beyond that needs a paid licence.
+
 ## How it works
 
 ```text

@@ -1,5 +1,6 @@
 <!--
   Photo Equation Solver - AI Edge Gallery skill script.
+  Copyright (c) 2026 Sobhan Shahbazi. Proprietary: see LICENSE in the repository.
   Fully self-contained: no network access, no external libraries.
   The model reads the equation from the photo; this page does the maths exactly.
 -->
@@ -25629,6 +25630,7 @@ function wrapCardLine(g, line, maxW) {
 
 /** Base64 PNG of the Read as / Answer lines, or null when there is no canvas (or nothing worth showing). */
 function answerCardImage(text) {
+  if (window.__noAnswerCard) return null;
   try {
     const lines = cardLines(text);
     if (!lines.length) return null;
@@ -25791,7 +25793,7 @@ function helpHint(data) {
 }
 
 // Shown in the app's "View Console Logs" (a page, not a test run): the build number first, so a stale install is obvious.
-const BUILD = '2026-10-26.1';
+const BUILD = '2026-11-16.1';
 function logCall(...parts) {
   if (typeof document === 'undefined') return;
   try { console.log('[photo-equation-solver ' + BUILD + '] ' + parts.join(' | ')); } catch (e) { /* logging never breaks a result */ }

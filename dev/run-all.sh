@@ -12,6 +12,7 @@ PY="${PY:-python3}"
 export PY
 
 echo "== build"; node "$here/build.mjs"
+node "$here/build-node.mjs"                                         # the Node module for the MCP server and the CLI
 node "$here/build.mjs" "$tmp/test-index.html" --expose >/dev/null   # same code + an internals hook for the tests that need it
 
 cd "$here/tests"
@@ -71,5 +72,7 @@ else
   echo; echo "== 11. skipped (playwright not installed)"
 fi
 echo; echo "== 8zg. photo kit: the typed form of the ten handwritten test items gives the expected answers"; node photo-kit/check.mjs "$skill"
+echo; echo "== 8zh. MCP server: real stdio session (with and without a canvas) and parity of the Node module with the Gallery page on every hand-written case"; node mcp-test.mjs "$skill"
 echo; echo "== 12. packaging: the folder the Gallery app imports (SKILL.md at its root, scripts/index.html, nothing else) and its zip"; node "$here/package.mjs" "$tmp/photo-equation-solver.zip"
+echo; echo "== 13. the licence copies (skill folder, MCP server) equal the LICENSE at the root"; cmp "$here/../LICENSE" "$here/../photo-equation-solver/LICENSE" && cmp "$here/../LICENSE" "$here/../mcp-server/LICENSE" && echo "✓ identical"
 echo; echo "ALL GOOD"
