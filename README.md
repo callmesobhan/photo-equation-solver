@@ -36,6 +36,8 @@ One exact solver, packaged for three kinds of model:
 
 The Local and Agent packages run the engine through `node scripts/bin/cli.js` or the MCP server (`mcp-server/`).
 
+For marketplaces that deliver text files only, [`packages/agensi`](packages/agensi) is the same instructions as a text-only skill: the engine is installed separately by the user (`reference/install.md`). `node dev/package-agensi.mjs` builds its zip.
+
 ## Licence
 
 This is **not** free software. The source is public so that you can read it and try it for up to 30 days; using it

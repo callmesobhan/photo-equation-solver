@@ -2,7 +2,7 @@
 // the cheat sheet runs without an error in the engine that ships with them.
 //   - lines in a fenced block under "## Commands" (local SKILL.md) or anywhere in cheatsheet.md: one call each
 //     (`  # comment` stripped; a leading `--for x` sets the unknown to solve for)
-//   - `node scripts/bin/cli.js ... "..."` anywhere in SKILL.md files and READMEs: the quoted text, with --for if given
+//   - `node scripts/bin/cli.js ... "..."` (or the installed engine's path, in the text-only package) anywhere in SKILL.md files and READMEs: the quoted text, with --for if given
 //   - `node scripts/bin/cli.js help <area>`: the help topic
 // Usage: node packages-test.mjs
 import fs from 'node:fs';
@@ -50,11 +50,11 @@ for (const f of mds) {
       }
     }
   }
-  for (const m of text.matchAll(/node scripts\/bin\/cli\.js((?: --\w+(?: \w+)?)*) "([^"]+)"/g)) {
+  for (const m of text.matchAll(/node (?:scripts\/bin|~\/photo-equation-solver\/mcp-server\/bin)\/cli\.js((?: --\w+(?: \w+)?)*) "([^"]+)"/g)) {
     const forM = /--for (\w+)/.exec(m[1]);
     jobs.push({ where: rel, equation: m[2], solveFor: forM ? forM[1] : '' });
   }
-  for (const m of text.matchAll(/node scripts\/bin\/cli\.js help(?: (\w+))?/g)) jobs.push({ where: rel, equation: m[1] ? 'help ' + m[1] : 'help', solveFor: '' });
+  for (const m of text.matchAll(/node (?:scripts\/bin|~\/photo-equation-solver\/mcp-server\/bin)\/cli\.js help(?: (\w+))?/g)) jobs.push({ where: rel, equation: m[1] ? 'help ' + m[1] : 'help', solveFor: '' });
 }
 
 let bad = 0;
