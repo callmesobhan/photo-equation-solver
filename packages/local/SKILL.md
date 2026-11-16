@@ -12,6 +12,7 @@ You READ the maths and the tool CALCULATES it. Never solve, check or estimate it
 From this skill's folder: `node scripts/bin/cli.js "<the maths>"`. If you have the MCP tools `solve` and `help`, call those with the same text instead.
 
 - Exit code 1 means it could not solve. Read the message, fix the input, try once more. After two failures, tell the user what you tried.
+- `node: command not found` (exit code 127) means Node is not on this shell's PATH: find it (`command -v node`, or look in `~/.local/bin`, `/opt/homebrew/bin`, `/usr/local/bin`, `~/.nvm`) and use its full path.
 - Unsure how to write something? `node scripts/bin/cli.js help` lists the areas and `node scripts/bin/cli.js help finance` gives the exact syntax for one.
 
 ## Rules

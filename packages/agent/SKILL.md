@@ -18,7 +18,7 @@ node scripts/bin/cli.js --json "det([[1,2],[3,4]])"
 node scripts/bin/cli.js help finance
 ```
 
-`help` alone lists the areas; `help <area>` gives the exact syntax of every command there. If your host exposes the MCP tools `solve` and `help` (see README.md), call those instead: same engine, same text. Exit code 1 means it could not solve; the message says why and names a help area.
+`help` alone lists the areas; `help <area>` gives the exact syntax of every command there. If your host exposes the MCP tools `solve` and `help` (see README.md), call those instead: same engine, same text. Exit code 1 means it could not solve; the message says why and names a help area. If the shell says `node: command not found` (exit code 127), Node is not on this shell's PATH: find it (`command -v node`, or look in `~/.local/bin`, `/opt/homebrew/bin`, `/usr/local/bin`, `~/.nvm`) and run the same command with its full path.
 
 ## Workflow
 
