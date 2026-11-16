@@ -67,4 +67,3 @@ Edit `dev/src/*.js`, never the generated `index.html`. See [`dev/README.md`](dev
 Tested on a desktop against independent oracles (sympy, scipy, numpy, pint, periodictable,
 numpy-financial), with fuzzing, and with the page loaded in offline Chromium exactly as the
 app calls it (details in the skill README).
-**Not yet tested** on a phone with Gemma 4 E4B reading real photos, nor the iOS install menus.
