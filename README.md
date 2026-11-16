@@ -20,8 +20,21 @@ conversion, finance, chemistry (molar mass, balancing equations), physics formul
 | Skill folder | [`photo-equation-solver/`](photo-equation-solver) - `SKILL.md`, `scripts/index.html`, `README.md` |
 | Full docs (what it can do, install, notation, limits) | [`photo-equation-solver/README.md`](photo-equation-solver/README.md) |
 | MCP server and command line tool (for agents and editors) | [`mcp-server/`](mcp-server) |
+| Skill packages for local models and for agents | [`packages/local`](packages/local), [`packages/agent`](packages/agent) |
 | Source, build and tests | [`dev/`](dev) |
 | Licence | [`LICENSE`](LICENSE): proprietary, not free to use |
+
+## Editions
+
+One exact solver, packaged for three kinds of model:
+
+| Edition | For | Instructions | How you get it |
+|---|---|---|---|
+| **Pocket** | Gemma 4 E4B on a phone, in Google AI Edge Gallery | `photo-equation-solver/SKILL.md`, under 2 KB, with a one-page JavaScript solver | import the folder |
+| **Local** | mid-size and large local models (for example Gemma 4 26B / 31B, Qwen, Llama) in an agent harness | [`packages/local`](packages/local): strict rules, a command list, examples, plus the CLI and MCP server | `node dev/package-skills.mjs` writes `dist/photo-equation-solver-local.zip` |
+| **Agent** | Claude Code, Cursor, Copilot, Gemini CLI, Codex CLI, Antigravity and other capable agents | [`packages/agent`](packages/agent): a short workflow, a tested cheat sheet, plus the CLI and MCP server | `node dev/package-skills.mjs` writes `dist/photo-equation-solver-agent.zip` |
+
+The Local and Agent packages run the engine through `node scripts/bin/cli.js` or the MCP server (`mcp-server/`).
 
 ## Licence
 

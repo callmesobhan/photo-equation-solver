@@ -102,6 +102,8 @@ Edit `src/`, then run `./run-all.sh`. Never edit the generated `index.html` by h
 | `applied-battery.mjs`, `gen_applied.py` | geometry, triangles, units, chemistry, finance, complex numbers against pint / periodictable / numpy-financial / Python `complex` |
 | `fuzz.mjs`, `fuzz-cmds.mjs` | random garbage text, and every command with random arguments: never crash, hang or print `NaN` |
 | `build-node.mjs` | builds `../mcp-server/lib/solver.cjs`: the solver as a Node module for the MCP server and the command line tool (same source as the page, via `lib-body.mjs`) |
+| `package-skills.mjs` | not a test: assembles the Local and Agent skill packages from `../packages` and `../mcp-server` into `dist/` (folders and zips), checks their structure and size budgets and smoke-tests each assembled copy (CLI, `--for`, help, exit codes, a real MCP session): `node dev/package-skills.mjs [outDir]` |
+| `packages-test.mjs` | every command line in the package `SKILL.md` files and the cheat sheet (98 of them) runs without an error in the engine |
 | `mcp-test.mjs` | the MCP server over a real stdio session (with and without a canvas) and parity: every hand-written case gives the same text through the Node module as through the Gallery page |
 | `../package.mjs` | not a test: checks the skill folder the way the app needs it (SKILL.md at the folder root with a matching name, `scripts/index.html`, no web references, SKILL.md under 2500 bytes) and writes the zip to import on the phone: `node dev/package.mjs out.zip` |
 | `photo-kit/` | ten handwritten-style test pictures for the phone (generator, four finished images, expected answers, how to run them); `photo-kit/check.mjs` checks the expected answers against the solver |
