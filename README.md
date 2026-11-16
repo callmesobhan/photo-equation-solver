@@ -36,6 +36,8 @@ One exact solver, packaged for three kinds of model:
 
 The Local and Agent packages run the engine through `node scripts/bin/cli.js` or the MCP server (`mcp-server/`).
 
+To hand the Agent edition to someone who uses Claude Code, `node dev/package-bundle.mjs` builds `photo-equation-solver-for-claude-code.zip`: they give it to Claude Code and say "install this" (it holds `INSTALL.md` and a small installer).
+
 For marketplaces that deliver text files only, [`packages/agensi`](packages/agensi) is the same instructions as a text-only skill: the engine is installed separately by the user (`reference/install.md`). `node dev/package-agensi.mjs` builds its zip.
 
 ## Licence

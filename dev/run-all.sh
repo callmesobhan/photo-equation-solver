@@ -77,5 +77,6 @@ echo; echo "== 12. packaging: the folder the Gallery app imports (SKILL.md at it
 echo; echo "== 8zi. package documentation: every command line in the Local / Agent SKILL.md files and the cheat sheet runs"; node packages-test.mjs
 echo; echo "== 14. skill packages (Local, Agent): assembled, structure and size checks, smoke tests of the assembled copies, zips"; node "$here/package-skills.mjs" "$tmp/dist"
 echo; echo "== 14b. text-only skill for marketplaces that deliver text files only: structure, scan hygiene, and a buyer simulation (install the engine as its install steps say, run the skill's own first-use check and commands)"; node "$here/package-agensi.mjs" "$tmp/agensi"
+echo; echo "== 14c. bundle to hand to a Claude Code user (zip with INSTALL.md, install.mjs and the Agent edition): the installer from the unzipped bundle in a scratch home - install, reinstall, refuse a foreign folder, project install, uninstall"; node "$here/package-bundle.mjs" "$tmp/bundle"
 echo; echo "== 13. the licence copies (skill folder, MCP server) equal the LICENSE at the root"; cmp "$here/../LICENSE" "$here/../photo-equation-solver/LICENSE" && cmp "$here/../LICENSE" "$here/../mcp-server/LICENSE" && echo "✓ identical"
 echo; echo "ALL GOOD"
