@@ -24,4 +24,4 @@ cd ~/photo-equation-solver/mcp-server && npm install
 
 ## Licence of the engine
 
-The engine is a separate program by the same author with its own licence, in the file `LICENSE` of the repository: its source is readable and it is free to try for 30 days; using it beyond that needs a paid licence from the author. This skill text is licensed to you through the marketplace you got it from.
+The engine is a separate program by the same author with its own licence, in the file `LICENSE` of the repository: its source is readable, it is free to evaluate for 30 days, and a paid licence from the author is needed after that. This skill text is licensed to you through the marketplace you got it from.

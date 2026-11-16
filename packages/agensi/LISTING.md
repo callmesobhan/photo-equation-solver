@@ -3,6 +3,11 @@
 Fill the form at agensi.io/dashboard/submit with the fields below. Nothing here has been submitted. Read the
 "Before you submit" list at the end first.
 
+Status: Agensi (Joeri Brons, by email) will not accept a paid listing for a skill that needs a separately installed,
+separately licensed engine. A free text-only listing that points to the repository IS acceptable, if it has the
+"Requires" line and states plainly in the description that the engine has its own licence: free to evaluate for 30
+days, paid after that. This copy follows that.
+
 ## Name (up to 60 characters, unique on Agensi)
 
 Photo Equation Solver: exact maths for your agent
@@ -31,7 +36,7 @@ The skill gives your agent the rules for using the engine: how to write a proble
 
 **Where it stops**
 
-- The engine is a separate program with its own licence: its source is readable, it is free to try for 30 days, and using it beyond that needs a paid licence from the author.
+- The engine is a separate program with its own licence. Its source is readable; it is free to evaluate for 30 days and paid after that. The licence is in the repository, and the licence stays between you and its author.
 - It does not replace understanding: an agent can still misread a photo. The result always starts with a "Read as" line so you can check what was understood.
 - Graphs need one optional package.
 - Tested with the engine's own automated checks and with Claude Code. Not yet tried in other agents.
@@ -87,7 +92,7 @@ Already in the SKILL.md front matter, which the form reads: tags, keywords and u
 - **Does it need internet?** Only once, to download the engine. Solving is offline.
 - **Which agents?** Any agent that can run a shell command with Node.js. Tried so far in Claude Code only.
 - **Is the answer always right?** The engine's arithmetic is exact and checked against independent libraries. A model can still misread a photo or mistype a problem, which is why the "Read as" line comes first.
-- **Do I pay for the engine?** It is free to try for 30 days; after that its licence applies (see the install steps).
+- **Do I pay for the engine?** It is free to evaluate for 30 days and paid after that, under its own licence (see the install steps). This listing is free.
 
 ## Docs link
 
@@ -95,13 +100,17 @@ https://github.com/callmesobhan/photo-equation-solver
 
 ## Price
 
-Your decision. The minimum for a paid skill is $1.
+Free. (Agensi declined a paid listing for a skill that depends on a separately licensed engine.)
 
 ## Before you submit
 
-1. Wait for Joeri's answer on whether a listing that depends on a separately licensed engine is allowed.
-   Agensi's rules ban links to paid versions sold elsewhere and licence keys delivered outside Agensi, and the
-   skill's install steps mention that the engine needs a paid licence after 30 days.
-2. Try the zip in your own agent (the form's own advice); name in the listing only the agents you have tried.
-3. Connect a payout method and finish the identity check: a paid listing cannot go live without them.
-4. The name `photo-equation-solver` must be unique on Agensi; the form will tell you.
+1. Decide whether you want a free listing at all. It is a way to be found; it earns nothing on Agensi, and the
+   engine's licence is sold by you, directly.
+2. Make sure someone who reaches the end of the 30 days can actually get a licence from you: write how to ask for one
+   in the repository (for example a LICENSING.md), and link only the repository from the listing. Agensi bans links
+   to outside checkouts and licence keys delivered outside Agensi.
+3. Try the zip in a second agent (the form's own advice) and name in the listing only the agents you have tried.
+4. A free listing needs no payout setup and no identity check.
+5. Taking a listing down once people have it means emailing info@agensi.io (the docs say skills that someone has
+   bought can't be deleted from Creator Studio).
+6. The name `photo-equation-solver` must be unique on Agensi; the form will tell you.
