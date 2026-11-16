@@ -231,17 +231,17 @@ function rfPow(a, k, dom) {
 // ======================================================================
 
 const SUPERSCRIPT = {
-  '\u2070': '0', '\u00b9': '1', '\u00b2': '2', '\u00b3': '3', '\u2074': '4', '\u2075': '5',
-  '\u2076': '6', '\u2077': '7', '\u2078': '8', '\u2079': '9', '\u207a': '+', '\u207b': '-',
+  '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5',
+  '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁺': '+', '⁻': '-',
 };
 const VULGAR = {
-  '\u00bd': '1/2', '\u2153': '1/3', '\u2154': '2/3', '\u00bc': '1/4', '\u00be': '3/4',
-  '\u2155': '1/5', '\u2156': '2/5', '\u2157': '3/5', '\u2158': '4/5', '\u2159': '1/6',
-  '\u215a': '5/6', '\u215b': '1/8', '\u215c': '3/8', '\u215d': '5/8', '\u215e': '7/8',
+  '½': '1/2', '⅓': '1/3', '⅔': '2/3', '¼': '1/4', '¾': '3/4',
+  '⅕': '1/5', '⅖': '2/5', '⅗': '3/5', '⅘': '4/5', '⅙': '1/6',
+  '⅚': '5/6', '⅛': '1/8', '⅜': '3/8', '⅝': '5/8', '⅞': '7/8',
 };
 const GREEK = {
-  '\u03b1': 'a', '\u03b2': 'b', '\u03b3': 'g', '\u03b4': 'd', '\u03b8': 't', '\u03bb': 'l',
-  '\u03bc': 'm', '\u03c6': 'f', '\u03c9': 'w', '\u03c1': 'r', '\u03c3': 's',
+  'α': 'a', 'β': 'b', 'γ': 'g', 'δ': 'd', 'θ': 't', 'λ': 'l',
+  'μ': 'm', 'φ': 'f', 'ω': 'w', 'ρ': 'r', 'σ': 's',
 };
 const VULGAR_CLASS = '[' + Object.keys(VULGAR).join('') + ']';
 
@@ -315,7 +315,7 @@ function convertLatex(s) {
     .replace(/\\(?:leq?|leqslant)\b/g, '<=')
     .replace(/\\(?:geq?|geqslant)\b/g, '>=')
     .replace(/\\(?:neq?)\b/g, '!=')
-    .replace(/\\int(?![a-z])/g, '\u222b')
+    .replace(/\\int(?![a-z])/g, '∫')
     .replace(/\\sum(?![a-z])/g, '\u0001S')
     .replace(/\\prod(?![a-z])/g, '\u0001P')
     .replace(/\\infty(?![a-z])/g, ' oo ')
@@ -362,15 +362,15 @@ function degreesToPi(a) {
 /** Things a photo of a worksheet adds around the maths: "Q3.", "Problem 2:", "(a)", "1)", bullets, **bold**, "(solve for x)", "=> x = ?". */
 function stripPrintedNoise(raw) {
   return raw.split('\n').map((line) => {
-    let t = line.replace(/(^|\s)(\*\*|__)([^*_\s][^*_\n]*?)\2(?=\s|$|[:.,;])/g, '$1$3').replace(/`/g, '').replace(/^\s*#{1,6}\s+/, '').replace(/^\s*[*\u2022\u25aa\u25cf]\s+(?=\S)/, '');
+    let t = line.replace(/(^|\s)(\*\*|__)([^*_\s][^*_\n]*?)\2(?=\s|$|[:.,;])/g, '$1$3').replace(/`/g, '').replace(/^\s*#{1,6}\s+/, '').replace(/^\s*[*•▪●]\s+(?=\S)/, '');
     for (let guard = 0; guard < 2; guard++) {
       const before = t;
       t = t
         .replace(/^\s*(?:problem|question|exercise|example|exercice|prob|ex|eg|q|no|number|task|item)\s*\.?\s*#?\s*\d+\s*[a-z]?\s*[.:)]\s*/i, '')
-        .replace(/^\s*(?:problem|question|exercise|example|prob|ex|q|no|task|item)\s*\.?\s*#?\s*\d+\s+(?=[A-Za-z\\$\u221a\u222b\u2211(\[|-])/i, '')
-        .replace(/^\s*\(([a-z]|[ivx]{1,4})\)\s+(?=[A-Za-z0-9\\$\u221a\u222b\u2211\u220f(\[|]|-\S)/i, '')
-        .replace(/^\s*\((\d{1,2})\)\s+(?=[A-Za-z0-9\\$\u221a\u222b\u2211\u220f\[|])/, '')
-        .replace(/^\s*([a-z]|\d{1,2})\)\s+(?=[A-Za-z0-9\\$\u221a\u222b\u2211\u220f(\[|-])/, '')
+        .replace(/^\s*(?:problem|question|exercise|example|prob|ex|q|no|task|item)\s*\.?\s*#?\s*\d+\s+(?=[A-Za-z\\$√∫∑(\[|-])/i, '')
+        .replace(/^\s*\(([a-z]|[ivx]{1,4})\)\s+(?=[A-Za-z0-9\\$√∫∑∏(\[|]|-\S)/i, '')
+        .replace(/^\s*\((\d{1,2})\)\s+(?=[A-Za-z0-9\\$√∫∑∏\[|])/, '')
+        .replace(/^\s*([a-z]|\d{1,2})\)\s+(?=[A-Za-z0-9\\$√∫∑∏(\[|-])/, '')
         .replace(/^\s*(?:problem|question|exercise|example|prob|ex|eg|q|no|task|item)\.\s*#?\s*\d+\s+(?=\S)/i, '')
         .replace(/^\s*#\d+\s*[.:)]?\s+/, '');
       t = t.replace(/^\s*\d{1,2}[.)]\s+(?=\S)/, '');
@@ -378,7 +378,7 @@ function stripPrintedNoise(raw) {
     }
     t = t
       .replace(/\s*\((?:solve|find|simplify|evaluate|calculate|compute|show|prove|factor|expand)\b[^)]*\)\s*[.?]?\s*$/i, '')
-      .replace(/\s*(?:\u21d2|\u27f9|\u2192|\u27f6|->|=>|\\Rightarrow|\\implies|\\rightarrow|\\to)\s*[a-zA-Z]\s*=?\s*\??\s*$/, '');
+      .replace(/\s*(?:⇒|⟹|→|⟶|->|=>|\\Rightarrow|\\implies|\\rightarrow|\\to)\s*[a-zA-Z]\s*=?\s*\??\s*$/, '');
     return t;
   }).join('\n');
 }
@@ -388,32 +388,32 @@ function normalizeText(raw) {
   SERIES_FLAG.v = null;
   WORDS_ASK.v = null;
   let s = convertApplied(convertLogic(stripPrintedNoise(String(raw))));
-  s = s.replace(/[\u2211\u03a3]/g, '\u0001S').replace(/[\u220f\u03a0]/g, '\u0001P');
-  s = s.replace(/[\u2070\u00b9\u00b2\u00b3\u2074-\u207b]+/g, (m) =>
+  s = s.replace(/[∑Σ]/g, '\u0001S').replace(/[∏Π]/g, '\u0001P');
+  s = s.replace(/[⁰¹²³⁴-⁻]+/g, (m) =>
     '^(' + Array.from(m).map((c) => SUPERSCRIPT[c] || '').join('') + ')');
-  s = s.replace(/(\u222b|\u0001[sp])([\u2080-\u2089]+)/g, (m, c, d) => c + '_' + Array.from(d).map((x) => String(x.charCodeAt(0) - 0x2080)).join(''));
-  s = s.replace(/[\u2080-\u2089]+/g, (m) => '_(' + Array.from(m).map((c) => String(c.charCodeAt(0) - 0x2080)).join('') + ')');
-  s = s.replace(/\u2034/g, "'''").replace(/\u2033/g, "''").replace(/\u2032/g, "'");
+  s = s.replace(/(∫|\u0001[sp])([₀-₉]+)/g, (m, c, d) => c + '_' + Array.from(d).map((x) => String(x.charCodeAt(0) - 0x2080)).join(''));
+  s = s.replace(/[₀-₉]+/g, (m) => '_(' + Array.from(m).map((c) => String(c.charCodeAt(0) - 0x2080)).join('') + ')');
+  s = s.replace(/‴/g, "'''").replace(/″/g, "''").replace(/′/g, "'");
   s = s.replace(new RegExp('(\\d)\\s*(' + VULGAR_CLASS + ')', 'g'), (_, d, f) => '(' + d + '+' + VULGAR[f] + ')');
   s = s.replace(new RegExp(VULGAR_CLASS, 'g'), (f) => '(' + VULGAR[f] + ')');
   s = s.normalize('NFKC');
   s = s
-    .replace(/[\u2212\u2012\u2013\u2014\u2015\ufe63]/g, '-')
-    .replace(/[\u00d7\u2715\u2716\u2a2f\u00b7\u22c5\u2219\u2022\u2217]/g, '*')
-    .replace(/[\u00f7\u2215\u2044]/g, '/')
-    .replace(/[\u2264\u2a7d\u2266]/g, '<=')
-    .replace(/[\u2265\u2a7e\u2267]/g, '>=')
-    .replace(/\u2260/g, '!=')
-    .replace(/\u221a/g, 'sqrt')
-    .replace(/\u221b/g, 'cbrt')
-    .replace(/\u03c0/g, 'pi')
-    .replace(/\u221e/g, ' oo ')
-    .replace(/\u2202/g, 'd')
-    .replace(/[\u2192\u27f6\u21a6]/g, '->')
-    .replace(/[\u201c\u201d\u2018\u2019]/g, '')
-    .replace(/[\u03b1\u03b2\u03b3\u03b4\u03b8\u03bb\u03bc\u03c6\u03c9\u03c1\u03c3]/g, (c) => GREEK[c]);
-  s = s.replace(/(\d+(?:\.\d+)?)\s*(?:degrees?|deg)\b/gi, '$1\u00b0');
-  s = s.replace(/(\d+(?:\.\d+)?|[a-zA-Z])\s*\u00b0/g, (m, a) => degreesToPi(a)).replace(/\u00b0/g, '*pi/180');
+    .replace(/[−‒–—―﹣]/g, '-')
+    .replace(/[×✕✖⨯·⋅∙•∗]/g, '*')
+    .replace(/[÷∕⁄]/g, '/')
+    .replace(/[≤⩽≦]/g, '<=')
+    .replace(/[≥⩾≧]/g, '>=')
+    .replace(/≠/g, '!=')
+    .replace(/√/g, 'sqrt')
+    .replace(/∛/g, 'cbrt')
+    .replace(/π/g, 'pi')
+    .replace(/∞/g, ' oo ')
+    .replace(/∂/g, 'd')
+    .replace(/[→⟶↦]/g, '->')
+    .replace(/[“”‘’]/g, '')
+    .replace(/[αβγδθλμφωρσ]/g, (c) => GREEK[c]);
+  s = s.replace(/(\d+(?:\.\d+)?)\s*(?:degrees?|deg)\b/gi, '$1°');
+  s = s.replace(/(\d+(?:\.\d+)?|[a-zA-Z])\s*°/g, (m, a) => degreesToPi(a)).replace(/°/g, '*pi/180');
   s = convertDiscrete(s);
   s = convertSubscripts(s);
   if (/[\\$]/.test(s)) s = convertLatex(s);
@@ -441,7 +441,7 @@ function markUppercaseLetters(s) {
   return s.replace(/[A-Z]/g, (L, off) => {
     const before = s[off - 1] || '';
     const after = s[off + 1] || '';
-    if (/[A-Za-z\u0001\u0002]/.test(before) || /[A-Za-z]/.test(after)) return L; // \u0001 marks a sum / product sign (\u03a3, \u03a0)
+    if (/[A-Za-z\u0001\u0002]/.test(before) || /[A-Za-z]/.test(after)) return L; // \u0001 marks a sum / product sign (Σ, Π)
     if (L === 'E' && /[\d.]/.test(before) && /[\d+-]/.test(after)) return L; // 1.5E3
     return '\u0002' + L.toLowerCase();
   });
@@ -544,7 +544,7 @@ function cleanStatement(p) {
   p = p.replace(/^\s*(?:please\s+)?(?:solve(?:\s+for\s+[a-z])?|find|evaluate|calculate|compute|simplify|what\s+is|answer)\b(?!\()\s*[:,]?\s*/, '');
   p = p.replace(/^\s*(?:\d{1,2}|[a-z])[.)]\s+/, '');
   p = p.replace(/^\s*[a-z][a-z ]*:\s*/, '');
-  p = p.replace(/[\s=?_\u25a1\u25a2.]+$/, '');
+  p = p.replace(/[\s=?_□▢.]+$/, '');
   p = p.replace(/^[\s,]+|[\s,]+$/g, '');
   return p.replace(/\s+/g, ' ').trim();
 }
@@ -882,8 +882,8 @@ const hasCommand = (n) => (n.t === 'call' && !!n.cmd) || (n.t === 'neg' || n.t =
       : n.t === 'list' ? n.items.some(hasCommand) : false);
 
 // ---- pretty printer (shows the user how the text was read) --------------------
-const SUP_DIGITS = '\u2070\u00b9\u00b2\u00b3\u2074\u2075\u2076\u2077\u2078\u2079';
-const toSup = (str) => Array.from(str).map((c) => (c === '-' ? '\u207b' : SUP_DIGITS[+c])).join('');
+const SUP_DIGITS = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+const toSup = (str) => Array.from(str).map((c) => (c === '-' ? '⁻' : SUP_DIGITS[+c])).join('');
 const PREC = { '+': 1, '-': 1, '*': 2, '/': 2, '^': 4 };
 const precOf = (n) => (n.t === 'bin' ? PREC[n.op] : n.t === 'neg' ? 3 : 6);
 function show(n, ctx) {
@@ -895,7 +895,7 @@ function showRaw(n) {
     case 'num': return n.text;
     case 'var': return n.name;
     case 'dvar': return n.name + "'".repeat(n.order);
-    case 'const': return n.name === 'pi' ? '\u03c0' : n.name === 'oo' ? '\u221e' : 'e';
+    case 'const': return n.name === 'pi' ? 'π' : n.name === 'oo' ? '∞' : 'e';
     case 'neg': return '-' + show(n.a, n.a.t === 'neg' ? 7 : 3);
     case 'fact': return show(n.a, 6) + '!';
     case 'pct': return show(n.a, 6) + '%';
@@ -910,9 +910,9 @@ function showRaw(n) {
   if (op === '*') {
     const l = show(n.a, n.a.t === 'bin' && n.a.op === '/' ? 7 : 2);
     const r = show(n.b, n.b.t === 'neg' || (n.b.t === 'bin' && n.b.op === '/') ? 7 : 2);
-    const implicit = /[0-9a-zA-Z\u03c0)!%\u2070-\u2079\u00b2\u00b3\u00b9\]]$/.test(l) && /^[a-zA-Z\u03c0\u221a(]/.test(r) && !/^[a-z]{2,}/.test(r) && !(/[a-zA-Z]$/.test(l) && /^e(\^|$)/.test(r)) && !(/\]$/.test(l) && /^\[/.test(r));
-    const spaced = /[0-9a-zA-Z\u03c0)!%\u2070-\u2079\u00b2\u00b3\u00b9\]]$/.test(l) && (/^[a-z]{2,}/.test(r) || /^e(\^|$)/.test(r));
-    return l + (implicit ? '' : spaced ? ' ' : '\u00b7') + r;
+    const implicit = /[0-9a-zA-Zπ)!%⁰-⁹²³¹\]]$/.test(l) && /^[a-zA-Zπ√(]/.test(r) && !/^[a-z]{2,}/.test(r) && !(/[a-zA-Z]$/.test(l) && /^e(\^|$)/.test(r)) && !(/\]$/.test(l) && /^\[/.test(r));
+    const spaced = /[0-9a-zA-Zπ)!%⁰-⁹²³¹\]]$/.test(l) && (/^[a-z]{2,}/.test(r) || /^e(\^|$)/.test(r));
+    return l + (implicit ? '' : spaced ? ' ' : '·') + r;
   }
   if (op === '/') return show(n.a, 2) + '/' + show(n.b, n.b.t === 'neg' ? 7 : 3);
   // power
@@ -926,7 +926,7 @@ function showRaw(n) {
 function showCall(n) {
   const a = n.args;
   const one = () => (a[0].t === 'num' || a[0].t === 'var' || a[0].t === 'const' ? showRaw(a[0]) : '(' + showRaw(a[0]) + ')');
-  if (n.fn === 'sqrt') return '\u221a' + one();
+  if (n.fn === 'sqrt') return '√' + one();
   if (n.fn === 'abs') return '|' + showRaw(a[0]) + '|';
   const names = { asin: 'arcsin', acos: 'arccos', atan: 'arctan', log10: 'log' };
   return (names[n.fn] || n.fn) + '(' + a.map(showRaw).join(', ') + ')';
@@ -934,8 +934,8 @@ function showCall(n) {
 
 // ======================================================================
 // 2b. Printed mathematical notation -> command syntax
-//     \u222b_a^b f dx -> integrate(f, x, a, b)      lim_{x->a} f -> limit(f, x, a)
-//     \u03a3_{k=1}^n f -> sum(f, k, 1, n)           d/dx f -> diff(f, x)      dy/dx -> y'
+//     ∫_a^b f dx -> integrate(f, x, a, b)      lim_{x->a} f -> limit(f, x, a)
+//     Σ_{k=1}^n f -> sum(f, k, 1, n)           d/dx f -> diff(f, x)      dy/dx -> y'
 // ======================================================================
 
 /** Registry of command names (filled by the modules that implement them). */
@@ -970,9 +970,9 @@ function readScript(s, i) {
     if (k < 0) return null;
     return { text: s.slice(j + 1, k).trim(), end: k + 1 };
   }
-  const m = /^[+-]?\s*(?:\d+(?:\.\d+)?|oo|pi|\u03c0|\u221e|[a-z])/.exec(s.slice(j));
+  const m = /^[+-]?\s*(?:\d+(?:\.\d+)?|oo|pi|π|∞|[a-z])/.exec(s.slice(j));
   if (!m) return null;
-  return { text: m[0].replace(/\s+/g, '').replace('\u03c0', 'pi').replace('\u221e', 'oo'), end: j + m[0].length };
+  return { text: m[0].replace(/\s+/g, '').replace('π', 'pi').replace('∞', 'oo'), end: j + m[0].length };
 }
 
 /** Find "dx" (the differential) at bracket depth 0, starting at `from`. */
@@ -992,7 +992,7 @@ function findDifferential(s, from) {
 
 function convertIntegrals(s) {
   for (let guard = 0; guard < 12; guard++) {
-    const i = s.indexOf('\u222b');
+    const i = s.indexOf('∫');
     if (i < 0) break;
     let j = i + 1;
     let lo = null;
@@ -1119,12 +1119,12 @@ function convertDerivatives(s) {
   return s;
 }
 
-/** "\u03a3 k from 1 to 10", "\u03a3 1/n for n = 1 to 5": bounds written in words become sub- and superscripts. */
+/** "Σ k from 1 to 10", "Σ 1/n for n = 1 to 5": bounds written in words become sub- and superscripts. */
 function convertTextSums(s) {
-  return s.replace(/\u0001([sp])\s*(?![_^])([^;\n]*?)\s+(?:for\s+([a-z])\s+)?(?:from|=)\s*(?:([a-z])\s*=\s*)?(-?\d+)\s*(?:to|\.\.|\u2192|through)\s*(-?\d+|n|oo|\u221e|infinity)(?![\w])/i, (m, kind, body, v1, v2, lo, hi) => {
+  return s.replace(/\u0001([sp])\s*(?![_^])([^;\n]*?)\s+(?:for\s+([a-z])\s+)?(?:from|=)\s*(?:([a-z])\s*=\s*)?(-?\d+)\s*(?:to|\.\.|→|through)\s*(-?\d+|n|oo|∞|infinity)(?![\w])/i, (m, kind, body, v1, v2, lo, hi) => {
     const v = v1 || v2 || (/[a-z]/.exec(body.replace(/\b(?:pi|oo|sin|cos|tan|ln|log|exp|sqrt|abs|e)\b/g, '')) || [])[0];
     if (!v) return m;
-    return '\u0001' + kind + '_(' + v + '=' + lo + ')^(' + String(hi).replace('\u221e', 'oo').replace('infinity', 'oo') + ') ' + body.trim();
+    return '\u0001' + kind + '_(' + v + '=' + lo + ')^(' + String(hi).replace('∞', 'oo').replace('infinity', 'oo') + ') ' + body.trim();
   });
 }
 /** A command name directly in front of a matrix literal (det[[1, 2], [3, 4]] from \\det\\begin{pmatrix}...) gets its brackets. */
@@ -1140,7 +1140,7 @@ function wrapMatrixArgs(s) {
   return s;
 }
 function convertNotation(s) {
-  if (s.indexOf('\u222b') >= 0) s = convertIntegrals(s);
+  if (s.indexOf('∫') >= 0) s = convertIntegrals(s);
   if (s.indexOf('\u0001') >= 0) s = convertSums(convertTextSums(s));
   s = wrapMatrixArgs(s);
   if (/\blim(?![a-z])/.test(s)) s = convertLimits(s);
@@ -1379,7 +1379,7 @@ function radicalText(s, r, q) {
   const g = bgcd(s, q);
   s /= g;
   q /= g;
-  return (s === 1n ? '' : String(s)) + '\u221a' + r + (q === 1n ? '' : '/' + q);
+  return (s === 1n ? '' : String(s)) + '√' + r + (q === 1n ? '' : '/' + q);
 }
 
 /** Try to give a floating value a short exact name (fraction, multiple of pi, root, ln). */
@@ -1391,7 +1391,7 @@ function recognize(x) {
   const pf = toFraction(x / Math.PI, 24);
   if (pf) {
     const a = Math.abs(pf.p);
-    const body = (a === 1 ? '' : String(a)) + '\u03c0' + (pf.q === 1 ? '' : '/' + pf.q);
+    const body = (a === 1 ? '' : String(a)) + 'π' + (pf.q === 1 ? '' : '/' + pf.q);
     return { text: (pf.p < 0 ? '-' : '') + body, val: (pf.p * Math.PI) / pf.q };
   }
   const f2 = Math.abs(x) < 1000 ? toFraction(x * x, 200) : null;
@@ -1408,18 +1408,18 @@ function recognize(x) {
   return null;
 }
 
-/** "=" when the printed decimal is exact, "\u2248" otherwise. */
+/** "=" when the printed decimal is exact, "≈" otherwise. */
 function approxSym(x) {
   const d = fmtNum(x);
-  return Math.abs(Number(d) - x) <= 1e-15 * Math.abs(x) ? '=' : '\u2248';
+  return Math.abs(Number(d) - x) <= 1e-15 * Math.abs(x) ? '=' : '≈';
 }
 
-/** "exact (\u2248 decimal)" style text for a real number. */
+/** "exact (≈ decimal)" style text for a real number. */
 function describeNumber(x) {
   const rec = recognize(x);
   if (rec && rec.rational && !rec.text.includes('/')) return rec.text;
   if (rec) return rec.text + ' (' + approxSym(x) + ' ' + fmtNum(x) + ')';
-  return '\u2248 ' + fmtNum(x);
+  return '≈ ' + fmtNum(x);
 }
 
 // ---- polynomial printing -------------------------------------------------------
@@ -1579,8 +1579,8 @@ function numericPolyRoots(ints) {
 function quadRootText(a, b, r, c, imag) {
   const ab = babs(b);
   let sq;
-  if (imag) sq = (ab === 1n ? '' : String(ab)) + 'i' + (r === 1n ? '' : '\u221a' + r);
-  else sq = (ab === 1n ? '' : String(ab)) + '\u221a' + r;
+  if (imag) sq = (ab === 1n ? '' : String(ab)) + 'i' + (r === 1n ? '' : '√' + r);
+  else sq = (ab === 1n ? '' : String(ab)) + '√' + r;
   let num;
   if (a === 0n) num = (b < 0n ? '-' : '') + sq;
   else num = a + (b < 0n ? ' - ' : ' + ') + sq;
@@ -1653,7 +1653,7 @@ function polyRoots(P) {
         }
       }
     }
-    notes.push('quadratic part: a=' + A + ', b=' + B + ', c=' + C + ', discriminant D = b\u00b2 - 4ac = ' + D);
+    notes.push('quadratic part: a=' + A + ', b=' + B + ', c=' + C + ', discriminant D = b² - 4ac = ' + D);
   } else if (deg >= 3) {
     const zs = numericPolyRoots(ints);
     const used = new Array(zs.length).fill(false);
@@ -1731,7 +1731,7 @@ function parseStatement(text) {
   const conds = ops.map((o, k) => ({ lhs: nodes[k], op: o.op, rhs: nodes[k + 1] }));
   return { kind: 'rel', conds, nodes, ops: ops.map((o) => o.op) };
 }
-const REL_SHOW = { '<=': ' \u2264 ', '>=': ' \u2265 ', '!=': ' \u2260 ', '<': ' < ', '>': ' > ', '=': ' = ' };
+const REL_SHOW = { '<=': ' ≤ ', '>=': ' ≥ ', '!=': ' ≠ ', '<': ' < ', '>': ' > ', '=': ' = ' };
 function showStatement(st) {
   if (st.kind === 'expr') return readAsNode(st.node);
   if (st.kind === 'eq') return showRaw(st.lhs) + ' = ' + showRaw(st.rhs);
@@ -1746,7 +1746,7 @@ function rootLine(v, r) {
   if (r.text) {
     if (r.q && r.q.isInt()) t = v + ' = ' + r.text;
     else t = v + ' = ' + r.text + ' (' + approxSym(r.val) + ' ' + d + ')';
-  } else t = v + ' \u2248 ' + d;
+  } else t = v + ' ≈ ' + d;
   if (r.mult === 2) t += ' (double root)';
   else if (r.mult === 3) t += ' (triple root)';
   else if (r.mult > 3) t += ' (multiplicity ' + r.mult + ')';
@@ -1759,7 +1759,7 @@ function complexNum(re, im) {
   return a + (im < 0 ? ' - ' : ' + ') + b;
 }
 function complexLine(v, c) {
-  const t = c.text ? v + ' = ' + c.text + ' (\u2248 ' + complexNum(c.re, c.im) + ')' : v + ' \u2248 ' + complexNum(c.re, c.im);
+  const t = c.text ? v + ' = ' + c.text + ' (≈ ' + complexNum(c.re, c.im) + ')' : v + ' ≈ ' + complexNum(c.re, c.im);
   return c.mult > 1 ? t + ' (multiplicity ' + c.mult + ')' : t;
 }
 function polyIsZeroAt(P, r) {
@@ -1813,7 +1813,7 @@ function solveRationalEquation(f, dom, eq, v, win) {
   const kind = f.d.length > 1 || dom.length ? 'equation with a fraction' : deg === 1 ? 'linear equation' : deg === 2 ? 'quadratic equation' : deg === 3 ? 'cubic equation' : 'polynomial equation of degree ' + deg;
   out.work.push('Type: ' + kind);
   out.work.push('Move everything to one side' + (f.d.length > 1 || dom.length ? ' and clear the denominators' : '') + ': ' + polyText(N, v) + ' = 0');
-  if (exclText.length) out.work.push('Values that make a denominator zero are not allowed: ' + v + ' \u2260 ' + listJoin(exclText));
+  if (exclText.length) out.work.push('Values that make a denominator zero are not allowed: ' + v + ' ≠ ' + listJoin(exclText));
   const roots = polyRoots(N);
   roots.notes.forEach((n) => out.work.push(n));
   const keep = [];
@@ -1826,7 +1826,7 @@ function solveRationalEquation(f, dom, eq, v, win) {
     keep.length = 0;
     kept.forEach((r) => keep.push(r));
     const bt = (x) => { const rc = recognize(x); return rc ? rc.text : fmtNum(x); };
-    out.notes.push('Only solutions with ' + bt(win.lo) + (win.loInc ? ' \u2264 ' : ' < ') + v + (win.hiInc ? ' \u2264 ' : ' < ') + bt(win.hi) + ' are listed.');
+    out.notes.push('Only solutions with ' + bt(win.lo) + (win.loInc ? ' ≤ ' : ' < ') + v + (win.hiInc ? ' ≤ ' : ' < ') + bt(win.hi) + ' are listed.');
     if (!keep.length) {
       out.answer.push('no solution in the interval');
       return out;
@@ -1905,7 +1905,7 @@ function minimizeAbs(F, a, b) {
 function periodText(P) {
   const fr = toFraction(P / Math.PI, 24);
   if (!fr) return fmtNum(P);
-  return (fr.p === 1 ? '' : String(fr.p)) + '\u03c0' + (fr.q === 1 ? '' : '/' + fr.q);
+  return (fr.p === 1 ? '' : String(fr.p)) + 'π' + (fr.q === 1 ? '' : '/' + fr.q);
 }
 
 /** "2\u03c0k", "\u03c0k", "2\u03c0k/3": the step between periodic solutions. */
@@ -2046,9 +2046,9 @@ function solveNumericEquation(eq, v, win) {
   }
   if (win) {
     const bt = (x) => { const rc = recognize(x); return rc ? rc.text : fmtNum(x); };
-    out.notes.push('Solutions with ' + bt(win.lo) + (win.loInc ? ' \u2264 ' : ' < ') + v + (win.hiInc ? ' \u2264 ' : ' < ') + bt(win.hi) + ' (' + uniq.length + ' found).');
+    out.notes.push('Solutions with ' + bt(win.lo) + (win.loInc ? ' ≤ ' : ' < ') + v + (win.hiInc ? ' ≤ ' : ' < ') + bt(win.hi) + ' (' + uniq.length + ' found).');
   }
-  else if (P) out.notes.push('The equation repeats every ' + periodText(P) + ' (k is any integer). The solutions listed are those in 0 \u2264 ' + v + ' < ' + periodText(P) + '.');
+  else if (P) out.notes.push('The equation repeats every ' + periodText(P) + ' (k is any integer). The solutions listed are those in 0 ≤ ' + v + ' < ' + periodText(P) + '.');
   else out.notes.push('Searched for real solutions between ' + v + ' = -' + SCAN_LIMIT + ' and ' + SCAN_LIMIT + '.');
   out.check = uniq.every((r) => Math.abs(F(r)) <= Math.max(tol(r), 1e-7)) ? 'substituting back gives equal sides (to numerical precision)' : null;
   return out;
@@ -2151,14 +2151,14 @@ function solveInequalities(conds, v) {
     i = j + 1;
   }
   out.work.push('Type: inequality; write it as an expression compared with 0 and find where it changes sign');
-  if (pts.length) out.work.push('Critical points (zero or undefined): ' + listJoin(pts.map((p) => v + ' = ' + (p.approx ? '\u2248' : '') + p.text + (p.undef ? ' (undefined)' : ''))));
+  if (pts.length) out.work.push('Critical points (zero or undefined): ' + listJoin(pts.map((p) => v + ' = ' + (p.approx ? '≈' : '') + p.text + (p.undef ? ' (undefined)' : ''))));
   formatIntervals(intervals, v, out);
   return out;
 }
 
-/** Interval list -> "x < 2 or x \u2265 5" and "(-\u221e, 2) \u222a [5, \u221e)". Endpoints: {val, text, approx}. */
+/** Interval list -> "x < 2 or x ≥ 5" and "(-∞, 2) ∪ [5, ∞)". Endpoints: {val, text, approx}. */
 function formatIntervals(intervals, v, out) {
-  const num = (p) => (p.approx ? '\u2248' : '') + p.text;
+  const num = (p) => (p.approx ? '≈' : '') + p.text;
   const isPoint = (iv) => iv.lo && iv.hi && Math.abs(iv.lo.val - iv.hi.val) <= 1e-12 * (1 + Math.abs(iv.lo.val));
   if (!intervals.length) {
     out.answer.push('no solution');
@@ -2170,16 +2170,16 @@ function formatIntervals(intervals, v, out) {
   }
   const setText = intervals.map((iv) => {
     if (isPoint(iv)) return '{' + num(iv.lo) + '}';
-    return (iv.lo ? (iv.loIncl ? '[' : '(') + num(iv.lo) : '(-\u221e') + ', ' + (iv.hi ? num(iv.hi) + (iv.hiIncl ? ']' : ')') : '\u221e)');
-  }).join(' \u222a ');
+    return (iv.lo ? (iv.loIncl ? '[' : '(') + num(iv.lo) : '(-∞') + ', ' + (iv.hi ? num(iv.hi) + (iv.hiIncl ? ']' : ')') : '∞)');
+  }).join(' ∪ ');
   const condText = intervals.map((iv) => {
     if (isPoint(iv)) return v + ' = ' + num(iv.lo);
-    if (!iv.lo) return v + (iv.hiIncl ? ' \u2264 ' : ' < ') + num(iv.hi);
-    if (!iv.hi) return v + (iv.loIncl ? ' \u2265 ' : ' > ') + num(iv.lo);
-    return num(iv.lo) + (iv.loIncl ? ' \u2264 ' : ' < ') + v + (iv.hiIncl ? ' \u2264 ' : ' < ') + num(iv.hi);
+    if (!iv.lo) return v + (iv.hiIncl ? ' ≤ ' : ' < ') + num(iv.hi);
+    if (!iv.hi) return v + (iv.loIncl ? ' ≥ ' : ' > ') + num(iv.lo);
+    return num(iv.lo) + (iv.loIncl ? ' ≤ ' : ' < ') + v + (iv.hiIncl ? ' ≤ ' : ' < ') + num(iv.hi);
   }).join(' or ');
   out.answer.push(condText);
-  out.answer.push(v + ' \u2208 ' + setText + '  (interval notation)');
+  out.answer.push(v + ' ∈ ' + setText + '  (interval notation)');
 }
 
 /** Inequalities that are not polynomial/fractional (abs, roots, exp, log ...): scan numerically. */
@@ -2260,7 +2260,7 @@ function solveInequalitiesNumeric(conds, v) {
   }
   out.work.push('Type: inequality with a non-polynomial expression (absolute value, root, exponential, logarithm ...) - solved by scanning for where it changes truth value');
   if (truncated) out.notes.push('The search was stopped early because the solution set has too many pieces, so this answer is incomplete.');
-  if (edgeNote) out.notes.push('Assumed the solution set continues beyond ' + v + ' = \u00b1' + SCAN_LIMIT + ' where it reaches that edge.');
+  if (edgeNote) out.notes.push('Assumed the solution set continues beyond ' + v + ' = ±' + SCAN_LIMIT + ' where it reaches that edge.');
   formatIntervals(intervals, v, out);
   return out;
 }
@@ -2467,19 +2467,19 @@ function solveNonlinear(eqs, vars) {
     return eqs.map((e) => evalNum(e.lhs, env) - evalNum(e.rhs, env));
   };
   const sols = newtonSolutions(F, n);
-  out.work.push('Type: system of ' + n + ' non-linear equations - solved numerically (Newton\u2019s method from many starting points)');
+  out.work.push('Type: system of ' + n + ' non-linear equations - solved numerically (Newton’s method from many starting points)');
   if (!sols.length) {
     out.answer.push('no real solution found');
     return out;
   }
   for (const s of sols) out.answer.push(vars.map((nm, i) => nm + ' ' + describeEq(s[i])).join(', '));
-  out.notes.push('Only real solutions with |value| \u2264 10 near the search grid are found; there could be others.');
+  out.notes.push('Only real solutions with |value| ≤ 10 near the search grid are found; there could be others.');
   return out;
 }
-/** "= 3", "= \u221a2 (\u2248 1.4142136)" or "\u2248 2.3456" for a floating value. */
+/** "= 3", "= √2 (≈ 1.4142136)" or "≈ 2.3456" for a floating value. */
 function describeEq(x) {
   const rec = recognize(x);
-  if (!rec) return '\u2248 ' + fmtNum(x);
+  if (!rec) return '≈ ' + fmtNum(x);
   if (rec.rational && !rec.text.includes('/')) return '= ' + rec.text;
   return '= ' + rec.text + ' (' + approxSym(x) + ' ' + fmtNum(x) + ')';
 }
@@ -2650,7 +2650,7 @@ function solveProblem(text, solveFor) {
       out = newOut();
       const res = eqs.map((e) => compareConstants(e.lhs, '=', e.rhs));
       const all = res.every((r) => r.holds);
-      out.answer.push(all ? 'True: both sides are equal (' + fmtNum(res[0].l) + ')' : 'False: ' + fmtNum(res[0].l) + ' \u2260 ' + fmtNum(res[0].r));
+      out.answer.push(all ? 'True: both sides are equal (' + fmtNum(res[0].l) + ')' : 'False: ' + fmtNum(res[0].l) + ' ≠ ' + fmtNum(res[0].r));
     } else if (names.length === 1 && eqs.length === 1) {
       out = solveOneUnknown(eqs[0], names[0]);
     } else if (names.length === 2 && eqs.length === 1 && !solveFor && conicCoefficients(eqs[0].lhs, eqs[0].rhs)) {
@@ -2873,7 +2873,7 @@ function sMul(factors) {
       list = (c.eq(Q1) ? [] : [sN(c)]).concat(items);
       continue;
     }
-    // radicals of rational numbers with the same index merge:  \u221a2\u00b7\u221a3 = \u221a6,  \u221a2\u00b7\u221a8 = 4
+    // radicals of rational numbers with the same index merge:  √2·√3 = √6,  √2·√8 = 4
     const radIdx = items.map((it, i) => (it.k === '^' && it.b.k === 'n' && it.b.q.sign() > 0 && it.e.k === 'n' && !it.e.q.isInt() && it.e.q.d < 13n && babs(it.e.q.n) < 50n ? i : -1)).filter((i) => i >= 0);
     if (radIdx.length >= 2) {
       const byIndex = new Map();
@@ -3122,7 +3122,7 @@ function sFn(fn, args) {
   const a = args[0];
   const num = a.k === 'n' ? a.q : null;
   if (fn === 'heaviside' || fn === 'dirac' || /^dirac\d+$/.test(fn)) {
-    // an argument without letters (2 - 5, \u03c0 - 3 ...) has a definite sign
+    // an argument without letters (2 - 5, π - 3 ...) has a definite sign
     let v = null;
     if (num) v = num.toNumber();
     else if (a.k !== 'v' && !varsOfS(a).size) v = numS(a, {});
@@ -3512,7 +3512,7 @@ function rfToS(r, x) {
 }
 
 // ---- printing ------------------------------------------------------------------------------------------
-const FN_LABEL = { asin: 'arcsin', acos: 'arccos', atan: 'arctan', zeta: '\u03b6', heaviside: 'u', dirac: '\u03b4' };
+const FN_LABEL = { asin: 'arcsin', acos: 'arccos', atan: 'arctan', zeta: 'ζ', heaviside: 'u', dirac: 'δ' };
 /** True when the whole string is a single parenthesised group "( ... )". */
 function isWrapped(s) {
   if (s[0] !== '(' || s[s.length - 1] !== ')') return false;
@@ -3525,7 +3525,7 @@ function isWrapped(s) {
 }
 function fmtS(e, ascii) {
   const U = !ascii;
-  const supers = (s) => Array.from(s).map((c) => (c === '-' ? '\u207b' : SUP_DIGITS[+c])).join('');
+  const supers = (s) => Array.from(s).map((c) => (c === '-' ? '⁻' : SUP_DIGITS[+c])).join('');
   const prec = (t) => (t.k === '+' ? 1 : t.k === '*' ? 2 : t.k === '^' ? 4 : t.k === 'n' && (t.q.sign() < 0 || !t.q.isInt()) ? 2 : 6);
   const wrap = (t, min) => (prec(t) < min ? '(' + go(t) + ')' : go(t));
   const joinMul = (parts) => {
@@ -3533,11 +3533,11 @@ function fmtS(e, ascii) {
     for (const p of parts) {
       if (!out) out = p;
       else if (ascii) out += '*' + p;
-      else if (/[0-9]$/.test(out) && /^[0-9]/.test(p)) out += '\u00b7' + p;
-      else if ((/^[A-Za-z]{2,}/.test(p) || /^e(\^|$)/.test(p) || /^[u\u03b4]\(/.test(p)) && /[A-Za-z\u03c0)\u00b2\u00b3\u00b9\u2070-\u2079\u207b|]$/.test(out)) out += ' ' + p;
+      else if (/[0-9]$/.test(out) && /^[0-9]/.test(p)) out += '·' + p;
+      else if ((/^[A-Za-z]{2,}/.test(p) || /^e(\^|$)/.test(p) || /^[uδ]\(/.test(p)) && /[A-Za-zπ)²³¹⁰-⁹⁻|]$/.test(out)) out += ' ' + p;
       else if (/[A-Za-z]\d+$/.test(out) && /^[A-Za-z(]/.test(p)) out += ' ' + p;
       else if (/^[A-Za-z]{2,}/.test(p) && /[0-9]$/.test(out)) out += ' ' + p;
-      else out += (/[0-9A-Za-z\u03c0)\u00b2\u00b3\u00b9\u2070-\u2079\u207b|]$/.test(out) && /^[A-Za-z\u03c0\u03bb\u03b8\u03bc\u03c3\u03c6\u03c9\u03b1\u03b2\u03b3\u03b4\u221a(|]/.test(p) ? '' : '\u00b7') + p;
+      else out += (/[0-9A-Za-zπ)²³¹⁰-⁹⁻|]$/.test(out) && /^[A-Za-zπλθμσφωαβγδ√(|]/.test(p) ? '' : '·') + p;
     }
     return out;
   };
@@ -3545,7 +3545,7 @@ function fmtS(e, ascii) {
     switch (t.k) {
       case 'n': return t.q.toString();
       case 'v': return t.name;
-      case 'c': return t.name === 'pi' ? (U ? '\u03c0' : 'pi') : t.name;
+      case 'c': return t.name === 'pi' ? (U ? 'π' : 'pi') : t.name;
       case '+': {
         let out = '';
         let terms = t.a;
@@ -3593,7 +3593,7 @@ function fmtS(e, ascii) {
         const { b, e: ex } = t;
         if (ex.k === 'n' && ex.q.eq(new Q(1n, 2n))) {
           const inner = go(b);
-          return ascii ? 'sqrt(' + inner + ')' : '\u221a' + (b.k === 'n' && b.q.isInt() && b.q.sign() >= 0 || b.k === 'v' || b.k === 'c' ? inner : '(' + inner + ')');
+          return ascii ? 'sqrt(' + inner + ')' : '√' + (b.k === 'n' && b.q.isInt() && b.q.sign() >= 0 || b.k === 'v' || b.k === 'c' ? inner : '(' + inner + ')');
         }
         if (ex.k === 'n' && ex.q.sign() < 0) return '1/' + wrap(sPow(b, sN(ex.q.neg())), 3);
         let es;
@@ -3608,7 +3608,7 @@ function fmtS(e, ascii) {
       default: {
         if (t.fn === 'abs') return ascii ? 'abs(' + go(t.a[0]) + ')' : '|' + go(t.a[0]) + '|';
         if (t.fn === 'fact') return (t.a[0].k === 'v' || (t.a[0].k === 'n' && t.a[0].q.isInt() && t.a[0].q.sign() >= 0) ? go(t.a[0]) : '(' + go(t.a[0]) + ')') + '!';
-        const name = ascii ? t.fn : FN_LABEL[t.fn] || (/^dirac\d+$/.test(t.fn) ? '\u03b4' + '\u2032'.repeat(Number(t.fn.slice(5))) : t.fn);
+        const name = ascii ? t.fn : FN_LABEL[t.fn] || (/^dirac\d+$/.test(t.fn) ? 'δ' + '′'.repeat(Number(t.fn.slice(5))) : t.fn);
         return name + '(' + t.a.map(go).join(', ') + ')';
       }
     }
@@ -3751,7 +3751,7 @@ function factorBig(n) {
   return new Map([...f.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)));
 }
 function factorizationText(f) {
-  return [...f.entries()].map(([p, e]) => p + (e === 1 ? '' : e <= 99 ? toSup(String(e)) : '^' + e)).join('\u00b7');
+  return [...f.entries()].map(([p, e]) => p + (e === 1 ? '' : e <= 99 ? toSup(String(e)) : '^' + e)).join('·');
 }
 
 // ---- polynomial factoring over Q ---------------------------------------------------------------
@@ -4099,7 +4099,7 @@ defCmd('factor', (n) => {
     }
     const f = factorBig(v);
     if (!f) throw new MathError('that number is too large to factor here');
-    out.answer.push((S.q.sign() < 0 ? '-1\u00b7' : '') + factorizationText(f) + (f.size === 1 && [...f.values()][0] === 1 ? '  (prime)' : ''));
+    out.answer.push((S.q.sign() < 0 ? '-1·' : '') + factorizationText(f) + (f.size === 1 && [...f.values()][0] === 1 ? '  (prime)' : ''));
     out.work.push('Type: prime factorisation');
     return out;
   }
@@ -4172,7 +4172,7 @@ function factorMulti(S, vs, out) {
 
 /** "(top)/(bottom)" of a reduced rational function, factored or expanded, whichever is shorter. */
 function ratioPolyAnswer(r, fn, fd, v) {
-  const wrap = (t) => (isWrapped(t) || /^-?[A-Za-z0-9\u00b2\u00b3\u2074\u2075\u2076\u2077\u2078\u2079\u2070\u00b9]+$/.test(t) ? t : '(' + t + ')');
+  const wrap = (t) => (isWrapped(t) || /^-?[A-Za-z0-9²³⁴⁵⁶⁷⁸⁹⁰¹]+$/.test(t) ? t : '(' + t + ')');
   const factored = wrap(factorPolyText(fn, v)) + '/' + wrap(factorPolyText(fd, v));
   const expanded = wrap(polyText(r.n, v)) + '/' + wrap(polyText(r.d, v));
   return expanded.length + 4 <= factored.length ? expanded : factored;
@@ -4261,7 +4261,7 @@ defCmd('gcd', (n) => {
     const g = bgcd(a.q.n, b.q.n);
     out.answer.push(String(g));
     const [gg, x, y] = egcd(a.q.n, b.q.n);
-    out.work.push('Bezout: ' + gg + ' = ' + a.q.n + '\u00b7(' + x + ') + ' + b.q.n + '\u00b7(' + y + ')');
+    out.work.push('Bezout: ' + gg + ' = ' + a.q.n + '·(' + x + ') + ' + b.q.n + '·(' + y + ')');
     return out;
   }
   const { v, A, B } = polyArgs(n);
@@ -4296,7 +4296,7 @@ defCmd('divide polydiv', (n) => {
   if (!B.length) throw new MathError('division by zero');
   const [qq, rr] = pdivmod(A, B);
   out.answer.push('quotient: ' + polyText(qq, v) + ',  remainder: ' + polyText(rr, v));
-  out.check = 'dividend = divisor \u00d7 quotient + remainder';
+  out.check = 'dividend = divisor × quotient + remainder';
   return out;
 });
 // ======================================================================
@@ -4451,7 +4451,7 @@ function checkLiteral(L, R, v, sol) {
   return null;
 }
 
-/** Sums of fractions become one fraction:  1/(1/a + 1/b)  ->  a\u00b7b/(a + b). */
+/** Sums of fractions become one fraction:  1/(1/a + 1/b)  ->  a·b/(a + b). */
 function togetherDeep(e) {
   const hasFrac = (x) => (x.k === '^' && x.e.k === 'n' && x.e.q.isInt() && x.e.q.sign() < 0 && x.b.k !== 'n') || ((x.k === '+' || x.k === '*' || x.k === 'f') && x.a.some(hasFrac)) || (x.k === '^' && (hasFrac(x.b) || hasFrac(x.e)));
   const go = (x) => {
@@ -4563,7 +4563,7 @@ const sgnNum = (S) => {
   return v > 1e-12 ? 1 : v < -1e-12 ? -1 : 0;
 };
 
-/** Principal argument in (\u2212\u03c0, \u03c0] as an expression. */
+/** Principal argument in (−π, π] as an expression. */
 function cArg(a) {
   const sr = sgnNum(a.re);
   const si = sgnNum(a.im);
@@ -4620,7 +4620,7 @@ function cPow(a, w) {
   }
   if (cxIsReal(w) && w.re.k === 'n' && w.re.q.eq(new Q(1n, 2n))) return cSqrt(a);
   if (cxIsReal(w) && w.re.k === 'n') {
-    // z^(p/q) = |z|^(p/q) \u00b7 cis(p/q \u00b7 arg z): the principal value
+    // z^(p/q) = |z|^(p/q) · cis(p/q · arg z): the principal value
     const r = simp(sPow(cAbs(a), w.re));
     const c = cCis(exS(sMul([w.re, cArg(a)])));
     return cx(exS(sMul([r, c.re])), exS(sMul([r, c.im])));
@@ -4736,8 +4736,8 @@ function cpEval(n, v) {
 function imagTerm(coef) {
   const t = fmtS(coef);
   if (t === '1') return 'i';
-  if (/^[0-9]+$/.test(t) || /^[a-zA-Z\u03c0]$/.test(t)) return t + 'i';
-  if (!/[\s/]/.test(t)) return t + '\u00b7i';
+  if (/^[0-9]+$/.test(t) || /^[a-zA-Zπ]$/.test(t)) return t + 'i';
+  if (!/[\s/]/.test(t)) return t + '·i';
   return '(' + t + ')i';
 }
 function cxText(z) {
@@ -4770,13 +4770,13 @@ function cxLabel(z) {
   }
   if (!ap || ap === t) return t;
   const bothRational = z.re.k === 'n' && z.im.k === 'n';
-  return t + (bothRational ? ' (= ' : ' (\u2248 ') + ap + ')';
+  return t + (bothRational ? ' (= ' : ' (≈ ') + ap + ')';
 }
 function polarWork(z) {
   const r = cAbs(z);
   const th = cArg(z);
   const deg = (numS(th, {}) * 180) / Math.PI;
-  return 'Modulus |z| = ' + symText(r) + ';  argument = ' + symText(th) + ' rad (' + fmtNum(deg) + '\u00b0)';
+  return 'Modulus |z| = ' + symText(r) + ';  argument = ' + symText(th) + ' rad (' + fmtNum(deg) + '°)';
 }
 function showComplexResult(z, out) {
   out.answer.push(cxLabel(z));
@@ -4833,7 +4833,7 @@ defCmd('arg', (n) => {
   needArgs(n, 1, 1, 'one complex number');
   const th = cArg(constArg(n.args[0]));
   const out = newOut();
-  out.answer.push(symText(th) + ' rad (' + fmtNum((numS(th, {}) * 180) / Math.PI) + '\u00b0)');
+  out.answer.push(symText(th) + ' rad (' + fmtNum((numS(th, {}) * 180) / Math.PI) + '°)');
   out.value = { S: th };
   return out;
 });
@@ -4842,7 +4842,7 @@ defCmd('cis', (n) => {
   return showComplexResult(cCis(constArg(n.args[0]).re), newOut());
 });
 defCmd('rect', (n) => {
-  needArgs(n, 2, 2, 'the modulus r and the angle \u03b8 in radians');
+  needArgs(n, 2, 2, 'the modulus r and the angle θ in radians');
   const r = constArg(n.args[0]).re;
   const c = cCis(constArg(n.args[1]).re);
   return showComplexResult(cx(exS(sMul([r, c.re])), exS(sMul([r, c.im]))), newOut());
@@ -4854,9 +4854,9 @@ defCmd('polar', (n) => {
   const r = cAbs(z);
   const th = cArg(z);
   const deg = (numS(th, {}) * 180) / Math.PI;
-  out.answer.push('z = ' + fmtS(r) + '\u00b7(cos \u03b8 + i sin \u03b8)  with \u03b8 = ' + fmtS(th) + ' rad (' + fmtNum(deg) + '\u00b0)');
-  out.answer.push('z = ' + fmtS(r) + '\u00b7e^(i\u03b8)');
-  out.work.push('Modulus \u2248 ' + fmtNum(numS(r, {})) + ',  argument \u2248 ' + fmtNum(numS(th, {})) + ' rad');
+  out.answer.push('z = ' + fmtS(r) + '·(cos θ + i sin θ)  with θ = ' + fmtS(th) + ' rad (' + fmtNum(deg) + '°)');
+  out.answer.push('z = ' + fmtS(r) + '·e^(iθ)');
+  out.work.push('Modulus ≈ ' + fmtNum(numS(r, {})) + ',  argument ≈ ' + fmtNum(numS(th, {})) + ' rad');
   out.work.push('Rectangular form: ' + cxLabel(z));
   return out;
 });
@@ -4871,7 +4871,7 @@ defCmd('nthroots croots', (n) => {
 defCmd('unityroots', (n) => {
   needArgs(n, 1, 1, 'the order n');
   const k = Number(intArg(n.args[0]));
-  const out = rootsOut(nthRoots(CX1, k), '\u03c9');
+  const out = rootsOut(nthRoots(CX1, k), 'ω');
   out.work.push('The ' + k + ' solutions of z^' + k + ' = 1');
   return out;
 });
@@ -4928,7 +4928,7 @@ function solveComplexEquation(st) {
   if (deg === 1) {
     const z = cDiv(cNeg(f[0]), f[1]);
     out.answer.push(text(z));
-    out.work.push('Type: linear equation with complex numbers: ' + v + ' = \u2212(constant term)/(coefficient of ' + v + ')');
+    out.work.push('Type: linear equation with complex numbers: ' + v + ' = −(constant term)/(coefficient of ' + v + ')');
     const chk = cAdd(cMul(f[1], z), f[0]);
     if (Math.abs(numS(chk.re, {})) < 1e-9 && Math.abs(numS(chk.im, {})) < 1e-9) out.check = 'substituting back gives 0';
     return out;
@@ -4943,7 +4943,7 @@ function solveComplexEquation(st) {
     out.answer.push(text(z1));
     if (!(zeroS(exS(sSub(z1.re, z2.re))) && zeroS(exS(sSub(z1.im, z2.im))))) out.answer.push(text(z2));
     out.work.push('Type: quadratic equation with complex coefficients');
-    out.work.push('Discriminant b\u00b2 \u2212 4ac = ' + cxText(disc));
+    out.work.push('Discriminant b² − 4ac = ' + cxText(disc));
     const ok = [z1, z2].every((z) => {
       const r = cAdd(cAdd(cMul(a, cMul(z, z)), cMul(b, z)), c);
       return Math.abs(numS(r.re, {})) < 1e-8 && Math.abs(numS(r.im, {})) < 1e-8;
@@ -4972,14 +4972,14 @@ function tryComplex(sts, force) {
   if (sts.length === 1) {
     const r = evalOne(sts[0].node);
     if (r.cmd) return { readAs, out: r.cmd };
-    out.work.push('Type: complex-number arithmetic (exact; i\u00b2 = \u22121)');
+    out.work.push('Type: complex-number arithmetic (exact; i² = −1)');
     return { readAs, out: showComplexResult(r.z, out) };
   }
   sts.forEach((st) => {
     const r = evalOne(st.node);
     out.answer.push(showRaw(st.node) + ' = ' + (r.cmd ? r.cmd.answer.join('; ') : cxLabel(r.z)));
   });
-  out.work.push('Type: complex-number arithmetic (exact; i\u00b2 = \u22121)');
+  out.work.push('Type: complex-number arithmetic (exact; i² = −1)');
   return { readAs, out };
 }
 
@@ -5476,7 +5476,7 @@ function mTrig(f, x, depth) {
     const finish = (G, back) => sDiv(sMul([coef, subsS(G, FV, back)]), a);
     const integ = (e) => integrateS(e, FV, depth + 1);
     if (m % 2 !== 0 && m > 0) {
-      // w = cos u :  -\u222b (1-w^2)^((m-1)/2) w^n dw
+      // w = cos u :  -∫ (1-w^2)^((m-1)/2) w^n dw
       const G = integ(sNeg(sMul([sPow(sSub(S1, sPow(W, sI(2))), sI((m - 1) / 2)), sPow(W, sI(n))])));
       return G && finish(G, sFn('cos', [u]));
     }
@@ -5491,7 +5491,7 @@ function mTrig(f, x, depth) {
       return G;
     }
     if ((m + n) % 2 === 0 && m + n < 0) {
-      // w = tan u :  \u222b w^m (1+w^2)^(-(m+n)/2 - 1) dw
+      // w = tan u :  ∫ w^m (1+w^2)^(-(m+n)/2 - 1) dw
       const G = integ(sMul([sPow(W, sI(m)), sPow(sAdd([S1, sPow(W, sI(2))]), sI(-(m + n) / 2 - 1))]));
       return G && finish(G, sFn('tan', [u]));
     }
@@ -5668,7 +5668,7 @@ function mParts(f, x, depth) {
       continue;
     }
     const next = sMul([v, du]);
-    // cyclic case: \u222bf = g v - c \u222bf
+    // cyclic case: ∫f = g v - c ∫f
     const ratio = sMul([next, sPow(f, SM1)]);
     const constant = freeOf(ratio, x) ? ratio : isConstantFunction(ratio, x) ? constantValueOf(ratio, x) : null;
     if (constant) {
@@ -5995,7 +5995,7 @@ function boundOf(node) {
   return { S: fromAst(node) };
 }
 const boundNum = (b) => (b.inf ? b.inf * Infinity : numS(b.S, {}));
-const boundText = (b) => (b.inf ? (b.inf > 0 ? '\u221e' : '-\u221e') : fmtS(b.S));
+const boundText = (b) => (b.inf ? (b.inf > 0 ? '∞' : '-∞') : fmtS(b.S));
 
 /** Does substituting x = a make any denominator, logarithm or tangent blow up? */
 function singularAt(f, x, a) {
@@ -6075,7 +6075,7 @@ function limitNumericSeq(g, side) {
 function recognizeLoose(v) {
   const r = recognize(v);
   if (r) return r;
-  for (const [name, c] of [['e', Math.E], ['e\u00b2', Math.E * Math.E], ['\u221ae', Math.sqrt(Math.E)], ['\u03c0\u00b2', Math.PI * Math.PI], ['\u03c0\u00b3', Math.PI ** 3], ['\u03c0\u2074', Math.PI ** 4], ['ln(2)', Math.LN2], ['ln(3)', Math.log(3)], ['ln(10)', Math.LN10], ['\u221a\u03c0', Math.sqrt(Math.PI)], ['\u03b3', 0.5772156649015329]]) {
+  for (const [name, c] of [['e', Math.E], ['e²', Math.E * Math.E], ['√e', Math.sqrt(Math.E)], ['π²', Math.PI * Math.PI], ['π³', Math.PI ** 3], ['π⁴', Math.PI ** 4], ['ln(2)', Math.LN2], ['ln(3)', Math.log(3)], ['ln(10)', Math.LN10], ['√π', Math.sqrt(Math.PI)], ['γ', 0.5772156649015329]]) {
     const fr = toFraction(v / c, 24);
     if (fr && fr.p !== 0) {
       const a = Math.abs(fr.p);
@@ -6152,11 +6152,11 @@ function limitSymbolic(f, x, a, side, depth) {
       const isZero = li.kind === 'value' && isNumVal(simp(li.S), 0);
       if (f.k === 'f') {
         if (f.fn === 'ln' && isInf && li.sign > 0) return { kind: 'inf', sign: 1, how: 'ln grows without bound' };
-        if (f.fn === 'ln' && isZero && numS(inner, { [x]: an + side * 1e-7 }) > 0) return { kind: 'inf', sign: -1, how: 'ln of a quantity tending to 0\u207a' };
-        if (f.fn === 'atan' && isInf) return { kind: 'value', S: sMul([sN(new Q(BigInt(li.sign), 2n)), S_PI]), how: 'arctan tends to \u00b1\u03c0/2' };
+        if (f.fn === 'ln' && isZero && numS(inner, { [x]: an + side * 1e-7 }) > 0) return { kind: 'inf', sign: -1, how: 'ln of a quantity tending to 0⁺' };
+        if (f.fn === 'atan' && isInf) return { kind: 'value', S: sMul([sN(new Q(BigInt(li.sign), 2n)), S_PI]), how: 'arctan tends to ±π/2' };
         if ((f.fn === 'sinh') && isInf) return { kind: 'inf', sign: li.sign, how: 'sinh grows without bound' };
         if (f.fn === 'cosh' && isInf) return { kind: 'inf', sign: 1, how: 'cosh grows without bound' };
-        if (f.fn === 'tanh' && isInf) return { kind: 'value', S: sI(li.sign), how: 'tanh tends to \u00b11' };
+        if (f.fn === 'tanh' && isInf) return { kind: 'value', S: sI(li.sign), how: 'tanh tends to ±1' };
       } else if (isConstE(f.b)) {
         if (isInf) return li.sign > 0 ? { kind: 'inf', sign: 1, how: 'e^u grows without bound' } : { kind: 'value', S: S0, how: 'e^u tends to 0' };
       } else if (isInf && li.sign > 0) {
@@ -6183,7 +6183,7 @@ function limitSymbolic(f, x, a, side, depth) {
       if ((isZero(ln) && isZero(ld)) || (isInf(ln) && isInf(ld))) {
         const g = sMul([diffS(N, x), sPow(diffS(D, x), SM1)]);
         const r = limitSymbolic(g, x, a, side, depth + 1);
-        if (r) return { ...r, how: "L'H\u00f4pital's rule" + (r.how && r.how.startsWith("L'H") ? ' (repeated)' : '') };
+        if (r) return { ...r, how: "L'Hôpital's rule" + (r.how && r.how.startsWith("L'H") ? ' (repeated)' : '') };
       }
       if (ln.kind === 'value' && ld.kind === 'value' && !isZero(ld)) return { kind: 'value', S: sDiv(ln.S, ld.S), how: 'quotient of limits' };
       if (ln.kind === 'value' && !isZero(ln) && isZero(ld)) {
@@ -6215,7 +6215,7 @@ function limitSymbolic(f, x, a, side, depth) {
         const rest = sMul(f.a.filter((t) => freeOf(t, x)));
         const g = sMul([rest, diffS(big, x), sPow(diffS(sPow(small, SM1), x), SM1)]);
         const r = limitSymbolic(g, x, a, side, depth + 1);
-        if (r) return { ...r, how: "L'H\u00f4pital's rule (after writing 0\u00b7\u221e as a quotient)" };
+        if (r) return { ...r, how: "L'Hôpital's rule (after writing 0·∞ as a quotient)" };
       }
     }
   }
@@ -6289,7 +6289,7 @@ function limitOf(f, x, point, side) {
 const limNum = (r) => (r.num !== undefined ? r.num : r.S ? numS(r.S, {}) : NaN);
 
 function limitText(r) {
-  if (r.kind === 'inf') return r.sign > 0 ? '\u221e' : '-\u221e';
+  if (r.kind === 'inf') return r.sign > 0 ? '∞' : '-∞';
   if (r.kind === 'dne') {
     if (r.left && r.right) return 'does not exist (from the left: ' + limitText(r.left) + ', from the right: ' + limitText(r.right) + ')';
     return 'does not exist' + (r.why ? ' (' + r.why + ')' : '');
@@ -6302,7 +6302,7 @@ function limitText(r) {
   const rec = r.rec || recognizeLoose(r.num);
   if (rec && !(rec.rational && !rec.text.includes('/'))) return rec.text + ' (' + approxSym(r.num) + ' ' + fmtNum(r.num) + ')';
   if (rec) return rec.text;
-  return '\u2248 ' + fmtNum(r.num);
+  return '≈ ' + fmtNum(r.num);
 }
 
 // ---- Taylor / Maclaurin series ------------------------------------------------------------------------------
@@ -6355,7 +6355,7 @@ function taylorText(f, x, a, order) {
 // ======================================================================
 // 9d. Calculus commands: diff, integrate, limit, taylor, sum, product
 // ======================================================================
-const SUB_DIGITS = '\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089';
+const SUB_DIGITS = '₀₁₂₃₄₅₆₇₈₉';
 const withValue = (out, S) => {
   out.value = { S };
   return out;
@@ -6531,7 +6531,7 @@ defCmd('integrate integral', (n) => {
     // the antiderivative may grow without bound (ln ln x, ...) even when the numerical method could not tell
     try {
       if (F && (hi.inf || lo.inf)) {
-        const Fl = hi.inf && hi.inf > 0 ? stripLnAbs(F) : F; // at +\u221e the argument of ln|u| is positive
+        const Fl = hi.inf && hi.inf > 0 ? stripLnAbs(F) : F; // at +∞ the argument of ln|u| is positive
         const rTop = limitOf(Fl, v, hi.inf ? hi : { S: hi.S }, hi.inf ? 0 : -1);
         const rBot = limitOf(F, v, lo.inf ? lo : { S: lo.S }, lo.inf ? 0 : 1);
         if (rTop.kind === 'inf' || rBot.kind === 'inf') {
@@ -6546,7 +6546,7 @@ defCmd('integrate integral', (n) => {
     return out;
   }
   const rec = recognizeLoose(num.value);
-  out.answer.push(rec && !(rec.rational && !rec.text.includes('/')) ? rec.text + ' (\u2248 ' + fmtNum(num.value) + ')' : rec ? rec.text : '\u2248 ' + fmtNum(num.value));
+  out.answer.push(rec && !(rec.rational && !rec.text.includes('/')) ? rec.text + ' (≈ ' + fmtNum(num.value) + ')' : rec ? rec.text : '≈ ' + fmtNum(num.value));
   out.work.push('No closed form was found, so this value comes from numerical integration' + (num.ok ? '' : ' (accuracy is limited)'));
   if (num.note) out.notes.push(num.note);
   out.value = { num: num.value };
@@ -6560,7 +6560,7 @@ COMMANDS.integrate.show = (n) => {
   const body = showRaw(n.args[0]);
   const v = n.args.length >= 2 && n.args[1].t === 'var' ? n.args[1].name : 'x';
   const bs = n.args.length === 4 ? [n.args[2], n.args[3]] : n.args.length === 3 && n.args[1].t !== 'var' ? [n.args[1], n.args[2]] : null;
-  return '\u222b' + (bs ? ' from ' + showRaw(bs[0]) + ' to ' + showRaw(bs[1]) : '') + ' ' + body + ' d' + v;
+  return '∫' + (bs ? ' from ' + showRaw(bs[0]) + ' to ' + showRaw(bs[1]) : '') + ' ' + body + ' d' + v;
 };
 
 // ---- limits --------------------------------------------------------------------------------------------------------------
@@ -6577,14 +6577,14 @@ defCmd('limit lim', (n) => {
   }
   const r = limitOf(S, v, point, side);
   out.answer.push(limitText(r));
-  out.work.push('lim as ' + v + ' \u2192 ' + boundText(point) + (side > 0 ? '\u207a' : side < 0 ? '\u207b' : '') + ' of ' + fmtS(S));
+  out.work.push('lim as ' + v + ' → ' + boundText(point) + (side > 0 ? '⁺' : side < 0 ? '⁻' : '') + ' of ' + fmtS(S));
   if (r.how) out.work.push('Method: ' + r.how);
   if (r.kind === 'value') {
     out.value = r.S ? { S: r.S } : { num: r.num };
   }
   return out;
 });
-COMMANDS.limit.show = (n) => 'lim ' + showRaw(n.args[1]) + ' \u2192 ' + showRaw(n.args[2]) + (n.args[3] ? (constQ(n.args[3]).sign() < 0 ? '\u207b' : '\u207a') : '') + ' of ' + showRaw(n.args[0]);
+COMMANDS.limit.show = (n) => 'lim ' + showRaw(n.args[1]) + ' → ' + showRaw(n.args[2]) + (n.args[3] ? (constQ(n.args[3]).sign() < 0 ? '⁻' : '⁺') : '') + ' of ' + showRaw(n.args[0]);
 
 // ---- Taylor series ----------------------------------------------------------------------------------------------------------
 defCmd('taylor series maclaurin', (n) => {
@@ -6777,7 +6777,7 @@ defCmd('sum summation', (n) => {
       out.answer.push(qLabel(r.q));
       return withValue(out, sN(r.q));
     }
-    out.answer.push('\u2248 ' + fmtNum(r.num));
+    out.answer.push('≈ ' + fmtNum(r.num));
     out.value = { num: r.num };
     return out;
   }
@@ -6829,7 +6829,7 @@ defCmd('sum summation', (n) => {
   if (freeOf(ratio, k)) {
     const rv = numS(ratio, {});
     if (Math.abs(rv) >= 1) {
-      out.answer.push('diverges (geometric series with |ratio| \u2265 1)');
+      out.answer.push('diverges (geometric series with |ratio| ≥ 1)');
       return out;
     }
     const res = sDiv(subsS(body, k, sI(a)), sSub(S1, ratio));
@@ -6882,12 +6882,12 @@ defCmd('sum summation', (n) => {
     return out;
   }
   const rec = recognizeLoose(r.value);
-  out.answer.push(rec && !(rec.rational && !rec.text.includes('/')) ? rec.text + ' (\u2248 ' + fmtNum(r.value) + ')' : rec ? rec.text + ' (\u2248 ' + fmtNum(r.value) + ')' : '\u2248 ' + fmtNum(r.value));
+  out.answer.push(rec && !(rec.rational && !rec.text.includes('/')) ? rec.text + ' (≈ ' + fmtNum(r.value) + ')' : rec ? rec.text + ' (≈ ' + fmtNum(r.value) + ')' : '≈ ' + fmtNum(r.value));
   out.work.push('No closed form rule applied, so the value was found numerically by extrapolating the partial sums');
   out.value = { num: r.value };
   return out;
 });
-COMMANDS.sum.show = (n) => '\u03a3 ' + showRaw(n.args[1]) + ' = ' + showRaw(n.args[2]) + ' to ' + showRaw(n.args[3]) + ' of ' + showRaw(n.args[0]);
+COMMANDS.sum.show = (n) => 'Σ ' + showRaw(n.args[1]) + ' = ' + showRaw(n.args[2]) + ' to ' + showRaw(n.args[3]) + ' of ' + showRaw(n.args[0]);
 
 defCmd('product', (n) => {
   needArgs(n, 4, 4, 'the term, the index variable, the first value and the last value');
@@ -6930,11 +6930,11 @@ defCmd('product', (n) => {
     out.answer.push(qLabel(exact));
     return withValue(out, sN(exact));
   }
-  out.answer.push('\u2248 ' + fmtNum(flo));
+  out.answer.push('≈ ' + fmtNum(flo));
   out.value = { num: flo };
   return out;
 });
-COMMANDS.product.show = (n) => '\u03a0 ' + showRaw(n.args[1]) + ' = ' + showRaw(n.args[2]) + ' to ' + showRaw(n.args[3]) + ' of ' + showRaw(n.args[0]);
+COMMANDS.product.show = (n) => 'Π ' + showRaw(n.args[1]) + ' = ' + showRaw(n.args[2]) + ' to ' + showRaw(n.args[3]) + ' of ' + showRaw(n.args[0]);
 
 // ======================================================================
 // 9e. Ordinary differential equations
@@ -7313,7 +7313,7 @@ function solveODEStatements(sts) {
       // a unit step u(t - a) or an impulse delta(t - a) in the forcing: Laplace transform with the initial values as constants
       const lv = odeViaLaplace(cks.map((c) => c.q), simp(sNeg(g)), x, consts);
       sol = lv.y;
-      out.work.push('Forcing with steps / impulses: Laplace transform, Y(' + lv.sName + ') = ' + fmtS(simp(lv.Y)).slice(0, 300) + ';  then the inverse transform with the shifts e^(\u2212a\u00b7' + lv.sName + ') \u2192 u(' + x + ' \u2212 a)');
+      out.work.push('Forcing with steps / impulses: Laplace transform, Y(' + lv.sName + ') = ' + fmtS(simp(lv.Y)).slice(0, 300) + ';  then the inverse transform with the shifts e^(−a·' + lv.sName + ') → u(' + x + ' − a)');
       if (!ics.length) out.notes.push('C1 = y(0)' + (n > 1 ? ', C2 = y\'(0)' + (n > 2 ? ', ...' : '') : '') + ' (the initial values at ' + x + ' = 0).');
     } else if (n === 1) {
       const a1 = cks[1];
@@ -7324,10 +7324,10 @@ function solveODEStatements(sts) {
       const mu = sExp(stripLnAbs(P));
       const integrand = simp(sMul([mu, q]));
       const I = isNumVal(integrand, 0) ? S0 : antiderivative(integrand, x);
-      if (!I) throw new MathError('I could not integrate (integrating factor) \u00d7 (right-hand side)');
+      if (!I) throw new MathError('I could not integrate (integrating factor) × (right-hand side)');
       sol = expandS(sMul([sPow(mu, SM1), sAdd([I, sV(C(1))])]));
       consts.push(C(1));
-      out.work.push('First-order linear: integrating factor \u03bc = ' + fmtS(mu));
+      out.work.push('First-order linear: integrating factor μ = ' + fmtS(mu));
     } else if (isConstCoef) {
       const cs = cks.map((c) => c.q);
       const { basis, roots } = homogeneousBasis(cs, x);
@@ -7336,7 +7336,7 @@ function solveODEStatements(sts) {
         yh = sAdd([yh, sMul([sV(C(i + 1)), b])]);
         consts.push(C(i + 1));
       });
-      out.work.push('Characteristic equation: ' + polyText(cs, 'r') + ' = 0   (roots: ' + roots.map((r) => (r.im ? fmtS(r.re) + ' \u00b1 ' + fmtS(r.im) + 'i' : fmtS(r.re)) + (r.mult > 1 ? ' (\u00d7' + r.mult + ')' : '')).join(', ') + ')');
+      out.work.push('Characteristic equation: ' + polyText(cs, 'r') + ' = 0   (roots: ' + roots.map((r) => (r.im ? fmtS(r.re) + ' ± ' + fmtS(r.im) + 'i' : fmtS(r.re)) + (r.mult > 1 ? ' (×' + r.mult + ')' : '')).join(', ') + ')');
       let yp = S0;
       if (!isNumVal(simp(g), 0)) {
         const rhs = simp(expandS(hyperToExp(simp(sNeg(g)))));
@@ -7351,7 +7351,7 @@ function solveODEStatements(sts) {
       sol = sAdd([yh, yp]);
     } else if (n === 2) {
       const eu = eulerCauchy(cks, simp(g), x, consts, out);
-      if (!eu) throw new MathError('linear equations of order 2 or more need constant coefficients (or the Euler form a\u00b7x\u00b2\u00b7y\'\' + b\u00b7x\u00b7y\' + c\u00b7y = 0)');
+      if (!eu) throw new MathError('linear equations of order 2 or more need constant coefficients (or the Euler form a·x²·y\'\' + b·x·y\' + c·y = 0)');
       sol = eu.sol;
     } else {
       throw new MathError('linear equations of order 3 or more need constant coefficients here');
@@ -7405,7 +7405,7 @@ function solveODEStatements(sts) {
       if (!special) throw new MathError('I could not integrate one side of the separated equation');
     } else {
       consts.push(C(1));
-      out.work.push('Separable: \u222b dy/g(y) = \u222b f(x) dx   with g(y) = ' + fmtS(gyS) + ', f(x) = ' + fmtS(fxS));
+      out.work.push('Separable: ∫ dy/g(y) = ∫ f(x) dx   with g(y) = ' + fmtS(gyS) + ', f(x) = ' + fmtS(fxS));
       // try to solve for y explicitly
       const G = subsS(Gy, Y, sV(y));
       const R = sAdd([Fx, sV(C(1))]);
@@ -7642,7 +7642,7 @@ const valueAt = (S, x, b) => {
   }
 };
 const valText = (v) => (v.S ? fmtS(simp(v.S)) : fmtNum(v.val));
-const pointText = (b, v) => '(' + bpText(b) + ', ' + valText(v) + ')' + (b.S && b.S.k !== 'n' ? ' \u2248 (' + fmtNum(b.val) + ', ' + fmtNum(v.val) + ')' : v.S && v.S.k !== 'n' ? ' \u2248 (' + fmtNum(b.val) + ', ' + fmtNum(v.val) + ')' : '');
+const pointText = (b, v) => '(' + bpText(b) + ', ' + valText(v) + ')' + (b.S && b.S.k !== 'n' ? ' ≈ (' + fmtNum(b.val) + ', ' + fmtNum(v.val) + ')' : v.S && v.S.k !== 'n' ? ' ≈ (' + fmtNum(b.val) + ', ' + fmtNum(v.val) + ')' : '');
 function evalAt(S, x, t) {
   try {
     return numS(S, { [x]: t });
@@ -7664,10 +7664,10 @@ function signIntervals(g, x, bps) {
   }
   return res;
 }
-const ivText = (iv) => '(' + (iv.loB ? bpText(iv.loB) : '-\u221e') + ', ' + (iv.hiB ? bpText(iv.hiB) : '\u221e') + ')';
+const ivText = (iv) => '(' + (iv.loB ? bpText(iv.loB) : '-∞') + ', ' + (iv.hiB ? bpText(iv.hiB) : '∞') + ')';
 const joinIv = (ivs, sign) => {
   const list = ivs.filter((i) => i.sign === sign);
-  return list.length ? list.map(ivText).join(' \u222a ') : 'none';
+  return list.length ? list.map(ivText).join(' ∪ ') : 'none';
 };
 /** Merge neighbouring intervals with the same sign whose shared breakpoint is not a break of the function. */
 function mergeIv(ivs, skip) {
@@ -7714,7 +7714,7 @@ defCmd('tangent tangentline', (n) => {
   const X = sV(v);
   const tl = simp(sAdd([y0, sMul([m, sSub(X, aS)])]));
   out.answer.push('tangent line: y = ' + fmtS(expandS(tl)));
-  out.work.push('f(' + fmtS(aS) + ') = ' + symText(y0) + ',  f\'(' + fmtS(aS) + ') = ' + symText(m) + ',  point-slope form: y \u2212 ' + wrapNum(y0) + ' = ' + wrapNum(m) + '\u00b7(' + v + ' \u2212 ' + wrapNum(aS) + ')');
+  out.work.push('f(' + fmtS(aS) + ') = ' + symText(y0) + ',  f\'(' + fmtS(aS) + ') = ' + symText(m) + ',  point-slope form: y − ' + wrapNum(y0) + ' = ' + wrapNum(m) + '·(' + v + ' − ' + wrapNum(aS) + ')');
   if (zeroS(m)) out.answer.push('normal line: ' + v + ' = ' + fmtS(aS) + '  (vertical, because the tangent is horizontal)');
   else out.answer.push('normal line: y = ' + fmtS(expandS(simp(sAdd([y0, sMul([sNeg(sDiv(S1, m)), sSub(X, aS)])])))));
   out.value = { S: m };
@@ -7742,7 +7742,7 @@ function criticalReport(S, x, lo, hi, out) {
   if (!roots.length) out.answer.push('no critical points' + (bounded ? ' inside the interval' : ' (f\' = 0 has no real solution)'));
   const rows = roots.map((b) => ({ b, v: valueAt(S, x, b) })).filter((r) => r.v);
   rows.forEach(({ b, v }) => {
-    out.answer.push(x + ' = ' + bpText(b) + (b.S && b.S.k !== 'n' ? ' (\u2248 ' + fmtNum(b.val) + ')' : '') + ':  f = ' + valText(v) + (v.S && v.S.k !== 'n' ? ' (\u2248 ' + fmtNum(v.val) + ')' : '') + ',  ' + classifyCritical(f1, f2, x, b));
+    out.answer.push(x + ' = ' + bpText(b) + (b.S && b.S.k !== 'n' ? ' (≈ ' + fmtNum(b.val) + ')' : '') + ':  f = ' + valText(v) + (v.S && v.S.k !== 'n' ? ' (≈ ' + fmtNum(v.val) + ')' : '') + ',  ' + classifyCritical(f1, f2, x, b));
   });
   if (bounded) {
     const ends = [lo, hi].map((t) => ({ b: { S: null, val: t }, v: valueAt(S, x, { S: sN(qFromDecimalNumber(t)), val: t }) })).filter((r) => r.v);
@@ -7750,7 +7750,7 @@ function criticalReport(S, x, lo, hi, out) {
     if (all.length) {
       const mx = all.reduce((p, q) => (q.v.val > p.v.val ? q : p));
       const mn = all.reduce((p, q) => (q.v.val < p.v.val ? q : p));
-      const approx = (v) => (v.S && v.S.k !== 'n' ? ' (\u2248 ' + fmtNum(v.val) + ')' : '');
+      const approx = (v) => (v.S && v.S.k !== 'n' ? ' (≈ ' + fmtNum(v.val) + ')' : '');
       out.answer.push('absolute maximum on [' + fmtNum(lo) + ', ' + fmtNum(hi) + ']: f(' + bpText(mx.b) + ') = ' + valText(mx.v) + approx(mx.v));
       out.answer.push('absolute minimum on [' + fmtNum(lo) + ', ' + fmtNum(hi) + ']: f(' + bpText(mn.b) + ') = ' + valText(mn.v) + approx(mn.v));
       out.work.push('Compared f at the critical points and at the endpoints ' + fmtNum(lo) + ' and ' + fmtNum(hi));
@@ -7831,7 +7831,7 @@ defCmd('analyze analysis studyfunction', (n) => {
   });
   ['+', '-'].forEach((sg) => {
     const r = limitOf(S, v, { inf: sg === '+' ? 1 : -1 }, 0);
-    if (r.kind === 'value') asy.push('horizontal: y = ' + limitText(r).replace(/ \(.*/, '') + '  (as ' + v + ' \u2192 ' + (sg === '+' ? '\u221e' : '-\u221e') + ')');
+    if (r.kind === 'value') asy.push('horizontal: y = ' + limitText(r).replace(/ \(.*/, '') + '  (as ' + v + ' → ' + (sg === '+' ? '∞' : '-∞') + ')');
   });
   try {
     const rf = toRFS(expandS(S), v);
@@ -7855,8 +7855,8 @@ defCmd('analyze analysis studyfunction', (n) => {
   if (!critRows.length) out.answer.push('critical points: none');
   const mergedInc = mergeSame(ivsRaw, 1, (b) => isPole(b));
   const mergedDec = mergeSame(ivsRaw, -1, (b) => isPole(b));
-  out.answer.push('increasing on: ' + (mergedInc.length ? mergedInc.join(' \u222a ') : 'nowhere'));
-  out.answer.push('decreasing on: ' + (mergedDec.length ? mergedDec.join(' \u222a ') : 'nowhere'));
+  out.answer.push('increasing on: ' + (mergedInc.length ? mergedInc.join(' ∪ ') : 'nowhere'));
+  out.answer.push('decreasing on: ' + (mergedDec.length ? mergedDec.join(' ∪ ') : 'nowhere'));
   // inflection and concavity
   const infl = realRootsOf(f2, v, rational ? undefined : -50, rational ? undefined : 50);
   const inflRows = [];
@@ -7870,8 +7870,8 @@ defCmd('analyze analysis studyfunction', (n) => {
   const cBps = inflRows.map((r) => r.b).concat(polesNum).sort((p, q) => p.val - q.val);
   const cIv = signIntervals(f2, v, cBps);
   const isBreak = (b) => isPole(b);
-  out.answer.push('concave up on: ' + (mergeSame(cIv, 1, isBreak).join(' \u222a ') || 'nowhere'));
-  out.answer.push('concave down on: ' + (mergeSame(cIv, -1, isBreak).join(' \u222a ') || 'nowhere'));
+  out.answer.push('concave up on: ' + (mergeSame(cIv, 1, isBreak).join(' ∪ ') || 'nowhere'));
+  out.answer.push('concave down on: ' + (mergeSame(cIv, -1, isBreak).join(' ∪ ') || 'nowhere'));
   out.work.push("f'(" + v + ') = ' + fmtS(simp(f1)) + ";  f''(" + v + ') = ' + fmtS(simp(f2)));
   if (!rational) out.notes.push('For this kind of function zeros, extrema and inflection points were searched numerically between -50 and 50.');
   return out;
@@ -7890,7 +7890,7 @@ function mergeSame(ivs, sign, isBreak) {
       }
     } else cur = null;
   });
-  return groups.map((g) => '(' + (g.loB ? bpText(g.loB) : '-\u221e') + ', ' + (g.hiB ? bpText(g.hiB) : '\u221e') + ')');
+  return groups.map((g) => '(' + (g.loB ? bpText(g.loB) : '-∞') + ', ' + (g.hiB ? bpText(g.hiB) : '∞') + ')');
 }
 
 // ---- domain -------------------------------------------------------------------------------------------------------------------------
@@ -7932,8 +7932,8 @@ function domainOf(S, x) {
   try {
     const parsed = uniq.map((c) => ({ lhs: sAst(simp(c.expr)), op: c.op, rhs: { t: 'num', q: Q0, f: 0, text: '0' } }));
     const res = solveInequalities(parsed, x);
-    const line = res.answer.find((a) => /\u2208/.test(a));
-    const text = line ? line.replace(/^.*?\u2208\s*/, '').replace(/\s*\(interval notation\)\s*$/, '') : res.answer.join('  ');
+    const line = res.answer.find((a) => /∈/.test(a));
+    const text = line ? line.replace(/^.*?∈\s*/, '').replace(/\s*\(interval notation\)\s*$/, '') : res.answer.join('  ');
     return text || 'all real numbers';
   } catch (e) {
     if (e instanceof MathError) return 'where ' + uniq.map((c) => fmtS(simp(c.expr)) + ' ' + c.op + ' 0').join(' and ');
@@ -7944,12 +7944,12 @@ defCmd('domain', (n) => {
   const { S, v } = funcArgs(n, 1, 2, 'f and optionally the variable');
   const out = newOut();
   out.answer.push('domain: ' + domainOf(S, v));
-  out.work.push('Conditions: denominators \u2260 0, even roots \u2265 0, logarithms > 0, arcsin/arccos arguments in [-1, 1]');
+  out.work.push('Conditions: denominators ≠ 0, even roots ≥ 0, logarithms > 0, arcsin/arccos arguments in [-1, 1]');
   return out;
 });
 
 // ---- integrals as applications ----------------------------------------------------------------------------------------------------
-/** \u222b S dv from lo to hi (S objects, or {inf}); {S} when exact, {num} otherwise. */
+/** ∫ S dv from lo to hi (S objects, or {inf}); {S} when exact, {num} otherwise. */
 function integralValue(S, v, lo, hi) {
   const a = boundNum(lo);
   const b = boundNum(hi);
@@ -7975,11 +7975,11 @@ function integralValue(S, v, lo, hi) {
   return { failed: true };
 }
 function integralLine(label, r) {
-  if (r.diverges) return label + ' = \u221e (the integral diverges)';
+  if (r.diverges) return label + ' = ∞ (the integral diverges)';
   if (r.failed) throw new MathError('the integral could not be evaluated');
   if (r.S) return label + ' = ' + symText(r.S);
   const rec = recognizeLoose(r.num);
-  return label + ' = ' + (rec && !(rec.rational && !rec.text.includes('/')) ? rec.text + ' (\u2248 ' + fmtNum(r.num) + ')' : '\u2248 ' + fmtNum(r.num));
+  return label + ' = ' + (rec && !(rec.rational && !rec.text.includes('/')) ? rec.text + ' (≈ ' + fmtNum(r.num) + ')' : '≈ ' + fmtNum(r.num));
 }
 const bnd = (node) => boundOf(node);
 defCmd('areabetween area_between', (n) => {
@@ -7997,7 +7997,7 @@ defCmd('areabetween area_between', (n) => {
     out.work.push('The curves meet at ' + v + ' = ' + roots.map(bpText).join(', '));
   }
   const diff = sSub(f, g);
-  // split the interval at every crossing so that |f \u2212 g| can be integrated piece by piece
+  // split the interval at every crossing so that |f − g| can be integrated piece by piece
   const lo = breakpoints[0].val;
   const hi = breakpoints[breakpoints.length - 1].val;
   const inner = realRootsOf(diff, v, lo, hi).filter((b) => b.val > lo + 1e-9 && b.val < hi - 1e-9);
@@ -8016,7 +8016,7 @@ defCmd('areabetween area_between', (n) => {
     out.work.push('On [' + bpText(cuts[i]) + ', ' + bpText(cuts[i + 1]) + '] the ' + (sgn > 0 ? 'first' : 'second') + ' curve is on top');
   }
   out.answer.push(integralLine('area', exact ? { S: simp(total), num: totalNum } : { num: totalNum }));
-  out.work.push('Area = \u222b |f \u2212 g| dx between the meeting points');
+  out.work.push('Area = ∫ |f − g| dx between the meeting points');
   out.value = exact ? { S: simp(total) } : { num: totalNum };
   return out;
 });
@@ -8039,7 +8039,7 @@ defCmd('volumerev volumeofrevolution', revolveCmd('volume', (n, out) => {
   const a = bnd(n.args[washer ? 3 : 2]);
   const b = bnd(n.args[washer ? 4 : 3]);
   const body = washer ? sSub(sq(f), sq(g)) : sq(f);
-  out.work.push('V = \u03c0 \u222b ' + (washer ? '(f\u00b2 \u2212 g\u00b2)' : 'f\u00b2') + ' d' + v + ' from ' + intLimitsText(a, b) + '   (disk/washer method, rotating about the x-axis)');
+  out.work.push('V = π ∫ ' + (washer ? '(f² − g²)' : 'f²') + ' d' + v + ' from ' + intLimitsText(a, b) + '   (disk/washer method, rotating about the x-axis)');
   const r = integralValue(body, v, a, b);
   return r.S ? { S: simp(sMul([S_PI, r.S])), num: Math.PI * r.num } : r.num !== undefined ? { num: Math.PI * r.num } : r;
 }));
@@ -8049,7 +8049,7 @@ defCmd('shells shellmethod', revolveCmd('volume', (n, out) => {
   const v = varOfArg(n.args[1]);
   const a = bnd(n.args[2]);
   const b = bnd(n.args[3]);
-  out.work.push('V = 2\u03c0 \u222b x\u00b7f(x) dx from ' + intLimitsText(a, b) + '   (cylindrical shells, rotating about the y-axis)');
+  out.work.push('V = 2π ∫ x·f(x) dx from ' + intLimitsText(a, b) + '   (cylindrical shells, rotating about the y-axis)');
   const r = integralValue(sMul([sV(v), f]), v, a, b);
   return r.S ? { S: simp(sMul([sI(2), S_PI, r.S])), num: 2 * Math.PI * r.num } : r.num !== undefined ? { num: 2 * Math.PI * r.num } : r;
 }));
@@ -8060,7 +8060,7 @@ defCmd('arclength', revolveCmd('arc length', (n, out) => {
   const a = bnd(n.args[2]);
   const b = bnd(n.args[3]);
   const d = diffS(f, v);
-  out.work.push('L = \u222b \u221a(1 + f\'(' + v + ')\u00b2) d' + v + ' from ' + intLimitsText(a, b) + ',  f\' = ' + fmtS(simp(d)));
+  out.work.push('L = ∫ √(1 + f\'(' + v + ')²) d' + v + ' from ' + intLimitsText(a, b) + ',  f\' = ' + fmtS(simp(d)));
   return integralValue(sSqrt(sAdd([S1, sq(d)])), v, a, b);
 }));
 defCmd('surfacearearev surfaceofrevolution', revolveCmd('surface area', (n, out) => {
@@ -8070,7 +8070,7 @@ defCmd('surfacearearev surfaceofrevolution', revolveCmd('surface area', (n, out)
   const a = bnd(n.args[2]);
   const b = bnd(n.args[3]);
   const d = diffS(f, v);
-  out.work.push('S = 2\u03c0 \u222b f\u00b7\u221a(1 + f\'\u00b2) d' + v + ' from ' + intLimitsText(a, b));
+  out.work.push('S = 2π ∫ f·√(1 + f\'²) d' + v + ' from ' + intLimitsText(a, b));
   const r = integralValue(sMul([f, sSqrt(sAdd([S1, sq(d)]))]), v, a, b);
   return r.S ? { S: simp(sMul([sI(2), S_PI, r.S])), num: 2 * Math.PI * r.num } : r.num !== undefined ? { num: 2 * Math.PI * r.num } : r;
 }));
@@ -8086,8 +8086,8 @@ defCmd('avgvalue averagevalue meanvalue', (n) => {
   const width = simp(sSub(b.S, a.S));
   const out = newOut();
   const avg = r.S ? simp(sDiv(r.S, width)) : null;
-  out.answer.push('average value = ' + (avg ? symText(avg) : '\u2248 ' + fmtNum(r.num / numS(width, {}))));
-  out.work.push('f_avg = (1/(b \u2212 a)) \u222b f dx = (1/' + fmtS(width) + ')\u00b7' + (r.S ? wrapNum(r.S) : fmtNum(r.num)));
+  out.answer.push('average value = ' + (avg ? symText(avg) : '≈ ' + fmtNum(r.num / numS(width, {}))));
+  out.work.push('f_avg = (1/(b − a)) ∫ f dx = (1/' + fmtS(width) + ')·' + (r.S ? wrapNum(r.S) : fmtNum(r.num)));
   out.value = avg ? { S: avg } : { num: r.num / numS(width, {}) };
   return out;
 });
@@ -8116,9 +8116,9 @@ defCmd('newton newtonmethod', (n) => {
     if (!isFinite(nx)) throw new MathError('the iteration left the domain of f');
     x = nx;
   }
-  out.answer.push('x \u2248 ' + fmtNum(x) + (converged ? '  (converged)' : '  (after ' + steps + ' steps)'));
+  out.answer.push('x ≈ ' + fmtNum(x) + (converged ? '  (converged)' : '  (after ' + steps + ' steps)'));
   rows.forEach((r) => out.work.push(r));
-  out.work.push('x_(n+1) = x_n \u2212 f(x_n)/f\'(x_n),  f\' = ' + fmtS(simp(d)));
+  out.work.push('x_(n+1) = x_n − f(x_n)/f\'(x_n),  f\' = ' + fmtS(simp(d)));
   out.value = { num: x };
   return out;
 });
@@ -8137,11 +8137,11 @@ defCmd('implicit implicitdiff', (n) => {
   const y1 = simp(sDiv(sNeg(Fx), Fy));
   const out = newOut();
   out.answer.push('d' + yN + '/d' + xN + ' = ' + fmtS(y1));
-  out.work.push('Differentiated both sides with respect to ' + xN + ' (y depends on ' + xN + '):  d' + yN + '/d' + xN + ' = \u2212F_' + xN + ' / F_' + yN + ' = \u2212(' + fmtS(simp(Fx)) + ')/(' + fmtS(simp(Fy)) + ')');
+  out.work.push('Differentiated both sides with respect to ' + xN + ' (y depends on ' + xN + '):  d' + yN + '/d' + xN + ' = −F_' + xN + ' / F_' + yN + ' = −(' + fmtS(simp(Fx)) + ')/(' + fmtS(simp(Fy)) + ')');
   try {
     const total = simp(sAdd([diffS(y1, xN), sMul([diffS(y1, yN), y1])]));
     const t = fmtS(total);
-    if (t.length < 160) out.answer.push('d\u00b2' + yN + '/d' + xN + '\u00b2 = ' + t + '   (y\' replaced by the expression above; the original equation can simplify it further)');
+    if (t.length < 160) out.answer.push('d²' + yN + '/d' + xN + '² = ' + t + '   (y\' replaced by the expression above; the original equation can simplify it further)');
   } catch (e) {
     // second derivative is optional
   }
@@ -8161,7 +8161,7 @@ defCmd('inversefunction finverse inverse_function', (n) => {
     const r = rename(simp(s));
     if (!uniq.some((u) => key(u) === key(r))) uniq.push(r);
   });
-  uniq.forEach((r) => out.answer.push('f\u207b\u00b9(' + v + ') = ' + fmtS(r)));
+  uniq.forEach((r) => out.answer.push('f⁻¹(' + v + ') = ' + fmtS(r)));
   if (uniq.length > 1) out.notes.push('The function is not one-to-one, so there are several branches; restrict the domain to choose one.');
   out.work.push('Swap: y = ' + fmtS(S) + ' and solve for ' + v + ', then rename y as ' + v);
   return out;
@@ -8174,8 +8174,8 @@ defCmd('compose', (n) => {
   const out = newOut();
   const fg = simp(subsS(f, v, g));
   const gf = simp(subsS(g, v, f));
-  out.answer.push('(f\u2218g)(' + v + ') = f(g(' + v + ')) = ' + fmtS(expandS(fg)));
-  out.answer.push('(g\u2218f)(' + v + ') = g(f(' + v + ')) = ' + fmtS(expandS(gf)));
+  out.answer.push('(f∘g)(' + v + ') = f(g(' + v + ')) = ' + fmtS(expandS(fg)));
+  out.answer.push('(g∘f)(' + v + ') = g(f(' + v + ')) = ' + fmtS(expandS(gf)));
   return out;
 });
 // ======================================================================
@@ -8215,13 +8215,13 @@ defCmd('grad gradient nabla', (n) => {
   const out = newOut();
   const g = names.map((v) => simp(diffS(f, v)));
   const ptNode = n.args.find((a) => a.t === 'list' && a.items.some((i) => i.t !== 'var'));
-  out.answer.push('\u2207f = ' + fmtVec(g));
+  out.answer.push('∇f = ' + fmtVec(g));
   if (ptNode) {
     const pt = pointArg(ptNode, names.length);
     const gv = g.map((e) => atPoint(e, names, pt));
-    out.answer.push('\u2207f at ' + ptText(pt) + ' = ' + fmtVec(gv) + ',   |\u2207f| = ' + symText(simp(sSqrt(sAdd(gv.map((e) => sq(e)))))));
+    out.answer.push('∇f at ' + ptText(pt) + ' = ' + fmtVec(gv) + ',   |∇f| = ' + symText(simp(sSqrt(sAdd(gv.map((e) => sq(e)))))));
   }
-  out.work.push('Partial derivatives ' + names.map((v) => '\u2202f/\u2202' + v).join(', ') + ' (the other letters are held constant)');
+  out.work.push('Partial derivatives ' + names.map((v) => '∂f/∂' + v).join(', ') + ' (the other letters are held constant)');
   return out;
 });
 defCmd('hessian', (n) => {
@@ -8232,13 +8232,13 @@ defCmd('hessian', (n) => {
   const w = cells[0].map((_, j) => Math.max(...cells.map((r) => r[j].length)));
   cells.forEach((r) => out.answer.push('[ ' + r.map((c, j) => c.padStart(w[j])).join('  ') + ' ]'));
   if (names.length === 2) out.work.push('det H = ' + fmtS(simp(expandS(sSub(sMul([H[0][0], H[1][1]]), sMul([H[0][1], H[1][0]]))))));
-  out.work.push('Second partial derivatives \u2202\u00b2f/\u2202' + names[0] + '\u2202' + names[names.length > 1 ? 1 : 0] + ' and so on');
+  out.work.push('Second partial derivatives ∂²f/∂' + names[0] + '∂' + names[names.length > 1 ? 1 : 0] + ' and so on');
   return out;
 });
 defCmd('laplacian', (n) => {
   const { f, names } = mvSetup(n, 'a function and its variables');
   const out = newOut();
-  out.answer.push('\u2207\u00b2f = ' + fmtS(simp(expandS(sAdd(names.map((v) => diffS(diffS(f, v), v)))))));
+  out.answer.push('∇²f = ' + fmtS(simp(expandS(sAdd(names.map((v) => diffS(diffS(f, v), v)))))));
   return out;
 });
 defCmd('jacobian', (n) => {
@@ -8293,7 +8293,7 @@ defCmd('directional directionalderivative', (n) => {
   const dd = simp(expandS(sDiv(sAdd(g.map((e, i) => sMul([e, dir[i]]))), len)));
   const out = newOut();
   out.answer.push('D_u f = ' + symText(dd));
-  out.work.push('\u2207f at the point = ' + fmtVec(g) + ';  unit direction u = v/|v| with |v| = ' + symText(len) + ';  D_u f = \u2207f \u00b7 u');
+  out.work.push('∇f at the point = ' + fmtVec(g) + ';  unit direction u = v/|v| with |v| = ' + symText(len) + ';  D_u f = ∇f · u');
   out.value = { S: dd };
   return out;
 });
@@ -8310,7 +8310,7 @@ defCmd('tangentplane', (n) => {
   const plane = simp(expandS(sAdd([z0, sMul([fx, sSub(sV(xn), a)]), sMul([fy, sSub(sV(yn), b)])])));
   const out = newOut();
   out.answer.push('z = ' + fmtS(plane));
-  out.work.push('f = ' + symText(z0) + ',  f_' + xn + ' = ' + symText(fx) + ',  f_' + yn + ' = ' + symText(fy) + ' at (' + fmtS(a) + ', ' + fmtS(b) + ');  z = f + f_' + xn + '(' + xn + ' \u2212 a) + f_' + yn + '(' + yn + ' \u2212 b)');
+  out.work.push('f = ' + symText(z0) + ',  f_' + xn + ' = ' + symText(fx) + ',  f_' + yn + ' = ' + symText(fy) + ' at (' + fmtS(a) + ', ' + fmtS(b) + ');  z = f + f_' + xn + '(' + xn + ' − a) + f_' + yn + '(' + yn + ' − b)');
   return out;
 });
 
@@ -8348,7 +8348,7 @@ function multiCritical(n) {
   };
   const sols = newtonSolutions(F, names.length);
   const out = newOut();
-  out.work.push('\u2207f = ' + fmtVec(g) + ' = 0 solved numerically (Newton from many starting points); then the second-derivative test with the Hessian');
+  out.work.push('∇f = ' + fmtVec(g) + ' = 0 solved numerically (Newton from many starting points); then the second-derivative test with the Hessian');
   if (!sols.length) {
     out.answer.push('no critical points found');
     return out;
@@ -8365,7 +8365,7 @@ function multiCritical(n) {
     }
     out.answer.push('(' + names.map((nm, i) => nm + ' ' + describeEq(s[i])).join(', ') + '):  f ' + describeEq(fv) + ',  ' + kind);
   });
-  out.notes.push('Critical points are found numerically near the origin (|coordinate| \u2264 10); there could be others far away.');
+  out.notes.push('Critical points are found numerically near the origin (|coordinate| ≤ 10); there could be others far away.');
   return out;
 }
 defCmd('lagrange lagrangemultipliers', (n) => {
@@ -8399,7 +8399,7 @@ defCmd('lagrange lagrangemultipliers', (n) => {
   };
   const sols = newtonSolutions(F, names.length + 1);
   const out = newOut();
-  out.work.push('Solve \u2207f = \u03bb\u2207g together with g = ' + symText(c) + ':  ' + names.map((v, i) => '\u2202f/\u2202' + v + ' = \u03bb\u00b7\u2202g/\u2202' + v).join(', '));
+  out.work.push('Solve ∇f = λ∇g together with g = ' + symText(c) + ':  ' + names.map((v, i) => '∂f/∂' + v + ' = λ·∂g/∂' + v).join(', '));
   if (!sols.length) {
     out.answer.push('no solution of the Lagrange conditions found');
     return out;
@@ -8409,7 +8409,7 @@ defCmd('lagrange lagrangemultipliers', (n) => {
     names.forEach((nm, i) => { env[nm] = s[i]; });
     return { s, fv: numS(f, env) };
   }).sort((a, b) => a.fv - b.fv);
-  rows.forEach((r) => out.answer.push('(' + names.map((nm, i) => nm + ' ' + describeEq(r.s[i])).join(', ') + '):  f ' + describeEq(r.fv) + ',  \u03bb = ' + fmtNum(r.s[names.length])));
+  rows.forEach((r) => out.answer.push('(' + names.map((nm, i) => nm + ' ' + describeEq(r.s[i])).join(', ') + '):  f ' + describeEq(r.fv) + ',  λ = ' + fmtNum(r.s[names.length])));
   if (rows.length > 1) {
     out.answer.push('largest value of f on the constraint: ' + describeNumber(rows[rows.length - 1].fv) + ';  smallest: ' + describeNumber(rows[0].fv));
     out.notes.push('These are the candidates found; if the constraint curve is not closed and bounded, the largest/smallest of them need not be a true maximum/minimum.');
@@ -8440,7 +8440,7 @@ function linearIn_(g, t) {
   if (!cs || cs.length > 2) return null;
   return { a1: cs.length === 2 ? cs[1] : S0, a0: cs[0] };
 }
-/** One product term c\u00b7t^n\u00b7e^(a t)\u00b7(trig or nothing) -> its Laplace transform in s. */
+/** One product term c·t^n·e^(a t)·(trig or nothing) -> its Laplace transform in s. */
 function laplaceTerm(term, t, s) {
   if (l2HasImpulse(term, t)) return laplaceImpulseTerm(term, t, s);
   const fs = term.k === '*' ? term.a : [term];
@@ -8493,7 +8493,7 @@ function laplaceTransformS(f, t, s) {
   const parts = termsOf(g).map((tm) => laplaceTerm(tm, t, s));
   return sAdd(parts);
 }
-/** sin^2(bt) = (1 - cos 2bt)/2, sin\u00b7cos = sin(2bt)/2 ... (product-to-sum rules for sin/cos with linear arguments) */
+/** sin^2(bt) = (1 - cos 2bt)/2, sin·cos = sin(2bt)/2 ... (product-to-sum rules for sin/cos with linear arguments) */
 function rewriteTrigProducts(e, t) {
   const walk = (x) => {
     if (x.k === '^' && x.b.k === 'f' && (x.b.fn === 'sin' || x.b.fn === 'cos') && x.e.k === 'n' && x.e.q.isInt() && x.e.q.n >= 2n && x.e.q.n <= 8n) {
@@ -8519,7 +8519,7 @@ function rewriteTrigProducts(e, t) {
   return walk(e);
 }
 function productToSum(p, q) {
-  // p, q are sums of terms c\u00b7sin/cos(b t); multiply with the product-to-sum identities
+  // p, q are sums of terms c·sin/cos(b t); multiply with the product-to-sum identities
   const pa = termsOf(expandS(p));
   const qa = termsOf(expandS(q));
   const out = [];
@@ -8565,13 +8565,13 @@ defCmd('laplace laplacetransform', (n) => {
     // keep the sum of fractions
   }
   out.answer.push('L{' + fmtS(f) + '} = ' + fmtS(shown));
-  out.work.push('Linearity, L{t\u207f e\u1d43\u1d57 sin bt} etc. from the table, and multiplication by t as \u2212d/ds');
+  out.work.push('Linearity, L{tⁿ eᵃᵗ sin bt} etc. from the table, and multiplication by t as −d/ds');
   // numerical check of the defining integral at a safe value of s
   try {
     const s0 = 9;
     const lhs = integrateNumeric(simp(sMul([f, sExp(sMul([sI(-s0), sV(t)]))])), t, 0, 60);
     const rhs = numS(F, { [s]: s0 });
-    if (lhs.ok && Math.abs(lhs.value - rhs) < 1e-6 * (1 + Math.abs(rhs))) out.check = 'the defining integral \u222b\u2080^\u221e f(t)\u00b7e^(\u2212st) dt at s = ' + s0 + ' equals ' + fmtNum(rhs);
+    if (lhs.ok && Math.abs(lhs.value - rhs) < 1e-6 * (1 + Math.abs(rhs))) out.check = 'the defining integral ∫₀^∞ f(t)·e^(−st) dt at s = ' + s0 + ' equals ' + fmtNum(rhs);
   } catch (e) {
     // no numerical check
   }
@@ -8640,8 +8640,8 @@ defCmd('ilaplace inverselaplace', (n) => {
   const t = n.args[2] ? varOfArg(n.args[2]) : s === 't' ? 'x' : 't';
   const out = newOut();
   const f = simp(expandS(needsFullInverse(F, s) ? inverseLaplaceFull(F, s, t) : inverseLaplaceS(F, s, t)));
-  out.answer.push('L\u207b\u00b9{' + fmtS(F) + '} = ' + fmtS(f));
-  out.work.push('Partial fractions of F(s), then the table entries 1/(s\u2212a)\u207f, (s\u2212a)/((s\u2212a)\u00b2+b\u00b2), b/((s\u2212a)\u00b2+b\u00b2)');
+  out.answer.push('L⁻¹{' + fmtS(F) + '} = ' + fmtS(f));
+  out.work.push('Partial fractions of F(s), then the table entries 1/(s−a)ⁿ, (s−a)/((s−a)²+b²), b/((s−a)²+b²)');
   try {
     const back = laplaceTransformS(f, t, s);
     if (sameFunction(simp(back), simp(F), [s], 6)) out.check = 'transforming the result back gives F(s)';
@@ -8651,7 +8651,7 @@ defCmd('ilaplace inverselaplace', (n) => {
   out.value = { S: f };
   return out;
 });
-COMMANDS.ilaplace.show = (n) => 'L\u207b\u00b9{' + showRaw(n.args[0]) + '}';
+COMMANDS.ilaplace.show = (n) => 'L⁻¹{' + showRaw(n.args[0]) + '}';
 // ======================================================================
 // 9i. More differential equations: Bernoulli, homogeneous (y/x), exact (with an integrating
 //     factor), Euler-Cauchy, variation of parameters, systems of linear equations,
@@ -8717,7 +8717,7 @@ function bernoulliSolve(h, y, x, consts, out) {
   if (!I) return null;
   consts.push('C1');
   const v = expandS(sMul([sPow(mu, SM1), sAdd([I, sV('C1')])]));
-  out.work.push('Bernoulli equation y\' = a(x)\u00b7y + b(x)\u00b7y\u207f with n = ' + nq.toString() + ': substitute v = y^' + m.toString() + ' to get the linear equation v\' ' + (a.k === 'n' && a.q.sign() >= 0 ? '\u2212 ' : '+ ') + '\u2026 (integrating factor \u03bc = ' + fmtS(mu) + ')');
+  out.work.push('Bernoulli equation y\' = a(x)·y + b(x)·yⁿ with n = ' + nq.toString() + ': substitute v = y^' + m.toString() + ' to get the linear equation v\' ' + (a.k === 'n' && a.q.sign() >= 0 ? '− ' : '+ ') + '… (integrating factor μ = ' + fmtS(mu) + ')');
   const root = Q1.div(m);
   return { sol: simp(sPow(simp(v), sN(root))) };
 }
@@ -8743,13 +8743,13 @@ function homogeneousFirstOrder(F, h, y, x, consts, out) {
   const den = simp(sSub(Fu, sV(U)));
   if (isNumVal(den, 0)) {
     consts.push('C1');
-    out.work.push('Homogeneous equation with F(u) = u: y = C1\u00b7x');
+    out.work.push('Homogeneous equation with F(u) = u: y = C1·x');
     return { sol: sMul([sV('C1'), sV(x)]) };
   }
   const G = antiderivative(simp(sPow(den, SM1)), U);
   if (!G) return null;
   consts.push('C1');
-  out.work.push('Homogeneous equation y\' = F(y/x): put y = x\u00b7u, then x\u00b7u\' = F(u) \u2212 u is separable: \u222b du/(F(u) \u2212 u) = ln|x| + C1');
+  out.work.push('Homogeneous equation y\' = F(y/x): put y = x·u, then x·u\' = F(u) − u is separable: ∫ du/(F(u) − u) = ln|x| + C1');
   const lnx = sFn('ln', [sFn('abs', [sV(x)])]);
   const R = sAdd([lnx, sV('C1')]);
   const cands = solveSeparable(G, R, U, x, lnx).map((c) => simp(sMul([sV(x), c]))).filter((c) => odeResidualOk(F, y, x, c));
@@ -8783,8 +8783,8 @@ function exactFirstOrder(F, cp, rest, y, x, consts, out) {
     N = simp(sMul([mu, N]));
     d = exactDiff(M, N);
     if (!isNumVal(expandS(d), 0) && !sameFunction(simp(diffS(M, y)), simp(diffS(N, x)), [x, y], 6)) return null;
-    how = 'integrating factor \u03bc = ' + fmtS(simp(mu));
-  } else how = 'exact equation (\u2202M/\u2202y = \u2202N/\u2202x)';
+    how = 'integrating factor μ = ' + fmtS(simp(mu));
+  } else how = 'exact equation (∂M/∂y = ∂N/∂x)';
   const Psi0 = antiderivative(M, x) || (freeOf(M, x) ? sMul([M, sV(x)]) : null);
   if (!Psi0) return null;
   const rem = simp(sSub(N, diffS(Psi0, y)));
@@ -8793,7 +8793,7 @@ function exactFirstOrder(F, cp, rest, y, x, consts, out) {
   if (phi === null) return null;
   const Psi = simp(expandS(sAdd([Psi0, phi])));
   consts.push('C1');
-  out.work.push('Written as M dx + N dy = 0 with M = ' + fmtS(M) + ', N = ' + fmtS(N) + ' (' + how + '): \u03c8(x, y) = \u222bM dx + g(y) with \u03c8 = C1');
+  out.work.push('Written as M dx + N dy = 0 with M = ' + fmtS(M) + ', N = ' + fmtS(N) + ' (' + how + '): ψ(x, y) = ∫M dx + g(y) with ψ = C1');
   let sols = null;
   try {
     sols = solveLiteralFor(Psi, sV('C1'), y);
@@ -8879,7 +8879,7 @@ function eulerBasis(A, B, Cc, x) {
   const { basis, roots } = homogeneousBasisX(cs, x);
   return { basis, roots };
 }
-/** Like homogeneousBasis but in x^r: real roots -> x^r (x^r ln x for repeats), complex a \u00b1 bi -> x^a cos(b ln x), x^a sin(b ln x). */
+/** Like homogeneousBasis but in x^r: real roots -> x^r (x^r ln x for repeats), complex a ± bi -> x^a cos(b ln x), x^a sin(b ln x). */
 function homogeneousBasisX(cs, x) {
   const roots = charRootsS(cs);
   const X = sV(x);
@@ -8913,10 +8913,10 @@ function eulerCauchy(cks, g, x, consts, out) {
     yh = sAdd([yh, sMul([sV('C' + (i + 1)), b])]);
     consts.push('C' + (i + 1));
   });
-  out.work.push('Euler\u2013Cauchy equation (x\u00b2 y\'\' + \u2026 with y = x\u02b3): characteristic equation ' + polyText([Cc.q, B.q.sub(A.q), A.q], 'r') + ' = 0, roots ' + roots.map((r) => (r.im ? fmtS(r.re) + ' \u00b1 ' + fmtS(r.im) + 'i' : fmtS(r.re)) + (r.mult > 1 ? ' (\u00d7' + r.mult + ')' : '')).join(', ') + ';  valid for x > 0');
+  out.work.push('Euler–Cauchy equation (x² y\'\' + … with y = xʳ): characteristic equation ' + polyText([Cc.q, B.q.sub(A.q), A.q], 'r') + ' = 0, roots ' + roots.map((r) => (r.im ? fmtS(r.re) + ' ± ' + fmtS(r.im) + 'i' : fmtS(r.re)) + (r.mult > 1 ? ' (×' + r.mult + ')' : '')).join(', ') + ';  valid for x > 0');
   let yp = S0;
   if (!isNumVal(simp(g), 0)) {
-    // x = e^t turns  A x\u00b2 y'' + B x y' + C y = R(x)  into  A y_tt + (B \u2212 A) y_t + C y = R(e^t)  with constant coefficients
+    // x = e^t turns  A x² y'' + B x y' + C y = R(x)  into  A y_tt + (B − A) y_t + C y = R(e^t)  with constant coefficients
     const T = '$t';
     let ypT = null;
     try {
@@ -9032,7 +9032,7 @@ function odeSystemSolve(sts, odes, ics, out) {
   const charp = charPoly(M);
   const rootsI = polyRoots(charp);
   const q2 = (q) => sN(q);
-  out.work.push('Matrix A = ' + JSON.stringify(M.map((r) => r.map((q) => q.toString()))).replace(/"/g, '') + ';  characteristic polynomial ' + polyText(charp, '\u03bb') + ' = 0');
+  out.work.push('Matrix A = ' + JSON.stringify(M.map((r) => r.map((q) => q.toString()))).replace(/"/g, '') + ';  characteristic polynomial ' + polyText(charp, 'λ') + ' = 0');
   const portrait = phPortraitNote(M);
   if (portrait) out.notes.push(portrait);
   const evS = [];
@@ -9073,7 +9073,7 @@ function odeSystemSolve(sts, odes, ics, out) {
       const E = sExp(sMul([alpha, T]));
       const cs = sFn('cos', [sMul([beta, T])]);
       const sn = sFn('sin', [sMul([beta, T])]);
-      // \u03bb = \u03b1 + i\u03b2, eigenvector (b, \u03bb - a) = p + i q with p = (b, \u03b1 - a), q = (0, \u03b2)  (or (\u03bb - d, c) when b = 0)
+      // λ = α + iβ, eigenvector (b, λ - a) = p + i q with p = (b, α - a), q = (0, β)  (or (λ - d, c) when b = 0)
       let p;
       let qv;
       if (!b.isZero()) {
@@ -9156,7 +9156,7 @@ function mAdd(A, B, sign) {
   return A.map((r, i) => r.map((v, j) => (sign > 0 ? v.add(B[i][j]) : v.sub(B[i][j]))));
 }
 function mMul(A, B) {
-  if (A[0].length !== B.length) throw new MathError('cannot multiply a ' + A.length + '\u00d7' + A[0].length + ' matrix by a ' + B.length + '\u00d7' + B[0].length + ' matrix');
+  if (A[0].length !== B.length) throw new MathError('cannot multiply a ' + A.length + '×' + A[0].length + ' matrix by a ' + B.length + '×' + B[0].length + ' matrix');
   return A.map((r) => B[0].map((_, j) => r.reduce((s, v, k) => s.add(v.mul(B[k][j])), Q0)));
 }
 const mScale = (A, q) => A.map((r) => r.map((v) => v.mul(q)));
@@ -9425,7 +9425,7 @@ const flat = (v) => {
 // ---- commands -----------------------------------------------------------------------------------------------------
 defMat('det determinant', (args, n, out) => {
   const A = needMat(args[0], 'det');
-  if (out) out.work.push('Type: determinant of a ' + A.length + '\u00d7' + A[0].length + ' matrix (exact, by elimination)');
+  if (out) out.work.push('Type: determinant of a ' + A.length + '×' + A[0].length + ' matrix (exact, by elimination)');
   return scal(mDet(A));
 }, [1, 'a square matrix']);
 defMat('inv inverse', (args, n, out) => {
@@ -9437,7 +9437,7 @@ defMat('inv inverse', (args, n, out) => {
   }
   if (out) {
     out.work.push('det = ' + mDet(A).toString());
-    out.check = 'A \u00d7 A\u207b\u00b9 = I';
+    out.check = 'A × A⁻¹ = I';
   }
   return mat(I);
 }, [1, 'a square matrix']);
@@ -9480,15 +9480,15 @@ defMat('colspace columnspace', (args, n, out) => {
 }, [1, 'a matrix']);
 defMat('charpoly', (args, n, out) => {
   const A = needMat(args[0], 'charpoly');
-  return symv(polyToS(charPoly(A), '\u03bb'));
+  return symv(polyToS(charPoly(A), 'λ'));
 }, [1, 'a square matrix']);
 defMat('eigen eigenvalues eigenvectors eig', (args, n, out) => {
   const A = needMat(args[0], 'eigen');
   squareCheck(A, 'eigenvalues');
   const c = charPoly(A);
   const roots = polyRoots(c);
-  out.work.push('Characteristic polynomial: ' + polyText(c, '\u03bb') + ' = 0');
-  out.work.push('Eigenvalues \u03bb with multiplicity, and a basis of eigenvectors for each');
+  out.work.push('Characteristic polynomial: ' + polyText(c, 'λ') + ' = 0');
+  out.work.push('Eigenvalues λ with multiplicity, and a basis of eigenvectors for each');
   let total = 0;
   for (const r of roots.real) {
     let vecs;
@@ -9499,15 +9499,15 @@ defMat('eigen eigenvalues eigenvectors eig', (args, n, out) => {
     } else {
       vecs = numericEigenvector(A, r.val);
     }
-    out.answer.push('\u03bb = ' + (r.text ? r.text + (r.q && r.q.isInt() ? '' : ' (\u2248 ' + fmtNum(r.val) + ')') : '\u2248 ' + fmtNum(r.val)) + (r.mult > 1 ? '  (multiplicity ' + r.mult + ')' : '') + ':  ' + vecs.join(', '));
+    out.answer.push('λ = ' + (r.text ? r.text + (r.q && r.q.isInt() ? '' : ' (≈ ' + fmtNum(r.val) + ')') : '≈ ' + fmtNum(r.val)) + (r.mult > 1 ? '  (multiplicity ' + r.mult + ')' : '') + ':  ' + vecs.join(', '));
   }
   for (const z of roots.complex.filter((w) => w.im > 0)) {
     const approx = complexNum(z.re, z.im);
-    out.answer.push('\u03bb = ' + (z.text ? z.text.replace(/\s+/g, '') === approx.replace(/\s+/g, '') ? z.text : z.text + ' (\u2248 ' + approx + ')' : '\u2248 ' + approx) + ' and its conjugate' + ((z.mult || 1) > 1 ? '  (multiplicity ' + z.mult + ')' : ''));
+    out.answer.push('λ = ' + (z.text ? z.text.replace(/\s+/g, '') === approx.replace(/\s+/g, '') ? z.text : z.text + ' (≈ ' + approx + ')' : '≈ ' + approx) + ' and its conjugate' + ((z.mult || 1) > 1 ? '  (multiplicity ' + z.mult + ')' : ''));
   }
   const allRational = roots.complex.length === 0 && roots.real.every((r) => r.q);
   if (allRational) {
-    out.notes.push(total === A.length ? 'The matrix is diagonalizable (A = P D P\u207b\u00b9 with the eigenvectors as the columns of P).' : 'The matrix is not diagonalizable (not enough independent eigenvectors).');
+    out.notes.push(total === A.length ? 'The matrix is diagonalizable (A = P D P⁻¹ with the eigenvectors as the columns of P).' : 'The matrix is not diagonalizable (not enough independent eigenvectors).');
   } else if (roots.real.some((r) => !r.q)) out.notes.push('Eigenvectors for irrational eigenvalues are given as decimals.');
   out.__done = true;
   return mat([[Q0]], { __skip: true });
@@ -9565,7 +9565,7 @@ defMat('diagonalize', (args, n, out) => {
   out.answer.push('D =');
   matLines(D).forEach((l) => out.answer.push(l));
   const ok = mMul(mMul(P, D), mInv(P)).every((r, i) => r.every((v, j) => v.eq(A[i][j])));
-  out.check = ok ? 'P D P\u207b\u00b9 = A' : null;
+  out.check = ok ? 'P D P⁻¹ = A' : null;
   out.__done = true;
   return mat([[Q0]], { __skip: true });
 }, [1, 'a square matrix']);
@@ -9655,7 +9655,7 @@ defMat('angle', (args, n, out) => {
   const c = simp(sDiv(sN(d), sMul([nu, nv])));
   const theta = sFn('acos', [c]);
   const deg = (numS(theta, {}) * 180) / Math.PI;
-  if (out) out.work.push('cos \u03b8 = (u\u00b7v)/(|u||v|) = ' + fmtS(c) + '   (\u03b8 \u2248 ' + fmtNum(deg) + '\u00b0)');
+  if (out) out.work.push('cos θ = (u·v)/(|u||v|) = ' + fmtS(c) + '   (θ ≈ ' + fmtNum(deg) + '°)');
   return symv(theta);
 }, [2, 'two vectors']);
 defMat('proj projection', (args) => {
@@ -9682,9 +9682,9 @@ defMat('gramschmidt orthogonalize orthonormalize', (args, n, out) => {
     else basis.push(w);
   });
   const show = (v) => '[' + v.map((q) => q.toString()).join(', ') + ']';
-  out.work.push('Gram-Schmidt: u\u2096 = v\u2096 \u2212 \u03a3 (v\u2096\u00b7u\u2c7c)/(u\u2c7c\u00b7u\u2c7c) u\u2c7c  (subtract the projections onto the earlier vectors)');
+  out.work.push('Gram-Schmidt: uₖ = vₖ − Σ (vₖ·uⱼ)/(uⱼ·uⱼ) uⱼ  (subtract the projections onto the earlier vectors)');
   basis.forEach((b, i) => out.answer.push('u' + (i + 1) + ' = ' + show(b) + '   (length ' + fmtS(simp(sSqrt(sN(dotQ(b, b))))) + ')'));
-  out.work.push('Orthonormal basis (each u\u2096 divided by its length):');
+  out.work.push('Orthonormal basis (each uₖ divided by its length):');
   basis.forEach((b, i) => {
     const nrm = sSqrt(sN(dotQ(b, b)));
     out.work.push('e' + (i + 1) + ' = [' + b.map((x) => fmtS(simp(sDiv(sN(x), nrm)))).join(', ') + ']');
@@ -9723,11 +9723,11 @@ function bigText(v) {
   const s = v.toString();
   const t = s[0] === '-' ? s.slice(1) : s;
   if (t.length <= 70) return s;
-  return (v < 0n ? '-' : '') + t[0] + '.' + t.slice(1, 9) + '\u00d710^' + (t.length - 1);
+  return (v < 0n ? '-' : '') + t[0] + '.' + t.slice(1, 9) + '×10^' + (t.length - 1);
 }
 function intOut(out, v, extra) {
   out.answer.push(bigText(v));
-  if (bigCount(v) > 70) out.work.push(bigCount(v) + ' digits; it starts ' + babs(v).toString().slice(0, 30) + '\u2026 and ends \u2026' + babs(v).toString().slice(-12));
+  if (bigCount(v) > 70) out.work.push(bigCount(v) + ' digits; it starts ' + babs(v).toString().slice(0, 30) + '… and ends …' + babs(v).toString().slice(-12));
   if (extra) out.work.push(extra);
   out.value = { q: new Q(v) };
   return out;
@@ -9794,14 +9794,14 @@ defCmd('primes primelist', (n) => {
   const ps = sieve(hi).filter((p) => p >= lo);
   const out = newOut();
   out.work.push('There are ' + ps.length + ' primes from ' + Math.max(lo, 2) + ' to ' + hi);
-  out.answer.push(ps.length > 120 ? ps.slice(0, 60).join(', ') + ', \u2026, ' + ps.slice(-20).join(', ') : ps.join(', '));
+  out.answer.push(ps.length > 120 ? ps.slice(0, 60).join(', ') + ', …, ' + ps.slice(-20).join(', ') : ps.join(', '));
   out.value = { q: qInt(ps.length) };
   return out;
 });
 defCmd('primepi primecount', (n) => {
   const [v] = ints(n, 1, 1, 'one whole number');
   if (v > 5000000n) throw new MathError('the limit must be at most 5,000,000');
-  return intOut(newOut(), BigInt(sieve(Number(v)).length), 'the number of primes \u2264 ' + v);
+  return intOut(newOut(), BigInt(sieve(Number(v)).length), 'the number of primes ≤ ' + v);
 });
 function divisorList(f) {
   let ds = [1n];
@@ -9819,7 +9819,7 @@ defCmd('divisors factors_of', (n) => {
   const f = v === 1n ? new Map() : factorOrFail(v);
   const ds = divisorList(f);
   const out = newOut();
-  out.answer.push(ds.length > 150 ? ds.slice(0, 60).join(', ') + ', \u2026, ' + ds.slice(-20).join(', ') : ds.join(', '));
+  out.answer.push(ds.length > 150 ? ds.slice(0, 60).join(', ') + ', …, ' + ds.slice(-20).join(', ') : ds.join(', '));
   out.work.push('Prime factorisation: ' + (v === 1n ? '1' : factorizationText(f)));
   out.work.push('Number of divisors: ' + ds.length + ',  sum of divisors: ' + ds.reduce((s, d) => s + d, 0n));
   out.value = { q: qInt(ds.length) };
@@ -9841,12 +9841,12 @@ arithFn('totient phi eulerphi', 'one positive whole number', (v, f) => {
   let r = v;
   for (const p of f.keys()) r = (r / p) * (p - 1n);
   return r;
-}, '\u03c6(n) counts the numbers up to n that share no factor with n');
+}, 'φ(n) counts the numbers up to n that share no factor with n');
 arithFn('numdivisors tau', 'one positive whole number', (v, f) => {
   let r = 1n;
   for (const e of f.values()) r *= BigInt(e + 1);
   return r;
-}, '\u03c4(n) = (e\u2081+1)(e\u2082+1)\u2026');
+}, 'τ(n) = (e₁+1)(e₂+1)…');
 arithFn('sigma sumdivisors', 'one positive whole number (and optionally a power)', (v, f, k) => {
   let r = 1n;
   for (const [p, e] of f) {
@@ -9856,11 +9856,11 @@ arithFn('sigma sumdivisors', 'one positive whole number (and optionally a power)
     r *= t;
   }
   return r;
-}, '\u03c3(n) is the sum of the divisors');
+}, 'σ(n) is the sum of the divisors');
 arithFn('mobius mu', 'one positive whole number', (v, f) => {
   for (const e of f.values()) if (e > 1) return 0n;
   return f.size % 2 ? -1n : 1n;
-}, '\u03bc(n) = 0 when a square divides n, else (\u22121)^(number of prime factors)');
+}, 'μ(n) = 0 when a square divides n, else (−1)^(number of prime factors)');
 arithFn('radical rad', 'one positive whole number', (v, f) => {
   let r = 1n;
   for (const p of f.keys()) r *= p;
@@ -9882,7 +9882,7 @@ defCmd('mod remainder rem', (n) => {
   const mm = babs(m);
   const r = posMod(a, mm);
   const out = newOut();
-  out.work.push(a + ' = ' + (a - r) / mm + '\u00b7' + mm + ' + ' + r);
+  out.work.push(a + ' = ' + (a - r) / mm + '·' + mm + ' + ' + r);
   return intOut(out, r);
 });
 defCmd('modinv inversemod', (n) => {
@@ -9891,8 +9891,8 @@ defCmd('modinv inversemod', (n) => {
   const inv = modInv(a, m);
   if (inv === null) throw new MathError(a + ' has no inverse mod ' + m + ' because gcd(' + a + ', ' + m + ') = ' + bgcd(a, m) + ' is not 1');
   const out = newOut();
-  out.check = a + '\u00b7' + inv + ' = ' + a * inv + ' \u2261 ' + posMod(a * inv, m) + ' (mod ' + m + ')';
-  return intOut(out, inv, 'The number x with ' + a + '\u00b7x \u2261 1 (mod ' + m + ')');
+  out.check = a + '·' + inv + ' = ' + a * inv + ' ≡ ' + posMod(a * inv, m) + ' (mod ' + m + ')';
+  return intOut(out, inv, 'The number x with ' + a + '·x ≡ 1 (mod ' + m + ')');
 });
 defCmd('modpow powmod', (n) => {
   const [b, e, m] = ints(n, 3, 3, 'a base, an exponent and a modulus');
@@ -9917,7 +9917,7 @@ function orderMod(a, m) {
 }
 defCmd('orderof multorder', (n) => {
   const [a, m] = ints(n, 2, 2, 'a number and a modulus');
-  return intOut(newOut(), orderMod(posMod(a, m), m), 'The least k > 0 with ' + a + '^k \u2261 1 (mod ' + m + ')');
+  return intOut(newOut(), orderMod(posMod(a, m), m), 'The least k > 0 with ' + a + '^k ≡ 1 (mod ' + m + ')');
 });
 defCmd('primitiveroot', (n) => {
   const [p] = ints(n, 1, 1, 'a prime');
@@ -9936,7 +9936,7 @@ defCmd('legendre', (n) => {
   return intOut(out, v);
 });
 
-/** x \u2261 a_i (mod m_i): returns [x, M] or null when the system has no solution. */
+/** x ≡ a_i (mod m_i): returns [x, M] or null when the system has no solution. */
 function crtSolve(rs, ms) {
   let x = 0n;
   let M = 1n;
@@ -9978,14 +9978,14 @@ defCmd('crt chineseremainder', (n) => {
     out.answer.push('No solution: the congruences contradict each other');
     return out;
   }
-  out.answer.push('x \u2261 ' + sol[0] + ' (mod ' + sol[1] + ')');
-  out.work.push('System: ' + rs.map((r, i) => 'x \u2261 ' + r + ' (mod ' + ms[i] + ')').join(',  '));
+  out.answer.push('x ≡ ' + sol[0] + ' (mod ' + sol[1] + ')');
+  out.work.push('System: ' + rs.map((r, i) => 'x ≡ ' + r + ' (mod ' + ms[i] + ')').join(',  '));
   out.check = rs.map((r, i) => sol[0] + ' mod ' + ms[i] + ' = ' + posMod(sol[0], ms[i])).join(', ');
   out.value = { q: new Q(sol[0]) };
   return out;
 });
 
-/** A\u00b7x \u2261 B (mod m) for any polynomial in one variable: exact for linear, by scanning residues otherwise. */
+/** A·x ≡ B (mod m) for any polynomial in one variable: exact for linear, by scanning residues otherwise. */
 defCmd('congruence solvecongruence', (n) => {
   needArgs(n, 3, 3, 'the left side, the right side and the modulus');
   const m = intArg(n.args[2]);
@@ -10012,7 +10012,7 @@ defCmd('congruence solvecongruence', (n) => {
     const a = cs[1];
     const b = posMod(-cs[0], m);
     const g = bgcd(a, m);
-    out.work.push(a + '\u00b7' + v + ' \u2261 ' + b + '  (mod ' + m + '),  gcd(' + a + ', ' + m + ') = ' + g);
+    out.work.push(a + '·' + v + ' ≡ ' + b + '  (mod ' + m + '),  gcd(' + a + ', ' + m + ') = ' + g);
     if (b % g !== 0n) {
       out.answer.push('No solution (' + g + ' does not divide ' + b + ')');
       return out;
@@ -10020,9 +10020,9 @@ defCmd('congruence solvecongruence', (n) => {
     const m2 = m / g;
     const inv = modInv((a / g) % m2, m2);
     const x0 = m2 === 1n ? 0n : posMod((b / g) * inv, m2);
-    out.answer.push(v + ' \u2261 ' + x0 + ' (mod ' + m2 + ')');
-    if (g > 1n) out.work.push('There are ' + g + ' solutions mod ' + m + ': ' + Array.from({ length: Number(g > 12n ? 12n : g) }, (_, k) => x0 + BigInt(k) * m2).join(', ') + (g > 12n ? ', \u2026' : ''));
-    out.check = a + '\u00b7' + x0 + ' = ' + a * x0 + ' \u2261 ' + b + ' (mod ' + m + ')';
+    out.answer.push(v + ' ≡ ' + x0 + ' (mod ' + m2 + ')');
+    if (g > 1n) out.work.push('There are ' + g + ' solutions mod ' + m + ': ' + Array.from({ length: Number(g > 12n ? 12n : g) }, (_, k) => x0 + BigInt(k) * m2).join(', ') + (g > 12n ? ', …' : ''));
+    out.check = a + '·' + x0 + ' = ' + a * x0 + ' ≡ ' + b + ' (mod ' + m + ')';
     return out;
   }
   if (m > 2000000n) throw new MathError('for degree 2 and higher the modulus must be at most 2,000,000');
@@ -10034,18 +10034,18 @@ defCmd('congruence solvecongruence', (n) => {
     for (let k = cs.length - 1; k >= 0; k--) acc = (acc * bx + cs[k]) % m;
     if (acc === 0n) sols.push(x);
   }
-  out.work.push('Checked every residue 0\u2026' + (mm - 1));
-  out.answer.push(sols.length ? v + ' \u2261 ' + (sols.length > 40 ? sols.slice(0, 40).join(', ') + ', \u2026' : sols.join(', ')) + ' (mod ' + m + ')' : 'No solution mod ' + m);
+  out.work.push('Checked every residue 0…' + (mm - 1));
+  out.answer.push(sols.length ? v + ' ≡ ' + (sols.length > 40 ? sols.slice(0, 40).join(', ') + ', …' : sols.join(', ')) + ' (mod ' + m + ')' : 'No solution mod ' + m);
   return out;
 });
 
-/** a\u00b7x + b\u00b7y = c in integers. */
+/** a·x + b·y = c in integers. */
 defCmd('diophantine', (n) => {
   needArgs(n, 2, 2, 'the left side and the right side');
   const E = expandS(sSub(fromAst(n.args[0]), fromAst(n.args[1])));
   const vs = Array.from(varsOfS(E)).sort();
   if (vs.length !== 2) throw new MathError('a linear equation in two unknowns is needed, e.g. 3x + 5y = 1');
-  const bad = () => new MathError('only linear equations a\u00b7x + b\u00b7y = c with rational coefficients are supported');
+  const bad = () => new MathError('only linear equations a·x + b·y = c with rational coefficients are supported');
   const cx = polyCoeffsS(E, vs[0]);
   if (!cx || cx.length !== 2) throw bad();
   const cy = polyCoeffsS(cx[0], vs[1]);
@@ -10059,7 +10059,7 @@ defCmd('diophantine', (n) => {
   const C = c0.mul(new Q(lcmD)).neg().n; // a x + b y = -c0
   const out = newOut();
   const g = bgcd(A, B);
-  out.work.push(A + '\u00b7' + vs[0] + ' + ' + B + '\u00b7' + vs[1] + ' = ' + C + ';  gcd(' + A + ', ' + B + ') = ' + g);
+  out.work.push(A + '·' + vs[0] + ' + ' + B + '·' + vs[1] + ' = ' + C + ';  gcd(' + A + ', ' + B + ') = ' + g);
   if (C % g !== 0n) {
     out.answer.push('No integer solutions (' + g + ' does not divide ' + C + ')');
     return out;
@@ -10076,9 +10076,9 @@ defCmd('diophantine', (n) => {
   const px = x0 + k * bx;
   const py = y0 - k * ay;
   const sg = (q) => (q < 0n ? '- ' + -q : '+ ' + q);
-  out.answer.push(vs[0] + ' = ' + px + ' ' + sg(bx) + '\u00b7t,   ' + vs[1] + ' = ' + py + ' ' + sg(-ay) + '\u00b7t,   t any integer');
+  out.answer.push(vs[0] + ' = ' + px + ' ' + sg(bx) + '·t,   ' + vs[1] + ' = ' + py + ' ' + sg(-ay) + '·t,   t any integer');
   out.work.push('One solution: ' + vs[0] + ' = ' + px + ', ' + vs[1] + ' = ' + py);
-  out.check = A + '\u00b7(' + px + ') + ' + B + '\u00b7(' + py + ') = ' + (A * px + B * py);
+  out.check = A + '·(' + px + ') + ' + B + '·(' + py + ') = ' + (A * px + B * py);
   return out;
 });
 
@@ -10104,20 +10104,20 @@ function nonNeg(v, what) {
 defCmd('factorial', (n) => {
   const [v] = ints(n, 1, 1, 'one whole number');
   nonNeg(v, 'factorial');
-  return intOut(newOut(), bigFactorial(v), v + '! = 1\u00b72\u00b7\u2026\u00b7' + v);
+  return intOut(newOut(), bigFactorial(v), v + '! = 1·2·…·' + v);
 });
 defCmd('ncr binomial choose comb combinations', (n) => {
   const [a, k] = ints(n, 2, 2, 'n and k');
   nonNeg(a, 'ncr');
   const out = newOut();
-  out.work.push('C(' + a + ', ' + k + ') = ' + a + '! / (' + k + '!\u00b7' + (a - k) + '!)  \u2014 the number of ways to choose ' + k + ' of ' + a + ' when order does not matter');
+  out.work.push('C(' + a + ', ' + k + ') = ' + a + '! / (' + k + '!·' + (a - k) + '!)  — the number of ways to choose ' + k + ' of ' + a + ' when order does not matter');
   return intOut(out, binom(a, k));
 });
 defCmd('npr perm permutations', (n) => {
   const [a, k] = ints(n, 2, 2, 'n and k');
   nonNeg(a, 'npr');
   const out = newOut();
-  out.work.push('P(' + a + ', ' + k + ') = ' + a + '! / ' + (a - k) + '!  \u2014 the number of ordered selections of ' + k + ' from ' + a);
+  out.work.push('P(' + a + ', ' + k + ') = ' + a + '! / ' + (a - k) + '!  — the number of ordered selections of ' + k + ' from ' + a);
   let r = 0n;
   if (k >= 0n && k <= a) {
     r = 1n;
@@ -10130,7 +10130,7 @@ defCmd('multiset combrep', (n) => {
   nonNeg(a, 'multiset');
   nonNeg(k, 'multiset');
   const out = newOut();
-  out.work.push('Choosing ' + k + ' from ' + a + ' kinds with repetition allowed: C(' + a + ' + ' + k + ' \u2212 1, ' + k + ')');
+  out.work.push('Choosing ' + k + ' from ' + a + ' kinds with repetition allowed: C(' + a + ' + ' + k + ' − 1, ' + k + ')');
   return intOut(out, a === 0n ? (k === 0n ? 1n : 0n) : binom(a + k - 1n, k));
 });
 defCmd('multinomial', (n) => {
@@ -10140,13 +10140,13 @@ defCmd('multinomial', (n) => {
   let r = bigFactorial(total);
   ks.forEach((k) => { r /= bigFactorial(k); });
   const out = newOut();
-  out.work.push(total + '! / (' + ks.map((k) => k + '!').join('\u00b7') + ')  \u2014 arrangements of ' + total + ' items in groups of ' + ks.join(', '));
+  out.work.push(total + '! / (' + ks.map((k) => k + '!').join('·') + ')  — arrangements of ' + total + ' items in groups of ' + ks.join(', '));
   return intOut(out, r);
 });
 defCmd('catalan', (n) => {
   const [v] = ints(n, 1, 1, 'one whole number');
   nonNeg(v, 'catalan');
-  return intOut(newOut(), binom(2n * v, v) / (v + 1n), 'C\u2099 = C(2n, n)/(n + 1) with n = ' + v);
+  return intOut(newOut(), binom(2n * v, v) / (v + 1n), 'Cₙ = C(2n, n)/(n + 1) with n = ' + v);
 });
 function fibPair(k) {
   if (k === 0n) return [0n, 1n];
@@ -10158,24 +10158,24 @@ function fibPair(k) {
 defCmd('fibonacci fib', (n) => {
   const [v] = ints(n, 1, 1, 'one whole number');
   nonNeg(v, 'fibonacci');
-  return intOut(newOut(), fibPair(v)[0], 'F\u2080 = 0, F\u2081 = 1, F\u2099 = F\u2099\u208b\u2081 + F\u2099\u208b\u2082');
+  return intOut(newOut(), fibPair(v)[0], 'F₀ = 0, F₁ = 1, Fₙ = Fₙ₋₁ + Fₙ₋₂');
 });
 defCmd('lucas', (n) => {
   const [v] = ints(n, 1, 1, 'one whole number');
   nonNeg(v, 'lucas');
   const [f, f1] = fibPair(v);
-  return intOut(newOut(), 2n * f1 - f, 'L\u2080 = 2, L\u2081 = 1, L\u2099 = L\u2099\u208b\u2081 + L\u2099\u208b\u2082');
+  return intOut(newOut(), 2n * f1 - f, 'L₀ = 2, L₁ = 1, Lₙ = Lₙ₋₁ + Lₙ₋₂');
 });
 defCmd('derangements subfactorial', (n) => {
   const [v] = ints(n, 1, 1, 'one whole number');
   nonNeg(v, 'derangements');
   let d = 1n;
   for (let i = 1n; i <= v; i++) d = i * d + (i % 2n === 0n ? 1n : -1n);
-  return intOut(newOut(), d, 'Arrangements of ' + v + ' items where none stays in its place: D\u2099 = n\u00b7D\u2099\u208b\u2081 + (\u22121)\u207f');
+  return intOut(newOut(), d, 'Arrangements of ' + v + ' items where none stays in its place: Dₙ = n·Dₙ₋₁ + (−1)ⁿ');
 });
 defCmd('stirling2 stirling', (n) => {
   const [a, k] = ints(n, 2, 2, 'n and k');
-  if (a > 400n || k > a || k < 0n) throw new MathError('stirling2(n, k) needs 0 \u2264 k \u2264 n \u2264 400');
+  if (a > 400n || k > a || k < 0n) throw new MathError('stirling2(n, k) needs 0 ≤ k ≤ n ≤ 400');
   const N = Number(a);
   const K = Number(k);
   const t = [[1n]];
@@ -10187,7 +10187,7 @@ defCmd('stirling2 stirling', (n) => {
 });
 defCmd('stirling1', (n) => {
   const [a, k] = ints(n, 2, 2, 'n and k');
-  if (a > 400n || k > a || k < 0n) throw new MathError('stirling1(n, k) needs 0 \u2264 k \u2264 n \u2264 400');
+  if (a > 400n || k > a || k < 0n) throw new MathError('stirling1(n, k) needs 0 ≤ k ≤ n ≤ 400');
   const N = Number(a);
   const K = Number(k);
   const t = [[1n]];
@@ -10199,7 +10199,7 @@ defCmd('stirling1', (n) => {
 });
 defCmd('bell', (n) => {
   const [v] = ints(n, 1, 1, 'one whole number');
-  if (v < 0n || v > 300n) throw new MathError('bell(n) needs 0 \u2264 n \u2264 300');
+  if (v < 0n || v > 300n) throw new MathError('bell(n) needs 0 ≤ n ≤ 300');
   let row = [1n];
   for (let i = 1n; i <= v; i++) {
     const next = [row[row.length - 1]];
@@ -10210,7 +10210,7 @@ defCmd('bell', (n) => {
 });
 defCmd('partitions partitionnumber', (n) => {
   const [v] = ints(n, 1, 1, 'one whole number');
-  if (v < 0n || v > 3000n) throw new MathError('partitions(n) needs 0 \u2264 n \u2264 3000');
+  if (v < 0n || v > 3000n) throw new MathError('partitions(n) needs 0 ≤ n ≤ 3000');
   const N = Number(v);
   const p = [1n];
   for (let i = 1; i <= N; i++) {
@@ -10265,7 +10265,7 @@ defCmd('frombase', (n) => {
   }
   const s = digs.map(sym).join('');
   const out = newOut();
-  out.work.push(s + subscript(b) + ' = ' + digs.map((d, i) => sym(d) + (d > 9 ? ' (= ' + d + ')' : '') + '\u00b7' + b + (digs.length - 1 - i > 0 ? toSup(String(digs.length - 1 - i)) : '')).join(' + '));
+  out.work.push(s + subscript(b) + ' = ' + digs.map((d, i) => sym(d) + (d > 9 ? ' (= ' + d + ')' : '') + '·' + b + (digs.length - 1 - i > 0 ? toSup(String(digs.length - 1 - i)) : '')).join(' + '));
   return intOut(out, v);
 });
 
@@ -10335,13 +10335,13 @@ defCmd('sequence nextterm pattern', (n) => {
     P = ptrim(P);
     const at = (m) => peval(P, qInt(m));
     for (let m = N + 1; m <= N + 3; m++) next.push(at(m));
-    formula = 'a\u2099 = ' + (P.length ? polyText(P, 'n') : '0');
+    formula = 'aₙ = ' + (P.length ? polyText(P, 'n') : '0');
     const names = ['constant', 'arithmetic (linear)', 'quadratic', 'cubic', 'quartic', 'quintic', 'degree-6'];
     kindText = names[fit.deg] + ' sequence' + (fit.deg > 0 ? ': the ' + (fit.deg === 1 ? 'differences' : fit.deg === 2 ? 'second differences' : fit.deg === 3 ? 'third differences' : 'differences of order ' + fit.deg) + ' are constant (' + fit.rows[fit.deg][0].toString() + ')' : '');
     if (!fit.confirmed) out.notes.push('With so few terms this is only the simplest polynomial through them; give more terms to confirm the pattern.');
     if (fit.deg === 1) {
       const d = fit.rows[1][0];
-      out.work.push('Common difference d = ' + d.toString() + ';  sum of the first n terms: S\u2099 = n(2\u00b7' + vals[0].toString() + ' + (n \u2212 1)\u00b7' + qParen(d) + ')/2');
+      out.work.push('Common difference d = ' + d.toString() + ';  sum of the first n terms: Sₙ = n(2·' + vals[0].toString() + ' + (n − 1)·' + qParen(d) + ')/2');
     }
   } else if (fit.kind === 'geom') {
     const r = fit.ratio;
@@ -10349,14 +10349,14 @@ defCmd('sequence nextterm pattern', (n) => {
       t = t.mul(r);
       next.push(t);
     }
-    formula = 'a\u2099 = ' + (vals[0].eq(Q1) ? '' : qParen(vals[0]) + '\u00b7') + qParen(r) + '^(n\u22121)';
+    formula = 'aₙ = ' + (vals[0].eq(Q1) ? '' : qParen(vals[0]) + '·') + qParen(r) + '^(n−1)';
     kindText = 'geometric sequence with common ratio r = ' + r.toString();
   } else {
     const { p, q } = fit;
     const seq = vals.slice();
     for (let m = 0; m < 3; m++) seq.push(p.mul(seq[seq.length - 1]).add(q.mul(seq[seq.length - 2])));
     next.push(...seq.slice(N));
-    formula = 'a\u2099 = ' + (p.eq(Q1) ? '' : qParen(p) + '\u00b7') + 'a\u2099\u208b\u2081 + ' + (q.eq(Q1) ? '' : qParen(q) + '\u00b7') + 'a\u2099\u208b\u2082';
+    formula = 'aₙ = ' + (p.eq(Q1) ? '' : qParen(p) + '·') + 'aₙ₋₁ + ' + (q.eq(Q1) ? '' : qParen(q) + '·') + 'aₙ₋₂';
     kindText = p.eq(Q1) && q.eq(Q1) ? 'Fibonacci-type sequence (each term is the sum of the two before it)' : 'linear recurrence of order 2';
   }
   out.answer.push('next terms: ' + qList(next).join(', '));
@@ -10372,9 +10372,9 @@ defCmd('arith arithmetic', (n) => {
   const an = a.add(d.mul(k.sub(Q1)));
   const S = k.mul(a.add(an)).div(qInt(2));
   const out = newOut();
-  out.answer.push('a\u2099 = ' + qLabel(an) + ',   S\u2099 = ' + qLabel(S));
-  out.work.push('a\u2099 = a\u2081 + (n \u2212 1)d = ' + a.toString() + ' + ' + k.sub(Q1).toString() + '\u00b7' + qParen(d));
-  out.work.push('S\u2099 = n(a\u2081 + a\u2099)/2 = ' + k.toString() + '\u00b7(' + a.toString() + ' + ' + an.toString() + ')/2');
+  out.answer.push('aₙ = ' + qLabel(an) + ',   Sₙ = ' + qLabel(S));
+  out.work.push('aₙ = a₁ + (n − 1)d = ' + a.toString() + ' + ' + k.sub(Q1).toString() + '·' + qParen(d));
+  out.work.push('Sₙ = n(a₁ + aₙ)/2 = ' + k.toString() + '·(' + a.toString() + ' + ' + an.toString() + ')/2');
   out.value = { q: an };
   return out;
 });
@@ -10389,10 +10389,10 @@ defCmd('geom geometric', (n) => {
   const an = a.mul(rp);
   const S = r.eq(Q1) ? a.mul(k) : a.mul(Q1.sub(rp.mul(r))).div(Q1.sub(r));
   const out = newOut();
-  out.answer.push('a\u2099 = ' + qLabel(an) + ',   S\u2099 = ' + qLabel(S));
-  out.work.push('a\u2099 = a\u2081\u00b7r\u207f\u207b\u00b9;  S\u2099 = a\u2081(1 \u2212 r\u207f)/(1 \u2212 r)');
+  out.answer.push('aₙ = ' + qLabel(an) + ',   Sₙ = ' + qLabel(S));
+  out.work.push('aₙ = a₁·rⁿ⁻¹;  Sₙ = a₁(1 − rⁿ)/(1 − r)');
   const mag = Math.abs(r.toNumber());
-  if (mag < 1 && !r.isZero()) out.work.push('Since |r| < 1 the infinite series converges to a\u2081/(1 \u2212 r) = ' + qLabel(a.div(Q1.sub(r))));
+  if (mag < 1 && !r.isZero()) out.work.push('Since |r| < 1 the infinite series converges to a₁/(1 − r) = ' + qLabel(a.div(Q1.sub(r))));
   out.value = { q: an };
   return out;
 });
@@ -10430,24 +10430,24 @@ function setCmd(names, label, combine) {
     return out;
   });
 }
-setCmd('union', 'A \u222a B: everything in A or B', (A, B, R) => { A.forEach((v, k) => R.set(k, v)); B.forEach((v, k) => R.set(k, v)); });
-setCmd('intersection intersect', 'A \u2229 B: elements in both', (A, B, R) => { A.forEach((v, k) => B.has(k) && R.set(k, v)); });
+setCmd('union', 'A ∪ B: everything in A or B', (A, B, R) => { A.forEach((v, k) => R.set(k, v)); B.forEach((v, k) => R.set(k, v)); });
+setCmd('intersection intersect', 'A ∩ B: elements in both', (A, B, R) => { A.forEach((v, k) => B.has(k) && R.set(k, v)); });
 setCmd('setdiff setminus', 'A \\ B: elements of A that are not in B', (A, B, R) => { A.forEach((v, k) => !B.has(k) && R.set(k, v)); });
-setCmd('symdiff', 'A \u25b3 B: elements in exactly one of them', (A, B, R) => { A.forEach((v, k) => !B.has(k) && R.set(k, v)); B.forEach((v, k) => !A.has(k) && R.set(k, v)); });
+setCmd('symdiff', 'A △ B: elements in exactly one of them', (A, B, R) => { A.forEach((v, k) => !B.has(k) && R.set(k, v)); B.forEach((v, k) => !A.has(k) && R.set(k, v)); });
 
 // ---- text patterns: mod, congruences, bases, choose -----------------------------------------------------------------
-/** Called by normalizeText: turns "17 mod 5", "3x \u2261 4 (mod 7)", "255 to binary", "5 choose 2" into commands. */
+/** Called by normalizeText: turns "17 mod 5", "3x ≡ 4 (mod 7)", "255 to binary", "5 choose 2" into commands. */
 function convertDiscrete(s) {
-  if (!/mod|\u2261|equiv|binary|octal|hex|base|choose|0[xbo][0-9a-f]|integer|diophant|\bc\(|\bp\(|\d[cp]\d|_|anagram|arrang|permut|\(\s*n\b/i.test(s)) return s;
+  if (!/mod|≡|equiv|binary|octal|hex|base|choose|0[xbo][0-9a-f]|integer|diophant|\bc\(|\bp\(|\d[cp]\d|_|anagram|arrang|permut|\(\s*n\b/i.test(s)) return s;
   s = convertWordCounting(s);
   s = convertRecurrenceText(s);
-  s = s.replace(/\\equiv/g, '\u2261').replace(/\\pmod\s*\{([^{}]*)\}/g, ' mod $1').replace(/\\bmod/g, ' mod ').replace(/\\pmod\s*(\d+)/g, ' mod $1');
-  // congruences  L \u2261 R (mod m)
-  s = s.replace(/([^\n;,\u2261]+?)\s*(?:\u2261|\bcongruent\s+to\b)\s*([^\n;,\u2261]+?)\s*[(,]?\s*(?:\bmod\b|\bmodulo\b)\s*(\d+)\s*\)?/gi, (m, l, r, mod) => {
+  s = s.replace(/\\equiv/g, '≡').replace(/\\pmod\s*\{([^{}]*)\}/g, ' mod $1').replace(/\\bmod/g, ' mod ').replace(/\\pmod\s*(\d+)/g, ' mod $1');
+  // congruences  L ≡ R (mod m)
+  s = s.replace(/([^\n;,≡]+?)\s*(?:≡|\bcongruent\s+to\b)\s*([^\n;,≡]+?)\s*[(,]?\s*(?:\bmod\b|\bmodulo\b)\s*(\d+)\s*\)?/gi, (m, l, r, mod) => {
     l = l.replace(/^[\s:]*(?:(?:solve|find|and|the|system|of|congruences?|such\s+that)\b[\s:]*)+/i, '');
     return 'congruence(' + l.trim() + ', ' + r.trim() + ', ' + mod + ')';
   });
-  // a system x \u2261 a (mod m), x \u2261 b (mod n) ...  ->  crt
+  // a system x ≡ a (mod m), x ≡ b (mod n) ...  ->  crt
   const sys = [];
   s.replace(/congruence\(\s*([a-z])\s*,\s*(-?\d+)\s*,\s*(\d+)\s*\)/gi, (m, v, a, mo) => { sys.push({ v, a, mo, m }); return m; });
   if (sys.length >= 2 && sys.every((t) => t.v === sys[0].v)) {
@@ -10525,7 +10525,7 @@ defCmd('dice dicesum diceprob', (n) => {
       if (s >= t) ge += v;
     });
     out.answer.push('P(sum = ' + t + ') = ' + qText(P(w)) + '   (' + w + ' of the ' + total + ' equally likely outcomes)');
-    out.work.push('P(sum \u2264 ' + t + ') = ' + qText(P(le)) + ';  P(sum \u2265 ' + t + ') = ' + qText(P(ge)));
+    out.work.push('P(sum ≤ ' + t + ') = ' + qText(P(le)) + ';  P(sum ≥ ' + t + ') = ' + qText(P(ge)));
     out.value = { q: P(w) };
   } else {
     out.answer.push('sums from ' + sums[0] + ' to ' + sums[sums.length - 1] + ';  most likely ' + sums.filter((s) => ways.get(s) === sums.reduce((m, x) => (ways.get(x) > m ? ways.get(x) : m), 0n)).join(' or ') + '  (' + total + ' equally likely outcomes)');
@@ -10558,8 +10558,8 @@ defCmd('anagrams wordperm arrangementsof', (n) => {
   let div = 1n;
   counts.forEach((k) => { div *= bigFactorial(BigInt(k)); });
   const out = newOut();
-  out.work.push('The word ' + word + ' has ' + word.length + ' letters: ' + Array.from(counts).map(([c, k]) => c + ' \u00d7' + k).join(', '));
-  out.work.push(word.length + '! / (' + Array.from(counts.values()).map((k) => k + '!').join('\u00b7') + ') \u2014 repeated letters make some arrangements identical');
+  out.work.push('The word ' + word + ' has ' + word.length + ' letters: ' + Array.from(counts).map(([c, k]) => c + ' ×' + k).join(', '));
+  out.work.push(word.length + '! / (' + Array.from(counts.values()).map((k) => k + '!').join('·') + ') — repeated letters make some arrangements identical');
   return intOut(out, total / div);
 });
 COMMANDS.anagrams.show = (n) => 'distinct arrangements of the letters of ' + decodeWord(intArg(n.args[0]));
@@ -10575,7 +10575,7 @@ defCmd('birthday birthdayproblem', (n) => {
   const p = Q1.sub(allDifferent);
   const out = newOut();
   out.answer.push('P(at least two of ' + people + ' people share a birthday) = ' + (p.isInt() ? p.toString() : fmtNum(p.toNumber())));
-  out.work.push('P(all different) = ' + Array.from({ length: Math.min(people, 4) }, (_, i) => '(' + (days - i) + '/' + days + ')').join('\u00b7') + (people > 4 ? '\u00b7\u00b7\u00b7' : '') + ' = ' + fmtNum(allDifferent.toNumber()) + ';  the answer is 1 minus that (' + days + ' equally likely days)');
+  out.work.push('P(all different) = ' + Array.from({ length: Math.min(people, 4) }, (_, i) => '(' + (days - i) + '/' + days + ')').join('·') + (people > 4 ? '···' : '') + ' = ' + fmtNum(allDifferent.toNumber()) + ';  the answer is 1 minus that (' + days + ' equally likely days)');
   if (days === 365 && people < 366) {
     let need = 1;
     let q = Q1;
@@ -10594,20 +10594,20 @@ defCmd('pascal pascalrow', (n) => {
   const row = Array.from({ length: Number(r) + 1 }, (_, k) => binom(r, BigInt(k)));
   const out = newOut();
   out.answer.push(row.join(', '));
-  out.work.push('Row ' + r + ' of Pascal\'s triangle: C(' + r + ', k) for k = 0 \u2026 ' + r + ';  the entries add up to 2^' + r + ' = ' + 2n ** r);
+  out.work.push('Row ' + r + ' of Pascal\'s triangle: C(' + r + ', k) for k = 0 … ' + r + ';  the entries add up to 2^' + r + ' = ' + 2n ** r);
   return out;
 });
 defCmd('circular circularperm', (n) => {
   const [r] = ints(n, 1, 1, 'the number of people around the table');
   nonNeg(r, 'circular');
   if (r < 1n) throw new MathError('at least one person is needed');
-  return intOut(newOut(), bigFactorial(r - 1n), r + ' people around a round table (rotations count as the same seating): (' + r + ' \u2212 1)!');
+  return intOut(newOut(), bigFactorial(r - 1n), r + ' people around a round table (rotations count as the same seating): (' + r + ' − 1)!');
 });
 
 /** Called by convertDiscrete: "arrangements of MISSISSIPPI" -> anagrams(<encoded word>) */
 const WORD_STOP = new Set(['the', 'of', 'a', 'an', 'n', 'objects', 'items', 'people', 'persons', 'letters', 'elements', 'things', 'books', 'balls', 'students', 'digits', 'numbers', 'boys', 'girls', 'men', 'women', 'children', 'cards', 'colors', 'colours', 'flags', 'seats', 'chairs', 'ways', 'all', 'these', 'those', 'them', 'such', 'that', 'this', 'with', 'from', 'size', 'distinct', 'different', 'possible', 'many', 'letter', 'word', 'words']);
 function convertWordCounting(s) {
-  return s.replace(/\b(?:how\s+many\s+)?(?:(?:distinct|different|possible|unique)\s+)?(?:anagrams?|arrangements?|permutations?|rearrangements?|ways\s+(?:to\s+)?(?:arrange|rearrange))(?:\s+are\s+there)?\s*(?:\(\s*|\s*(?:(?:of|for|from)\s+)?)(?:the\s+)?(?:(?:letters|word|name)\s+(?:of\s+|in\s+)?)?(?:the\s+)?(?:word\s+)?["'\u201c\u201d]?([A-Za-z]{3,})["'\u201c\u201d]?\s*\)?/gi, (m, w) => (WORD_STOP.has(w.toLowerCase()) ? m : 'anagrams(' + encodeWord(w) + ')'));
+  return s.replace(/\b(?:how\s+many\s+)?(?:(?:distinct|different|possible|unique)\s+)?(?:anagrams?|arrangements?|permutations?|rearrangements?|ways\s+(?:to\s+)?(?:arrange|rearrange))(?:\s+are\s+there)?\s*(?:\(\s*|\s*(?:(?:of|for|from)\s+)?)(?:the\s+)?(?:(?:letters|word|name)\s+(?:of\s+|in\s+)?)?(?:the\s+)?(?:word\s+)?["'“”]?([A-Za-z]{3,})["'“”]?\s*\)?/gi, (m, w) => (WORD_STOP.has(w.toLowerCase()) ? m : 'anagrams(' + encodeWord(w) + ')'));
 }
 // ======================================================================
 // 12. Statistics and probability
@@ -10831,13 +10831,13 @@ defCmd('mode', (n) => {
 defCmd('variance var', (n) => {
   const vs = dataOf(n.args, 'variance');
   const out = newOut();
-  out.work.push('Sample variance: \u03a3(x \u2212 mean)\u00b2 / (n \u2212 1) with n = ' + vs.length + '  (use popvariance for the whole population)');
+  out.work.push('Sample variance: Σ(x − mean)² / (n − 1) with n = ' + vs.length + '  (use popvariance for the whole population)');
   return qvOut(out, sampleVar(vs, false));
 });
 defCmd('popvariance pvar', (n) => {
   const vs = dataOf(n.args, 'popvariance');
   const out = newOut();
-  out.work.push('Population variance: \u03a3(x \u2212 mean)\u00b2 / n with n = ' + vs.length);
+  out.work.push('Population variance: Σ(x − mean)² / n with n = ' + vs.length);
   return qvOut(out, sampleVar(vs, true));
 });
 function sdCmd(pop) {
@@ -10845,7 +10845,7 @@ function sdCmd(pop) {
     const vs = dataOf(n.args, 'stdev');
     const v = sampleVar(vs, pop);
     const out = newOut();
-    out.work.push((pop ? 'Population' : 'Sample') + ' standard deviation = \u221avariance;  variance = ' + v.toString() + ',  mean = ' + sumQ(vs).div(qInt(vs.length)).toString());
+    out.work.push((pop ? 'Population' : 'Sample') + ' standard deviation = √variance;  variance = ' + v.toString() + ',  mean = ' + sumQ(vs).div(qInt(vs.length)).toString());
     out.work.push(pop ? '(for a sample use stdev)' : '(for the whole population use popstdev)');
     const S = qSqrtS(v);
     out.answer.push(symText(S));
@@ -10910,7 +10910,7 @@ defCmd('summary stats describe', (n) => {
   }
   const pv = sampleVar(vs, true);
   out.answer.push('population variance = ' + qText(pv) + ',  population standard deviation = ' + sqrtQText(pv));
-  out.answer.push('outliers (beyond 1.5\u00b7IQR from the quartiles): ' + (outliers.length ? outliers.map((v) => v.toString()).join(', ') : 'none'));
+  out.answer.push('outliers (beyond 1.5·IQR from the quartiles): ' + (outliers.length ? outliers.map((v) => v.toString()).join(', ') : 'none'));
   return out;
 });
 defCmd('zscore', (n) => {
@@ -10919,7 +10919,7 @@ defCmd('zscore', (n) => {
   if (s.isZero()) throw new MathError('the standard deviation cannot be 0');
   const z = x.sub(m).div(s);
   const out = newOut();
-  out.work.push('z = (x \u2212 mean) / sd = (' + x.toString() + ' \u2212 ' + m.toString() + ') / ' + s.toString());
+  out.work.push('z = (x − mean) / sd = (' + x.toString() + ' − ' + m.toString() + ') / ' + s.toString());
   return qvOut(out, z);
 });
 function twoLists(n, what) {
@@ -10947,7 +10947,7 @@ defCmd('correlation corr pearson', (n) => {
   const out = newOut();
   const S = sxy.sign() < 0 ? sNeg(qSqrtS(r2)) : qSqrtS(r2);
   out.answer.push('r = ' + symText(S));
-  out.work.push('r\u00b2 = ' + qText(r2));
+  out.work.push('r² = ' + qText(r2));
   out.value = { S };
   return out;
 });
@@ -10955,7 +10955,7 @@ defCmd('covariance cov', (n) => {
   const { xs, ys } = twoLists(n, 'covariance');
   const { sxy } = sums2(xs, ys);
   const out = newOut();
-  out.work.push('Sample covariance = \u03a3(x \u2212 x\u0304)(y \u2212 \u0233) / (n \u2212 1)');
+  out.work.push('Sample covariance = Σ(x − x̄)(y − ȳ) / (n − 1)');
   return qvOut(out, sxy.div(qInt(xs.length - 1)));
 });
 defCmd('linreg regression linearregression', (n) => {
@@ -10965,12 +10965,12 @@ defCmd('linreg regression linearregression', (n) => {
   const b = sxy.div(sxx);
   const a = my.sub(b.mul(mx));
   const out = newOut();
-  const eq = 'y = ' + (b.isZero() ? '' : (b.eq(Q1) ? '' : b.eq(qInt(-1)) ? '-' : qParen(b) + '\u00b7') + 'x') + (a.isZero() ? (b.isZero() ? '0' : '') : (b.isZero() || a.sign() < 0 ? ' ' : ' + ') + (a.sign() < 0 && !b.isZero() ? '\u2212 ' + a.neg().toString() : a.toString()));
+  const eq = 'y = ' + (b.isZero() ? '' : (b.eq(Q1) ? '' : b.eq(qInt(-1)) ? '-' : qParen(b) + '·') + 'x') + (a.isZero() ? (b.isZero() ? '0' : '') : (b.isZero() || a.sign() < 0 ? ' ' : ' + ') + (a.sign() < 0 && !b.isZero() ? '− ' + a.neg().toString() : a.toString()));
   out.answer.push(eq);
-  out.work.push('slope = Sxy/Sxx = ' + qText(b) + ',  intercept = \u0233 \u2212 slope\u00b7x\u0304 = ' + qText(a));
+  out.work.push('slope = Sxy/Sxx = ' + qText(b) + ',  intercept = ȳ − slope·x̄ = ' + qText(a));
   if (!syy.isZero()) {
     const r2 = sxy.mul(sxy).div(sxx.mul(syy));
-    out.work.push('r = ' + (sxy.sign() < 0 ? '\u2212' : '') + sqrtQText(r2) + ',  r\u00b2 = ' + qText(r2));
+    out.work.push('r = ' + (sxy.sign() < 0 ? '−' : '') + sqrtQText(r2) + ',  r² = ' + qText(r2));
   }
   if (n.args[2]) {
     const x0 = constQ(n.args[2]);
@@ -10994,7 +10994,7 @@ defCmd('expect expectedvalue', (n) => {
   const v = ex2.sub(m.mul(m));
   out.answer.push('E[X] = ' + qText(m));
   out.answer.push('Var(X) = ' + qText(v) + ',  SD = ' + sqrtQText(v));
-  out.work.push('E[X] = \u03a3 x\u00b7p;  Var(X) = E[X\u00b2] \u2212 E[X]\u00b2 with E[X\u00b2] = ' + qText(ex2));
+  out.work.push('E[X] = Σ x·p;  Var(X) = E[X²] − E[X]² with E[X²] = ' + qText(ex2));
   out.value = { q: m };
   return out;
 });
@@ -11073,7 +11073,7 @@ function binomPmf(nn, p, k) {
 }
 function binomCmd(cumulative) {
   return (n) => {
-    needArgs(n, 3, 4, cumulative ? 'n, p and k (or n, p, a, b for P(a \u2264 X \u2264 b))' : 'n, p and k');
+    needArgs(n, 3, 4, cumulative ? 'n, p and k (or n, p, a, b for P(a ≤ X ≤ b))' : 'n, p and k');
     const nn = intArg(n.args[0]);
     if (nn < 0n || nn > 5000n) throw new MathError('n must be between 0 and 5000');
     const p = probArg(n.args[1], n.fn);
@@ -11087,14 +11087,14 @@ function binomCmd(cumulative) {
     } else if (n.args[3]) {
       const k2 = intArg(n.args[3]);
       for (let i = k < 0n ? 0n : k; i <= (k2 > nn ? nn : k2); i++) res = res.add(binomPmf(nn, p, i));
-      label = 'P(' + k + ' \u2264 X \u2264 ' + k2 + ')';
+      label = 'P(' + k + ' ≤ X ≤ ' + k2 + ')';
     } else {
       for (let i = 0n; i <= (k > nn ? nn : k); i++) res = res.add(binomPmf(nn, p, i));
-      label = 'P(X \u2264 ' + k + ')';
+      label = 'P(X ≤ ' + k + ')';
     }
     out.answer.push(label + ' = ' + qText(res));
-    out.work.push('X ~ Binomial(n = ' + nn + ', p = ' + p.toString() + '):  P(X = k) = C(n, k)\u00b7p\u1d4f\u00b7(1 \u2212 p)\u207f\u207b\u1d4f');
-    out.work.push('mean = n\u00b7p = ' + qText(p.mul(new Q(nn))) + ',  variance = n\u00b7p\u00b7(1 \u2212 p) = ' + qText(p.mul(Q1.sub(p)).mul(new Q(nn))));
+    out.work.push('X ~ Binomial(n = ' + nn + ', p = ' + p.toString() + '):  P(X = k) = C(n, k)·pᵏ·(1 − p)ⁿ⁻ᵏ');
+    out.work.push('mean = n·p = ' + qText(p.mul(new Q(nn))) + ',  variance = n·p·(1 − p) = ' + qText(p.mul(Q1.sub(p)).mul(new Q(nn))));
     out.value = { q: res };
     return out;
   };
@@ -11103,10 +11103,10 @@ defCmd('binompdf binompmf binomialpdf', binomCmd(false));
 defCmd('binomcdf binomialcdf', binomCmd(true));
 function poissonCmd(cumulative) {
   return (n) => {
-    needArgs(n, 2, 2, 'the mean \u03bb and k');
+    needArgs(n, 2, 2, 'the mean λ and k');
     const lam = constQ(n.args[0]);
     const k = intArg(n.args[1]);
-    if (lam.sign() <= 0) throw new MathError('\u03bb must be positive');
+    if (lam.sign() <= 0) throw new MathError('λ must be positive');
     if (k > 3000n || (k < 0n && !cumulative)) throw new MathError('k must be between 0 and 3000');
     let acc = Q0;
     let term = Q1;
@@ -11117,8 +11117,8 @@ function poissonCmd(cumulative) {
     }
     const S = simp(sMul([sExp(sN(lam.neg())), sN(acc)]));
     const out = newOut();
-    out.answer.push((cumulative ? 'P(X \u2264 ' + k + ')' : 'P(X = ' + k + ')') + ' = ' + symText(S));
-    out.work.push('X ~ Poisson(\u03bb = ' + lam.toString() + '):  P(X = k) = e^(\u2212\u03bb)\u00b7\u03bb\u1d4f/k!');
+    out.answer.push((cumulative ? 'P(X ≤ ' + k + ')' : 'P(X = ' + k + ')') + ' = ' + symText(S));
+    out.work.push('X ~ Poisson(λ = ' + lam.toString() + '):  P(X = k) = e^(−λ)·λᵏ/k!');
     out.value = { S };
     return out;
   };
@@ -11132,7 +11132,7 @@ defCmd('geometpdf geometricpmf', (n) => {
   if (k < 1n || k > 5000n) throw new MathError('k must be at least 1');
   const res = Q1.sub(p).pow(Number(k - 1n)).mul(p);
   const out = newOut();
-  out.work.push('First success on trial k: P = (1 \u2212 p)\u1d4f\u207b\u00b9\u00b7p');
+  out.work.push('First success on trial k: P = (1 − p)ᵏ⁻¹·p');
   out.answer.push('P(X = ' + k + ') = ' + qText(res));
   out.value = { q: res };
   return out;
@@ -11144,19 +11144,19 @@ defCmd('geometcdf geometriccdf', (n) => {
   if (k > 5000n) throw new MathError('k must be at most 5000');
   const res = k < 0n ? Q0 : Q1.sub(Q1.sub(p).pow(Number(k)));
   const out = newOut();
-  out.work.push('At least one success within k trials: 1 \u2212 (1 \u2212 p)\u1d4f');
-  out.answer.push('P(X \u2264 ' + k + ') = ' + qText(res));
+  out.work.push('At least one success within k trials: 1 − (1 − p)ᵏ');
+  out.answer.push('P(X ≤ ' + k + ') = ' + qText(res));
   out.value = { q: res };
   return out;
 });
 defCmd('hyperpdf hypergeometric', (n) => {
   needArgs(n, 4, 4, 'population N, successes K, sample size n and k');
   const [N, K, nn, k] = n.args.map(intArg);
-  if (N < 0n || K > N || nn > N || N > 100000n) throw new MathError('check the numbers: need K \u2264 N and n \u2264 N');
+  if (N < 0n || K > N || nn > N || N > 100000n) throw new MathError('check the numbers: need K ≤ N and n ≤ N');
   const den = binom(N, nn);
   const res = new Q(binom(K, k) * binom(N - K, nn - k)).div(new Q(den));
   const out = newOut();
-  out.work.push('P = C(K, k)\u00b7C(N \u2212 K, n \u2212 k) / C(N, n)');
+  out.work.push('P = C(K, k)·C(N − K, n − k) / C(N, n)');
   out.answer.push('P(X = ' + k + ') = ' + qText(res));
   out.value = { q: res };
   return out;
@@ -11169,7 +11169,7 @@ function pOut(out, label, p) {
   out.value = { num: p };
   return out;
 }
-const fmtArg = (x) => (x === Infinity ? '\u221e' : x === -Infinity ? '\u2212\u221e' : fmtNum(x));
+const fmtArg = (x) => (x === Infinity ? '∞' : x === -Infinity ? '−∞' : fmtNum(x));
 defCmd('normalcdf normcdf', (n) => {
   needArgs(n, 1, 4, 'x (or a, b) and optionally the mean and standard deviation');
   const a = n.args.map(numArg);
@@ -11186,8 +11186,8 @@ defCmd('normalcdf normcdf', (n) => {
   const zh = (hi - mu) / sg;
   const p = (isFinite(zh) ? normCdf(zh) : zh > 0 ? 1 : 0) - (isFinite(zl) ? normCdf(zl) : zl > 0 ? 1 : 0);
   const out = newOut();
-  out.work.push('Normal(mean ' + fmtNum(mu) + ', sd ' + fmtNum(sg) + '):  z = (x \u2212 mean)/sd' + (lo === -Infinity ? ' = ' + fmtNum(zh) : ' from ' + fmtNum(zl) + ' to ' + fmtNum(zh)));
-  return pOut(out, lo === -Infinity ? 'P(X \u2264 ' + fmtArg(hi) + ')' : 'P(' + fmtArg(lo) + ' \u2264 X \u2264 ' + fmtArg(hi) + ')', p);
+  out.work.push('Normal(mean ' + fmtNum(mu) + ', sd ' + fmtNum(sg) + '):  z = (x − mean)/sd' + (lo === -Infinity ? ' = ' + fmtNum(zh) : ' from ' + fmtNum(zl) + ' to ' + fmtNum(zh)));
+  return pOut(out, lo === -Infinity ? 'P(X ≤ ' + fmtArg(hi) + ')' : 'P(' + fmtArg(lo) + ' ≤ X ≤ ' + fmtArg(hi) + ')', p);
 });
 defCmd('normalpdf normpdf', (n) => {
   needArgs(n, 1, 3, 'x and optionally the mean and standard deviation');
@@ -11200,7 +11200,7 @@ defCmd('invnorm invnormal quantile', (n) => {
   const [p, mu = 0, sg = 1] = n.args.map(numArg);
   if (sg <= 0) throw new MathError('the standard deviation must be positive');
   const out = newOut();
-  out.work.push('The x with P(X \u2264 x) = ' + fmtNum(p));
+  out.work.push('The x with P(X ≤ x) = ' + fmtNum(p));
   return numOut(out, mu + sg * invNorm(p), 'x');
 });
 defCmd('zcrit', (n) => {
@@ -11208,7 +11208,7 @@ defCmd('zcrit', (n) => {
   let c = numArg(n.args[0]);
   if (c > 1) c /= 100;
   const out = newOut();
-  out.work.push('Two-sided critical value for ' + fmtNum(c * 100) + '% confidence: the z with P(\u2212z \u2264 Z \u2264 z) = ' + fmtNum(c));
+  out.work.push('Two-sided critical value for ' + fmtNum(c * 100) + '% confidence: the z with P(−z ≤ Z ≤ z) = ' + fmtNum(c));
   return numOut(out, invNorm((1 + c) / 2), 'z*');
 });
 defCmd('tcdf', (n) => {
@@ -11219,9 +11219,9 @@ defCmd('tcdf', (n) => {
   const out = newOut();
   if (a.length === 3) {
     const cdf = (t) => (t === Infinity ? 1 : t === -Infinity ? 0 : tCdf(t, df));
-    return pOut(out, 'P(' + fmtArg(a[0]) + ' \u2264 T \u2264 ' + fmtArg(a[1]) + ')', cdf(a[1]) - cdf(a[0]));
+    return pOut(out, 'P(' + fmtArg(a[0]) + ' ≤ T ≤ ' + fmtArg(a[1]) + ')', cdf(a[1]) - cdf(a[0]));
   }
-  return pOut(out, 'P(T \u2264 ' + fmtNum(a[0]) + ')', tCdf(a[0], df));
+  return pOut(out, 'P(T ≤ ' + fmtNum(a[0]) + ')', tCdf(a[0], df));
 });
 defCmd('invt', (n) => {
   needArgs(n, 2, 2, 'the left-tail probability and the degrees of freedom');
@@ -11241,26 +11241,26 @@ defCmd('chi2cdf chisqcdf', (n) => {
   needArgs(n, 2, 2, 'x and the degrees of freedom');
   const [x, df] = n.args.map(numArg);
   if (!(df > 0)) throw new MathError('the degrees of freedom must be positive');
-  return pOut(newOut(), 'P(\u03c7\u00b2 \u2264 ' + fmtNum(x) + ')', chi2Cdf(x, df));
+  return pOut(newOut(), 'P(χ² ≤ ' + fmtNum(x) + ')', chi2Cdf(x, df));
 });
 defCmd('invchi2 invchisq chi2crit', (n) => {
   needArgs(n, 2, 2, 'the left-tail probability and the degrees of freedom');
   const [p, df] = n.args.map(numArg);
   if (!(df > 0)) throw new MathError('the degrees of freedom must be positive');
   const out = newOut();
-  out.work.push('The x with P(\u03c7\u00b2 \u2264 x) = ' + fmtNum(p) + ' (for a right-tail area \u03b1 use 1 \u2212 \u03b1)');
+  out.work.push('The x with P(χ² ≤ x) = ' + fmtNum(p) + ' (for a right-tail area α use 1 − α)');
   return numOut(out, invCdf((x) => chi2Cdf(x, df), p, 0, df + 10), 'x');
 });
 defCmd('fcdf', (n) => {
   needArgs(n, 3, 3, 'f and the two degrees of freedom');
   const [f, d1, d2] = n.args.map(numArg);
-  return pOut(newOut(), 'P(F \u2264 ' + fmtNum(f) + ')', fCdf(f, d1, d2));
+  return pOut(newOut(), 'P(F ≤ ' + fmtNum(f) + ')', fCdf(f, d1, d2));
 });
 defCmd('expcdf exponentialcdf', (n) => {
-  needArgs(n, 2, 2, 'the rate \u03bb and x');
+  needArgs(n, 2, 2, 'the rate λ and x');
   const [lam, x] = n.args.map(numArg);
-  if (!(lam > 0)) throw new MathError('\u03bb must be positive');
-  return pOut(newOut(), 'P(X \u2264 ' + fmtNum(x) + ')', x <= 0 ? 0 : 1 - Math.exp(-lam * x));
+  if (!(lam > 0)) throw new MathError('λ must be positive');
+  return pOut(newOut(), 'P(X ≤ ' + fmtNum(x) + ')', x <= 0 ? 0 : 1 - Math.exp(-lam * x));
 });
 
 // ---- confidence intervals and tests ------------------------------------------------------------------------------------------
@@ -11274,7 +11274,7 @@ function intervalOut(out, center, margin, crit, critLabel, level) {
   [center, margin, crit].forEach(needFinite);
   out.answer.push(fmtNum(level * 100) + '% confidence interval: (' + fmtNum(center - margin) + ', ' + fmtNum(center + margin) + ')');
   out.work.push(critLabel + ' = ' + fmtNum(crit) + ',  margin of error = ' + fmtNum(margin));
-  out.work.push('Interval = estimate \u00b1 margin = ' + fmtNum(center) + ' \u00b1 ' + fmtNum(margin));
+  out.work.push('Interval = estimate ± margin = ' + fmtNum(center) + ' ± ' + fmtNum(margin));
   out.value = { num: margin };
   return out;
 }
@@ -11289,7 +11289,7 @@ function sampleSummary(n, label) {
   return { mean: numArg(n.args[0]), s: numArg(n.args[1]), n: numArg(n.args[2]), rest: n.args.slice(3) };
 }
 defCmd('zinterval', (n) => {
-  needArgs(n, 4, 4, 'the sample mean, \u03c3, n and the confidence level');
+  needArgs(n, 4, 4, 'the sample mean, σ, n and the confidence level');
   const [m, sg, nn] = n.args.slice(0, 3).map(numArg);
   const c = levelOf(n.args[3]);
   const z = invNorm((1 + c) / 2);
@@ -11302,7 +11302,7 @@ defCmd('tinterval', (n) => {
   const df = sm.n - 1;
   const t = invCdf((x) => tCdf(x, df), (1 + c) / 2, -5, 5);
   const out = newOut();
-  out.work.push('df = n \u2212 1 = ' + df);
+  out.work.push('df = n − 1 = ' + df);
   return intervalOut(out, sm.mean, (t * sm.s) / Math.sqrt(sm.n), t, 't*', c);
 });
 defCmd('propinterval', (n) => {
@@ -11313,7 +11313,7 @@ defCmd('propinterval', (n) => {
   const ph = x < 1 || !Number.isInteger(x) ? x : x / nn;
   const z = invNorm((1 + c) / 2);
   const out = newOut();
-  out.work.push('p\u0302 = ' + fmtNum(ph) + ';  margin = z*\u00b7\u221a(p\u0302(1 \u2212 p\u0302)/n)');
+  out.work.push('p̂ = ' + fmtNum(ph) + ';  margin = z*·√(p̂(1 − p̂)/n)');
   return intervalOut(out, ph, z * Math.sqrt((ph * (1 - ph)) / nn), z, 'z*', c);
 });
 function testOut(out, stat, label, p2, pLeft, pRight, extra) {
@@ -11321,34 +11321,34 @@ function testOut(out, stat, label, p2, pLeft, pRight, extra) {
   out.answer.push(label + ' = ' + fmtNum(stat));
   out.answer.push('p-value: two-tailed ' + fmtNum(p2) + ',  left-tailed ' + fmtNum(pLeft) + ',  right-tailed ' + fmtNum(pRight));
   if (extra) out.work.push(extra);
-  out.notes.push('Reject H0 when the p-value of the matching alternative is below the significance level \u03b1.');
+  out.notes.push('Reject H0 when the p-value of the matching alternative is below the significance level α.');
   out.value = { num: p2 };
   return out;
 }
 defCmd('ztest', (n) => {
-  needArgs(n, 4, 4, 'the sample mean, \u03bc0, \u03c3 and n');
+  needArgs(n, 4, 4, 'the sample mean, μ0, σ and n');
   const [m, mu0, sg, nn] = n.args.map(numArg);
   const z = (m - mu0) / (sg / Math.sqrt(nn));
-  return testOut(newOut(), z, 'z', 2 * normCdf(-Math.abs(z)), normCdf(z), 1 - normCdf(z), 'z = (x\u0304 \u2212 \u03bc0)/(\u03c3/\u221an)');
+  return testOut(newOut(), z, 'z', 2 * normCdf(-Math.abs(z)), normCdf(z), 1 - normCdf(z), 'z = (x̄ − μ0)/(σ/√n)');
 });
 defCmd('ttest', (n) => {
   const sm = sampleSummary(n, 'ttest');
   if (!sm.rest.length) {
-    if (n.args[0].t === 'list') throw new MathError('ttest([data], \u03bc0) needs the hypothesised mean');
-    throw new MathError('ttest(mean, s, n, \u03bc0) needs the hypothesised mean \u03bc0');
+    if (n.args[0].t === 'list') throw new MathError('ttest([data], μ0) needs the hypothesised mean');
+    throw new MathError('ttest(mean, s, n, μ0) needs the hypothesised mean μ0');
   }
   const mu0 = numArg(sm.rest[0]);
   const df = sm.n - 1;
   const t = (sm.mean - mu0) / (sm.s / Math.sqrt(sm.n));
   const cdf = tCdf(t, df);
-  return testOut(newOut(), t, 't', 2 * (1 - tCdf(Math.abs(t), df)), cdf, 1 - cdf, 't = (x\u0304 \u2212 \u03bc0)/(s/\u221an),  df = ' + df + ',  x\u0304 = ' + fmtNum(sm.mean) + ',  s = ' + fmtNum(sm.s));
+  return testOut(newOut(), t, 't', 2 * (1 - tCdf(Math.abs(t), df)), cdf, 1 - cdf, 't = (x̄ − μ0)/(s/√n),  df = ' + df + ',  x̄ = ' + fmtNum(sm.mean) + ',  s = ' + fmtNum(sm.s));
 });
 defCmd('proptest', (n) => {
   needArgs(n, 3, 3, 'successes x, n and the hypothesised proportion p0');
   const [x, nn, p0] = n.args.map(numArg);
   const ph = x / nn;
   const z = (ph - p0) / Math.sqrt((p0 * (1 - p0)) / nn);
-  return testOut(newOut(), z, 'z', 2 * normCdf(-Math.abs(z)), normCdf(z), 1 - normCdf(z), 'p\u0302 = ' + fmtNum(ph) + ',  z = (p\u0302 \u2212 p0)/\u221a(p0(1 \u2212 p0)/n)');
+  return testOut(newOut(), z, 'z', 2 * normCdf(-Math.abs(z)), normCdf(z), 1 - normCdf(z), 'p̂ = ' + fmtNum(ph) + ',  z = (p̂ − p0)/√(p0(1 − p0)/n)');
 });
 defCmd('chisqtest chitest', (n) => {
   needArgs(n, 1, 2, 'a table of counts, or observed and expected lists');
@@ -11367,7 +11367,7 @@ defCmd('chisqtest chitest', (n) => {
       chi += (o.toNumber() - e) ** 2 / e;
     }));
     df = (T.length - 1) * (T[0].length - 1);
-    out.work.push('Test of independence: expected = row total \u00d7 column total / grand total;  df = (rows \u2212 1)(columns \u2212 1) = ' + df);
+    out.work.push('Test of independence: expected = row total × column total / grand total;  df = (rows − 1)(columns − 1) = ' + df);
   } else {
     const obs = dataOf([n.args[0]], 'chisqtest');
     const tot = sumQ(obs);
@@ -11377,12 +11377,12 @@ defCmd('chisqtest chitest', (n) => {
     if (exp.some((e) => !(e.sign() > 0))) throw new MathError('every expected count must be positive');
     obs.forEach((o, i) => { chi += (o.toNumber() - exp[i].toNumber()) ** 2 / exp[i].toNumber(); });
     df = obs.length - 1;
-    out.work.push('Goodness of fit: \u03c7\u00b2 = \u03a3 (O \u2212 E)\u00b2 / E;  df = categories \u2212 1 = ' + df);
+    out.work.push('Goodness of fit: χ² = Σ (O − E)² / E;  df = categories − 1 = ' + df);
   }
   const pv = 1 - chi2Cdf(chi, df);
-  out.answer.push('\u03c7\u00b2 = ' + fmtNum(chi) + ',  df = ' + df);
+  out.answer.push('χ² = ' + fmtNum(chi) + ',  df = ' + df);
   out.answer.push('p-value (right tail) = ' + fmtNum(pv));
-  out.notes.push('Reject H0 when the p-value is below the significance level \u03b1.');
+  out.notes.push('Reject H0 when the p-value is below the significance level α.');
   out.value = { num: pv };
   return out;
 });
@@ -11454,7 +11454,7 @@ shapeCmd('circle', 'the radius r', ['r'], {
   line(out, 'area', piTimes(sq(r)));
   line(out, 'circumference', sMul([sI(2), S_PI, r]));
   line(out, 'diameter', sMul([sI(2), r]));
-}, 'A = \u03c0r\u00b2,  C = 2\u03c0r');
+}, 'A = πr²,  C = 2πr');
 shapeCmd('sphere', 'the radius r', ['r'], {
   d: (v) => sDiv(v, sI(2)),
   V: (v) => sPow(sDiv(sMul([sI(3), v]), sMul([sI(4), S_PI])), frac(1, 3)),
@@ -11462,19 +11462,19 @@ shapeCmd('sphere', 'the radius r', ['r'], {
 }, ({ r }, out) => {
   line(out, 'volume', sMul([frac(4, 3), S_PI, cube(r)]));
   line(out, 'surface area', sMul([sI(4), S_PI, sq(r)]));
-}, 'V = (4/3)\u03c0r\u00b3,  A = 4\u03c0r\u00b2');
+}, 'V = (4/3)πr³,  A = 4πr²');
 shapeCmd('cylinder', 'the radius r and the height h', ['r', 'h'], null, ({ r, h }, out) => {
   line(out, 'volume', piTimes(sq(r), h));
   line(out, 'lateral surface', sMul([sI(2), S_PI, r, h]));
   line(out, 'total surface', sMul([sI(2), S_PI, r, sAdd([r, h])]));
-}, 'V = \u03c0r\u00b2h,  lateral = 2\u03c0rh,  total = 2\u03c0r(r + h)');
+}, 'V = πr²h,  lateral = 2πrh,  total = 2πr(r + h)');
 shapeCmd('cone', 'the radius r and the height h', ['r', 'h'], null, ({ r, h }, out) => {
   const slant = sSqrt(sAdd([sq(r), sq(h)]));
   line(out, 'volume', sMul([frac(1, 3), S_PI, sq(r), h]));
   line(out, 'slant height', slant);
   line(out, 'lateral surface', sMul([S_PI, r, slant]));
   line(out, 'total surface', sMul([S_PI, r, sAdd([r, slant])]));
-}, 'V = (1/3)\u03c0r\u00b2h,  slant = \u221a(r\u00b2 + h\u00b2)');
+}, 'V = (1/3)πr²h,  slant = √(r² + h²)');
 shapeCmd('box cuboid', 'the length, width and height', ['l', 'w', 'h'], null, ({ l, w, h }, out) => {
   line(out, 'volume', sMul([l, w, h]));
   line(out, 'surface area', sMul([sI(2), sAdd([sMul([l, w]), sMul([l, h]), sMul([w, h])])]));
@@ -11489,7 +11489,7 @@ shapeCmd('cube', 'the side s', ['s'], {
 });
 shapeCmd('pyramid', 'the base area B and the height h', ['B', 'h'], null, ({ B, h }, out) => {
   line(out, 'volume', sMul([frac(1, 3), B, h]));
-}, 'V = (1/3)\u00b7B\u00b7h');
+}, 'V = (1/3)·B·h');
 shapeCmd('rectangle', 'the width and height', ['w', 'h'], null, ({ w, h }, out) => {
   line(out, 'area', sMul([w, h]));
   line(out, 'perimeter', sMul([sI(2), sAdd([w, h])]));
@@ -11506,7 +11506,7 @@ shapeCmd('square', 'the side s', ['s'], {
 });
 shapeCmd('trapezoid trapezium', 'the two parallel sides a, b and the height h', ['a', 'b', 'h'], null, ({ a, b, h }, out) => {
   line(out, 'area', sMul([frac(1, 2), sAdd([a, b]), h]));
-}, 'A = (a + b)/2 \u00b7 h');
+}, 'A = (a + b)/2 · h');
 shapeCmd('parallelogram', 'the base and the height', ['b', 'h'], null, ({ b, h }, out) => {
   line(out, 'area', sMul([b, h]));
 });
@@ -11521,8 +11521,8 @@ shapeCmd('ellipsearea ellipse', 'the semi-axes a and b', ['a', 'b'], null, ({ a,
   const A = numS(a, {});
   const B = numS(b, {});
   const h = ((A - B) / (A + B)) ** 2;
-  out.answer.push('perimeter \u2248 ' + fmtNum(Math.PI * (A + B) * (1 + (3 * h) / (10 + Math.sqrt(4 - 3 * h)))) + '  (Ramanujan approximation)');
-}, 'A = \u03c0ab');
+  out.answer.push('perimeter ≈ ' + fmtNum(Math.PI * (A + B) * (1 + (3 * h) / (10 + Math.sqrt(4 - 3 * h)))) + '  (Ramanujan approximation)');
+}, 'A = πab');
 shapeCmd('sector', 'the radius r and the angle in degrees', ['r', 'theta'], null, ({ r, theta }, out) => {
   const ang = numS(theta, {}) > 0 && varsOfS(theta).size === 0 && theta.k === 'n' ? degToRad(theta) : theta;
   line(out, 'arc length', sMul([r, ang]));
@@ -11539,9 +11539,9 @@ defCmd('polygon regularpolygon', (n) => {
   const ap = numS(s, {}) / (2 * Math.tan(Math.PI / sides));
   const area = (sides * numS(s, {}) * ap) / 2;
   out.answer.push('perimeter = ' + symText(simp(sMul([sI(sides), s]))));
-  out.answer.push('area \u2248 ' + fmtNum(area));
-  out.answer.push('each interior angle = ' + fmtNum(((sides - 2) * 180) / sides) + '\u00b0  (sum of interior angles = ' + (sides - 2) * 180 + '\u00b0)');
-  out.work.push('A = n s\u00b2 / (4 tan(\u03c0/n));  apothem \u2248 ' + fmtNum(ap));
+  out.answer.push('area ≈ ' + fmtNum(area));
+  out.answer.push('each interior angle = ' + fmtNum(((sides - 2) * 180) / sides) + '°  (sum of interior angles = ' + (sides - 2) * 180 + '°)');
+  out.work.push('A = n s² / (4 tan(π/n));  apothem ≈ ' + fmtNum(ap));
   return out;
 });
 defCmd('hypotenuse', (n) => {
@@ -11549,7 +11549,7 @@ defCmd('hypotenuse', (n) => {
   const [a, b] = n.args.map(geoVal);
   const out = newOut();
   line(out, 'c', sSqrt(sAdd([sq(a), sq(b)])));
-  out.work.push('c = \u221a(a\u00b2 + b\u00b2)');
+  out.work.push('c = √(a² + b²)');
   return out;
 });
 defCmd('leg', (n) => {
@@ -11558,7 +11558,7 @@ defCmd('leg', (n) => {
   if (!(numS(c, {}) > numS(a, {}))) throw new MathError('the hypotenuse must be longer than a leg');
   const out = newOut();
   line(out, 'b', sSqrt(sSub(sq(c), sq(a))));
-  out.work.push('b = \u221a(c\u00b2 \u2212 a\u00b2)');
+  out.work.push('b = √(c² − a²)');
   return out;
 });
 
@@ -11569,11 +11569,11 @@ function pointOf(node, dim) {
   if (dim && v.length !== dim) throw new MathError('this needs points with ' + dim + ' coordinates');
   return v;
 }
-const wrapNum = (S) => { const t = exactText(S); return /^-?[0-9a-zA-Z\u03c0.]+$/.test(t) && !t.startsWith('-') ? t : '(' + t + ')'; };
+const wrapNum = (S) => { const t = exactText(S); return /^-?[0-9a-zA-Zπ.]+$/.test(t) && !t.startsWith('-') ? t : '(' + t + ')'; };
 const exactText = (S) => fmtS(simp(S));
 function ptText(p) {
   const t = '(' + p.map(exactText).join(', ') + ')';
-  return p.some((c) => simp(c).k !== 'n') ? t + ' \u2248 (' + p.map((c) => fmtNum(numS(c, {}))).join(', ') + ')' : t;
+  return p.some((c) => simp(c).k !== 'n') ? t + ' ≈ (' + p.map((c) => fmtNum(numS(c, {}))).join(', ') + ')' : t;
 }
 const shiftText = (v, q) => (q.isZero() ? v : v + (q.sign() > 0 ? ' - ' + q.toString() : ' + ' + q.neg().toString()));
 const wrapCoef = (q) => (q.isInt() ? q.toString() : '(' + q.toString() + ')');
@@ -11590,7 +11590,7 @@ defCmd('distance dist', (n) => {
   const out = newOut();
   const d = sSqrt(sAdd(p.map((c, k) => sq(sSub(q[k], c)))));
   line(out, 'distance', d);
-  out.work.push('d = \u221a(\u03a3 (differences)\u00b2) between ' + ptText(p) + ' and ' + ptText(q));
+  out.work.push('d = √(Σ (differences)²) between ' + ptText(p) + ' and ' + ptText(q));
   out.value = { S: simp(d) };
   return out;
 });
@@ -11612,7 +11612,7 @@ defCmd('slope', (n) => {
   }
   const m = simp(sDiv(dy, dx));
   line(out, 'slope m', m);
-  out.work.push('m = (y\u2082 \u2212 y\u2081)/(x\u2082 \u2212 x\u2081) = (' + symText(dy) + ')/(' + symText(dx) + ')');
+  out.work.push('m = (y₂ − y₁)/(x₂ − x₁) = (' + symText(dy) + ')/(' + symText(dx) + ')');
   out.value = { S: m };
   return out;
 });
@@ -11631,7 +11631,7 @@ defCmd('line lineequation', (n) => {
   const b = simp(sSub(p[1], sMul([m, p[0]])));
   const x = sV('x');
   out.answer.push('y = ' + fmtS(simp(sAdd([sMul([m, x]), b]))));
-  out.answer.push('point-slope form: y \u2212 ' + wrapNum(p[1]) + ' = ' + wrapNum(m) + '\u00b7(x \u2212 ' + wrapNum(p[0]) + ')');
+  out.answer.push('point-slope form: y − ' + wrapNum(p[1]) + ' = ' + wrapNum(m) + '·(x − ' + wrapNum(p[0]) + ')');
   if (m.k === 'n' && b.k === 'n') {
     const lc = [m.q.d, b.q.d].reduce((acc, c) => (acc * c) / bgcd(acc, c), 1n);
     let A = m.q.neg().mul(new Q(lc)).n;
@@ -11657,7 +11657,7 @@ defCmd('pointlinedistance distline', (n) => {
   const d = simp(sDiv(sFn('abs', [num]), sSqrt(sAdd([sq(a), sq(b)]))));
   const out = newOut();
   line(out, 'distance', d);
-  out.work.push('d = |a\u00b7x\u2080 + b\u00b7y\u2080 + c| / \u221a(a\u00b2 + b\u00b2)');
+  out.work.push('d = |a·x₀ + b·y₀ + c| / √(a² + b²)');
   return out;
 });
 defCmd('polygonarea shoelace', (n) => {
@@ -11671,7 +11671,7 @@ defCmd('polygonarea shoelace', (n) => {
   const area = simp(sMul([frac(1, 2), sFn('abs', [simp(s)])]));
   const out = newOut();
   line(out, 'area', area);
-  out.work.push('Shoelace formula: \u00bd|\u03a3 (x\u1d62\u00b7y\u1d62\u208a\u2081 \u2212 x\u1d62\u208a\u2081\u00b7y\u1d62)| over the vertices in order');
+  out.work.push('Shoelace formula: ½|Σ (xᵢ·yᵢ₊₁ − xᵢ₊₁·yᵢ)| over the vertices in order');
   out.value = { S: area };
   return out;
 });
@@ -11691,16 +11691,16 @@ const fa = (x) => fmtNum(x);
 function triangleReport(t, out, given) {
   const { a, b, c, A, B, C } = t;
   out.answer.push('sides: a = ' + fa(a) + ',  b = ' + fa(b) + ',  c = ' + fa(c));
-  out.answer.push('angles: A = ' + fa(A / RAD) + '\u00b0,  B = ' + fa(B / RAD) + '\u00b0,  C = ' + fa(C / RAD) + '\u00b0');
+  out.answer.push('angles: A = ' + fa(A / RAD) + '°,  B = ' + fa(B / RAD) + '°,  C = ' + fa(C / RAD) + '°');
   const s = (a + b + c) / 2;
   const area = Math.sqrt(Math.max(0, s * (s - a) * (s - b) * (s - c)));
-  out.answer.push('area \u2248 ' + fa(area) + ',  perimeter = ' + fa(a + b + c));
+  out.answer.push('area ≈ ' + fa(area) + ',  perimeter = ' + fa(a + b + c));
   const big = Math.max(A, B, C);
   const kind = Math.abs(big - Math.PI / 2) < 1e-9 ? 'right' : big > Math.PI / 2 ? 'obtuse' : 'acute';
   const sides = Math.abs(a - b) < 1e-9 * a && Math.abs(b - c) < 1e-9 * a ? 'equilateral' : Math.abs(a - b) < 1e-9 * a || Math.abs(b - c) < 1e-9 * a || Math.abs(a - c) < 1e-9 * a ? 'isosceles' : 'scalene';
   out.work.push('Type: ' + kind + ', ' + sides + ' triangle');
   if (given) out.work.push(given);
-  out.work.push('Angle sum check: ' + fa((A + B + C) / RAD) + '\u00b0;  area also = \u00bd\u00b7a\u00b7b\u00b7sin C = ' + fa(0.5 * a * b * Math.sin(C)));
+  out.work.push('Angle sum check: ' + fa((A + B + C) / RAD) + '°;  area also = ½·a·b·sin C = ' + fa(0.5 * a * b * Math.sin(C)));
 }
 function trianglesFromParts(P) {
   // P: {a,b,c,A,B,C} with A,B,C in radians; returns a list of full solutions
@@ -11753,7 +11753,7 @@ function trianglesFromParts(P) {
   const T = { ...P };
   const third = ['A', 'B', 'C'].find((q) => T[q] === undefined);
   T[third] = Math.PI - angs.reduce((s, k) => s + P[k], 0);
-  if (T[third] <= 1e-12) throw new MathError('the two angles add up to 180\u00b0 or more');
+  if (T[third] <= 1e-12) throw new MathError('the two angles add up to 180° or more');
   const k = P[sides[0]] / Math.sin(T[opp[sides[0]]]);
   ['a', 'b', 'c'].forEach((q) => { T[q] = k * Math.sin(T[opp[q]]); });
   return { kind: angs.includes(opp[sides[0]]) ? 'AAS' : 'ASA', sols: [full(T.a, T.b, T.c)] };
@@ -11789,7 +11789,7 @@ defCmd('triangle solvetriangle', (n) => {
     if (sols.length > 1) out.answer.push('Solution ' + (k + 1) + ':');
     triangleReport(t, out, k === 0 ? 'Case ' + kind + (kind === 'SSA' ? ' (ambiguous case: ' + sols.length + ' triangle' + (sols.length > 1 ? 's' : '') + ')' : '') : '');
   });
-  out.work.push('Used the law of cosines (c\u00b2 = a\u00b2 + b\u00b2 \u2212 2ab cos C) and the law of sines (a/sin A = b/sin B = c/sin C)');
+  out.work.push('Used the law of cosines (c² = a² + b² − 2ab cos C) and the law of sines (a/sin A = b/sin B = c/sin C)');
   return out;
 });
 defCmd('righttriangle rtriangle', (n) => {
@@ -11806,7 +11806,7 @@ defCmd('righttriangle rtriangle', (n) => {
     if (/[AB]/.test(name) && !key(S).includes('pi')) v *= RAD;
     P[name] = v;
   });
-  if (Object.keys(P).length !== 2) throw new MathError('give exactly two parts of the right triangle (the right angle is C = 90\u00b0)');
+  if (Object.keys(P).length !== 2) throw new MathError('give exactly two parts of the right triangle (the right angle is C = 90°)');
   const T = { ...P };
   if (T.A !== undefined && T.B === undefined && T.a === undefined && T.b === undefined && T.c === undefined) throw new MathError('give at least one side');
   if (T.A !== undefined) T.B = Math.PI / 2 - T.A;
@@ -11821,7 +11821,7 @@ defCmd('righttriangle rtriangle', (n) => {
   if (T.B === undefined) T.B = Math.PI / 2 - T.A;
   if (![T.a, T.b, T.c].every((v) => isFinite(v) && v > 0)) throw new MathError('these measurements do not give a right triangle');
   const out = newOut();
-  triangleReport({ a: T.a, b: T.b, c: T.c, A: T.A, B: T.B, C: Math.PI / 2 }, out, 'Right angle at C;  c\u00b2 = a\u00b2 + b\u00b2');
+  triangleReport({ a: T.a, b: T.b, c: T.c, A: T.A, B: T.B, C: Math.PI / 2 }, out, 'Right angle at C;  c² = a² + b²');
   return out;
 });
 
@@ -11856,9 +11856,9 @@ function analyzeConic(cf, out) {
   out.work.push('General form: ' + polyText2 + ' = 0   (A=' + A + ', B=' + B + ', C=' + C + ', D=' + D + ', E=' + E + ', F=' + F + ')');
   if (!B.isZero()) {
     const kind = disc.sign() < 0 ? 'ellipse (or circle)' : disc.sign() > 0 ? 'hyperbola' : 'parabola';
-    out.answer.push('type: ' + kind + ' (rotated: the xy term is present; B\u00b2 \u2212 4AC = ' + disc + ')');
+    out.answer.push('type: ' + kind + ' (rotated: the xy term is present; B² − 4AC = ' + disc + ')');
     const th = 0.5 * Math.atan2(B.toNumber(), A.sub(C).toNumber());
-    out.answer.push('rotate the axes by \u03b8 = \u00bd\u00b7atan2(B, A \u2212 C) \u2248 ' + fmtNum((th * 180) / Math.PI) + '\u00b0 to remove the xy term');
+    out.answer.push('rotate the axes by θ = ½·atan2(B, A − C) ≈ ' + fmtNum((th * 180) / Math.PI) + '° to remove the xy term');
     return;
   }
   const sx = (A.isZero() ? null : A);
@@ -11917,13 +11917,13 @@ function analyzeConic(cf, out) {
     const cS = simp(sSqrt(qS(cc)));
     out.answer.push('type: hyperbola');
     out.answer.push('standard form: ' + (xFirst ? fmtS(simp(sSub(sDiv(sqX, qS(a2)), sDiv(sqY, qS(b2))))) : fmtS(simp(sSub(sDiv(sqY, qS(a2)), sDiv(sqX, qS(b2)))))) + ' = 1');
-    out.answer.push('center = ' + hk + ',  a = ' + exactText(aS) + ',  b = ' + exactText(bS) + ',  c = \u221a(a\u00b2 + b\u00b2) = ' + exactText(cS));
+    out.answer.push('center = ' + hk + ',  a = ' + exactText(aS) + ',  b = ' + exactText(bS) + ',  c = √(a² + b²) = ' + exactText(cS));
     out.answer.push('vertices = ' + (xFirst ? showPoint(sSub(qS(h), aS), qS(k)) + ' and ' + showPoint(sAdd([qS(h), aS]), qS(k)) : showPoint(qS(h), sSub(qS(k), aS)) + ' and ' + showPoint(qS(h), sAdd([qS(k), aS]))));
     out.answer.push('foci = ' + (xFirst ? showPoint(sSub(qS(h), cS), qS(k)) + ' and ' + showPoint(sAdd([qS(h), cS]), qS(k)) : showPoint(qS(h), sSub(qS(k), cS)) + ' and ' + showPoint(qS(h), sAdd([qS(k), cS]))));
     const slope = xFirst ? simp(sDiv(bS, aS)) : simp(sDiv(aS, bS));
     const st = exactText(slope);
     const coefT = /^[0-9]+$/.test(st) ? st : '(' + st + ')';
-    out.answer.push('asymptotes: ' + shiftText('y', k) + ' = \u00b1' + (st === '1' ? '' : coefT) + (h.isZero() ? 'x' : '(' + shiftText('x', h) + ')'));
+    out.answer.push('asymptotes: ' + shiftText('y', k) + ' = ±' + (st === '1' ? '' : coefT) + (h.isZero() ? 'x' : '(' + shiftText('x', h) + ')'));
     out.answer.push('eccentricity e = c/a = ' + symText(simp(sDiv(cS, aS))));
     return;
   }
@@ -11933,15 +11933,15 @@ function analyzeConic(cf, out) {
   const lin = sx ? E : D; // coefficient of the other variable
   const lin2 = sx ? D : E; // coefficient of the squared variable's linear term
   if (lin.isZero()) {
-    // a\u00b7u\u00b2 + lin2\u00b7u + F = 0: one or two parallel lines
+    // a·u² + lin2·u + F = 0: one or two parallel lines
     const dd = lin2.mul(lin2).sub(four.mul(aa).mul(F));
     out.answer.push('type: parallel lines (degenerate parabola): ' + (dd.sign() < 0 ? 'no real points' : squared + ' = ' + symText(simp(sDiv(sAdd([qS(lin2.neg()), sSqrt(qS(dd))]), qS(two.mul(aa))))) + (dd.isZero() ? '' : ' and ' + squared + ' = ' + symText(simp(sDiv(sSub(qS(lin2.neg()), sSqrt(qS(dd))), qS(two.mul(aa))))))));
     return;
   }
-  // a u\u00b2 + lin2 u + lin w + F = 0, u = squared variable, w = other:  (u - p)\u00b2 = -(lin/a)(w - q)
+  // a u² + lin2 u + lin w + F = 0, u = squared variable, w = other:  (u - p)² = -(lin/a)(w - q)
   const p = lin2.neg().div(two.mul(aa));
-  const w0 = aa.mul(p).mul(p).sub(F).div(lin); // vertex w coordinate:  a p\u00b2 - F = lin w  =>  w = (a p\u00b2 \u2212 F)/lin
-  const four_p = lin.neg().div(aa); // (u-p)\u00b2 = four_p (w - w0)
+  const w0 = aa.mul(p).mul(p).sub(F).div(lin); // vertex w coordinate:  a p² - F = lin w  =>  w = (a p² − F)/lin
+  const four_p = lin.neg().div(aa); // (u-p)² = four_p (w - w0)
   const pp = four_p.div(four);
   const vtx = squared === 'x' ? showPoint(qS(p), qS(w0)) : showPoint(qS(w0), qS(p));
   const focus = squared === 'x' ? showPoint(qS(p), qS(w0.add(pp))) : showPoint(qS(w0.add(pp)), qS(p));
@@ -11949,7 +11949,7 @@ function analyzeConic(cf, out) {
   const other = squared === 'x' ? 'y' : 'x';
   const uvar = squared;
   out.answer.push('type: parabola (' + (squared === 'x' ? 'opens ' + (four_p.sign() > 0 ? 'upward' : 'downward') : 'opens ' + (four_p.sign() > 0 ? 'to the right' : 'to the left')) + ')');
-  const lhsT = p.isZero() ? uvar + '\u00b2' : '(' + shiftText(uvar, p) + ')\u00b2';
+  const lhsT = p.isZero() ? uvar + '²' : '(' + shiftText(uvar, p) + ')²';
   const rhsT = four_p.eq(Q1) ? shiftText(other, w0) : wrapCoef(four_p) + (w0.isZero() ? other : '(' + shiftText(other, w0) + ')');
   out.answer.push('standard form: ' + lhsT + ' = ' + rhsT);
   out.answer.push('vertex = ' + vtx + ',  focus = ' + focus + ',  directrix: ' + dirText);
@@ -11990,7 +11990,7 @@ defUnits('m meter meters metre metres', '1', { L: 1 });
 defUnits('km kilometer kilometers kilometre kilometres', '1000', { L: 1 });
 defUnits('cm centimeter centimeters centimetre centimetres', '1/100', { L: 1 });
 defUnits('mm millimeter millimeters millimetre millimetres', '1/1000', { L: 1 });
-defUnits('um \u00b5m micrometer micrometers micron microns', '1e-6', { L: 1 });
+defUnits('um µm micrometer micrometers micron microns', '1e-6', { L: 1 });
 defUnits('nm nanometer nanometers', '1e-9', { L: 1 });
 defUnits('mi mile miles', '1609.344', { L: 1 });
 defUnits('yd yard yards', '0.9144', { L: 1 });
@@ -12003,7 +12003,7 @@ defUnits('ly lightyear lightyears', '9460730472580800', { L: 1 });
 defUnits('kg kilogram kilograms', '1', { M: 1 });
 defUnits('g gram grams', '1/1000', { M: 1 });
 defUnits('mg milligram milligrams', '1e-6', { M: 1 });
-defUnits('ug \u00b5g microgram micrograms', '1e-9', { M: 1 });
+defUnits('ug µg microgram micrograms', '1e-9', { M: 1 });
 defUnits('tonne tonnes metricton', '1000', { M: 1 });
 defUnits('lb lbs pound pounds', '0.45359237', { M: 1 });
 defUnits('oz ounce ounces', '0.028349523125', { M: 1 });
@@ -12012,7 +12012,7 @@ defUnits('ton tons shortton', '907.18474', { M: 1 });
 // time
 defUnits('s sec secs second seconds', '1', { T: 1 });
 defUnits('ms millisecond milliseconds', '1/1000', { T: 1 });
-defUnits('us \u00b5s microsecond microseconds', '1e-6', { T: 1 });
+defUnits('us µs microsecond microseconds', '1e-6', { T: 1 });
 defUnits('ns nanosecond nanoseconds', '1e-9', { T: 1 });
 defUnits('min mins minute minutes', '60', { T: 1 });
 defUnits('h hr hrs hour hours', '3600', { T: 1 });
@@ -12112,7 +12112,7 @@ function lookupUnit(name) {
 }
 /** "km/h", "m/s^2", "ft2", "kg*m/s^2" -> {f, d}; null when a word is not a unit. */
 function parseUnit(str) {
-  const text = str.replace(/\u00b2/g, '^2').replace(/\u00b3/g, '^3').replace(/[\u00b7.]/g, '*').replace(/\s+/g, '').replace(/per/g, '/');
+  const text = str.replace(/²/g, '^2').replace(/³/g, '^3').replace(/[·.]/g, '*').replace(/\s+/g, '').replace(/per/g, '/');
   if (!text) return null;
   const parts = text.split(/([*/])/);
   let f = S1;
@@ -12144,7 +12144,7 @@ function dimsName(d) {
   return named[d.join(',')] || 'a different kind of quantity';
 }
 function tempKind(name) {
-  return TEMP_UNITS[name.replace(/^\u00b0|^deg/i, '').toLowerCase()] || (/^\u00b0?[CFK]$/.test(name) ? name.replace('\u00b0', '') : null);
+  return TEMP_UNITS[name.replace(/^°|^deg/i, '').toLowerCase()] || (/^°?[CFK]$/.test(name) ? name.replace('°', '') : null);
 }
 const UNIT_ARGS = [];
 const unitIndex = (s) => {
@@ -12176,7 +12176,7 @@ defCmd('convert', (n) => {
   if (tf && tt) {
     if (S.k !== 'n') throw new MathError('temperatures must be plain numbers');
     const r = convertTemperature(S.q, tf, tt);
-    out.answer.push(S.q.toString() + ' \u00b0' + tf + ' = ' + qText(r) + ' \u00b0' + tt);
+    out.answer.push(S.q.toString() + ' °' + tf + ' = ' + qText(r) + ' °' + tt);
     out.work.push('Temperature scales differ by an offset as well as a factor');
     out.value = { q: r };
     return out;
@@ -12198,7 +12198,7 @@ defCmd('convert', (n) => {
 COMMANDS.convert.show = (n) => {
   const f = UNIT_ARGS[Number(intArg(n.args[1]))];
   const t = UNIT_ARGS[Number(intArg(n.args[2]))];
-  return showRaw(n.args[0]) + ' ' + f + ' \u2192 ' + t;
+  return showRaw(n.args[0]) + ' ' + f + ' → ' + t;
 };
 
 // ---- chemistry --------------------------------------------------------------------------------------------------------------------
@@ -12217,10 +12217,10 @@ const chemIndex = (s) => {
   }
   return k;
 };
-/** "Ca(OH)2", "CuSO4\u00b75H2O", "Fe2(SO4)3" -> Map(element -> count). */
+/** "Ca(OH)2", "CuSO4·5H2O", "Fe2(SO4)3" -> Map(element -> count). */
 function parseFormula(str) {
-  const text = str.replace(/\s+/g, '').replace(/\*/g, '\u00b7').replace(/\.(?=\d*[A-Z(])/g, '\u00b7');
-  const chunks = text.split('\u00b7');
+  const text = str.replace(/\s+/g, '').replace(/\*/g, '·').replace(/\.(?=\d*[A-Z(])/g, '·');
+  const chunks = text.split('·');
   const total = new Map();
   chunks.forEach((chunk) => {
     const lead = /^(\d+)(.*)$/.exec(chunk);
@@ -12271,7 +12271,7 @@ defCmd('molarmass', (n) => {
   const M = molarOf(cnt);
   const out = newOut();
   out.answer.push('M(' + f + ') = ' + molText(M) + ' g/mol');
-  out.work.push(Array.from(cnt).map(([e, v]) => e + ': ' + v + ' \u00d7 ' + ATOM[e].m.toNumber() + ' = ' + molText(ATOM[e].m.mul(new Q(BigInt(v))))).join(',  '));
+  out.work.push(Array.from(cnt).map(([e, v]) => e + ': ' + v + ' × ' + ATOM[e].m.toNumber() + ' = ' + molText(ATOM[e].m.mul(new Q(BigInt(v))))).join(',  '));
   out.value = { q: M };
   return out;
 });
@@ -12283,7 +12283,7 @@ defCmd('percentcomp composition masspercent', (n) => {
   const M = molarOf(cnt);
   const out = newOut();
   cnt.forEach((v, e) => out.answer.push(e + ': ' + fmtNum((ATOM[e].m.mul(new Q(BigInt(v))).div(M).toNumber()) * 100) + ' %'));
-  out.work.push('Molar mass of ' + f + ' = ' + molText(M) + ' g/mol;  percent of an element = (its atoms \u00d7 atomic mass) / molar mass');
+  out.work.push('Molar mass of ' + f + ' = ' + molText(M) + ' g/mol;  percent of an element = (its atoms × atomic mass) / molar mass');
   return out;
 });
 COMMANDS.percentcomp.show = (n) => 'percent composition of ' + CHEM_ARGS[Number(intArg(n.args[0]))];
@@ -12295,11 +12295,11 @@ defCmd('moles', (n) => {
   const res = g.div(M);
   const out = newOut();
   out.answer.push(g.toString() + ' g of ' + f + ' = ' + fmtNum(res.toNumber()) + ' mol');
-  out.work.push('n = mass / molar mass = ' + g.toString() + ' / ' + molText(M) + ';  ' + fmtNum(res.toNumber() * 6.02214076e23) + ' particles (\u00d7 6.02214076\u00d710\u00b2\u00b3 per mol)');
+  out.work.push('n = mass / molar mass = ' + g.toString() + ' / ' + molText(M) + ';  ' + fmtNum(res.toNumber() * 6.02214076e23) + ' particles (× 6.02214076×10²³ per mol)');
   out.value = { q: res };
   return out;
 });
-COMMANDS.moles.show = (n) => showRaw(n.args[0]) + ' g of ' + CHEM_ARGS[Number(intArg(n.args[1]))] + ' \u2192 moles';
+COMMANDS.moles.show = (n) => showRaw(n.args[0]) + ' g of ' + CHEM_ARGS[Number(intArg(n.args[1]))] + ' → moles';
 defCmd('grams', (n) => {
   needArgs(n, 2, 2, 'moles and a formula');
   const mol = constQ(n.args[0]);
@@ -12308,16 +12308,16 @@ defCmd('grams', (n) => {
   const res = mol.mul(M);
   const out = newOut();
   out.answer.push(mol.toString() + ' mol of ' + f + ' = ' + fmtNum(res.toNumber()) + ' g');
-  out.work.push('mass = moles \u00d7 molar mass = ' + mol.toString() + ' \u00d7 ' + molText(M));
+  out.work.push('mass = moles × molar mass = ' + mol.toString() + ' × ' + molText(M));
   out.value = { q: res };
   return out;
 });
-COMMANDS.grams.show = (n) => showRaw(n.args[0]) + ' mol of ' + CHEM_ARGS[Number(intArg(n.args[1]))] + ' \u2192 grams';
+COMMANDS.grams.show = (n) => showRaw(n.args[0]) + ' mol of ' + CHEM_ARGS[Number(intArg(n.args[1]))] + ' → grams';
 defCmd('balance', (n) => {
   needArgs(n, 1, 1, 'a reaction such as H2 + O2 -> H2O');
   const rxn = CHEM_ARGS[Number(intArg(n.args[0]))];
   if (rxn === undefined) throw new MathError('write the reaction as balance H2 + O2 -> H2O');
-  const sides = rxn.split(/->|=>|\u2192|\u27f6|\u21cc|=|==/);
+  const sides = rxn.split(/->|=>|→|⟶|⇌|=|==/);
   if (sides.length !== 2) throw new MathError('the reaction needs one arrow, e.g. H2 + O2 -> H2O');
   const split = (t) => t.split(/\s+\+\s+|\s*\+\s*(?=[0-9]*[A-Z(])/).map((x) => x.trim().replace(/^\d+(?=[A-Z(])/, '')).filter(Boolean);
   const left = split(sides[0]);
@@ -12340,7 +12340,7 @@ defCmd('balance', (n) => {
     return out;
   }
   const term = (name, q) => (q.eq(Q1) ? '' : q.toString()) + name;
-  out.answer.push(left.map((s, j) => term(s, v[j])).join(' + ') + ' \u2192 ' + right.map((s, j) => term(s, v[left.length + j])).join(' + '));
+  out.answer.push(left.map((s, j) => term(s, v[j])).join(' + ') + ' → ' + right.map((s, j) => term(s, v[left.length + j])).join(' + '));
   out.work.push('Solved the atom-conservation equations for each element (' + elements.join(', ') + ') exactly and took the smallest whole numbers');
   out.check = elements.map((e) => e + ': ' + left.reduce((s, _, j) => s + (counts[j].get(e) || 0) * Number(v[j].n), 0) + ' = ' + right.reduce((s, _, j) => s + (counts[left.length + j].get(e) || 0) * Number(v[left.length + j].n), 0)).join(', ');
   return out;
@@ -12351,7 +12351,7 @@ defCmd('ph', (n) => {
   const h = numArg(n.args[0]);
   if (!(h > 0)) throw new MathError('the concentration must be positive');
   const out = newOut();
-  out.work.push('pH = \u2212log\u2081\u2080[H\u207a];  pOH = 14 \u2212 pH = ' + fmtNum(14 + Math.log10(h)) + ' (at 25 \u00b0C)');
+  out.work.push('pH = −log₁₀[H⁺];  pOH = 14 − pH = ' + fmtNum(14 + Math.log10(h)) + ' (at 25 °C)');
   return numOut(out, -Math.log10(h), 'pH');
 });
 defCmd('poh', (n) => {
@@ -12359,13 +12359,13 @@ defCmd('poh', (n) => {
   const h = numArg(n.args[0]);
   if (!(h > 0)) throw new MathError('the concentration must be positive');
   const out = newOut();
-  out.work.push('pOH = \u2212log\u2081\u2080[OH\u207b];  pH = 14 \u2212 pOH = ' + fmtNum(14 + Math.log10(h)) + ' (at 25 \u00b0C)');
+  out.work.push('pOH = −log₁₀[OH⁻];  pH = 14 − pOH = ' + fmtNum(14 + Math.log10(h)) + ' (at 25 °C)');
   return numOut(out, -Math.log10(h), 'pOH');
 });
 defCmd('hconc phtoh', (n) => {
   needArgs(n, 1, 1, 'a pH value');
   const p = numArg(n.args[0]);
-  return numOut(newOut(), Math.pow(10, -p), '[H\u207a] (mol/L)');
+  return numOut(newOut(), Math.pow(10, -p), '[H⁺] (mol/L)');
 });
 
 // ---- finance ------------------------------------------------------------------------------------------------------------------------
@@ -12401,14 +12401,14 @@ defCmd('compound compoundinterest', (n) => {
   const t = constQ(n.args[2]);
   const m = n.args[3] ? constQ(n.args[3]) : Q1;
   const nt = m.mul(t);
-  if (!nt.isInt() || nt.n > 5000n || nt.sign() < 0) throw new MathError('years \u00d7 compounds per year must be a whole number up to 5000');
+  if (!nt.isInt() || nt.n > 5000n || nt.sign() < 0) throw new MathError('years × compounds per year must be a whole number up to 5000');
   const A = P.mul(Q1.add(r.div(m)).pow(Number(nt.n)));
   const out = newOut();
   plausibleYears(out, t.toNumber(), 100);
   plausibleRate(out, 'rate', r.toNumber());
   moneyOut(out, 'final amount A', A);
   moneyOut(out, 'interest earned', A.sub(P));
-  out.work.push('A = P(1 + r/n)^(n\u00b7t) = ' + P.toString() + '\u00b7(1 + ' + fmtNum(r.toNumber()) + '/' + m.toString() + ')^' + nt.toString());
+  out.work.push('A = P(1 + r/n)^(n·t) = ' + P.toString() + '·(1 + ' + fmtNum(r.toNumber()) + '/' + m.toString() + ')^' + nt.toString());
   out.value = { q: A };
   return out;
 });
@@ -12421,7 +12421,7 @@ defCmd('continuous', (n) => {
   const out = newOut();
   out.answer.push('final amount A = ' + A.toFixed(2));
   out.answer.push('interest earned = ' + (A - P.toNumber()).toFixed(2));
-  out.work.push('A = P\u00b7e^(r\u00b7t) with continuous compounding');
+  out.work.push('A = P·e^(r·t) with continuous compounding');
   return out;
 });
 defCmd('simpleinterest', (n) => {
@@ -12433,7 +12433,7 @@ defCmd('simpleinterest', (n) => {
   const out = newOut();
   moneyOut(out, 'interest I', I);
   moneyOut(out, 'final amount', P.add(I));
-  out.work.push('I = P\u00b7r\u00b7t');
+  out.work.push('I = P·r·t');
   out.value = { q: I };
   return out;
 });
@@ -12444,7 +12444,7 @@ defCmd('loan payment mortgage', (n) => {
   const years = constQ(n.args[2]);
   const m = n.args[3] ? constQ(n.args[3]) : qInt(12);
   const N = years.mul(m);
-  if (!N.isInt() || N.n > 5000n || N.sign() <= 0) throw new MathError('years \u00d7 payments per year must be a whole number up to 5000');
+  if (!N.isInt() || N.n > 5000n || N.sign() <= 0) throw new MathError('years × payments per year must be a whole number up to 5000');
   const i = r.div(m);
   const out = newOut();
   plausibleYears(out, years.toNumber(), 60);
@@ -12459,7 +12459,7 @@ defCmd('loan payment mortgage', (n) => {
   moneyOut(out, 'total paid', pay.mul(N));
   moneyOut(out, 'total interest', pay.mul(N).sub(P));
   const int1 = P.mul(i);
-  out.work.push('M = P\u00b7i / (1 \u2212 (1 + i)^(\u2212N)) with i = ' + i.toString() + ' per period and N = ' + N.toString() + ' payments');
+  out.work.push('M = P·i / (1 − (1 + i)^(−N)) with i = ' + i.toString() + ' per period and N = ' + N.toString() + ' payments');
   out.work.push('First payment: interest ' + money(int1) + ', principal ' + money(pay.sub(int1)));
   out.value = { q: pay };
   return out;
@@ -12474,7 +12474,7 @@ defCmd('annuityfv fvannuity', (n) => {
   const fv = i.isZero() ? pmt.mul(N) : pmt.mul(g.sub(Q1)).div(i);
   const out = newOut();
   moneyOut(out, 'future value', fv);
-  out.work.push('FV = pmt\u00b7((1 + i)^N \u2212 1)/i  (payments at the end of each period)');
+  out.work.push('FV = pmt·((1 + i)^N − 1)/i  (payments at the end of each period)');
   out.value = { q: fv };
   return out;
 });
@@ -12488,7 +12488,7 @@ defCmd('annuitypv pvannuity presentvalue', (n) => {
   const pv = i.isZero() ? pmt.mul(N) : pmt.mul(g.sub(Q1)).div(i.mul(g));
   const out = newOut();
   moneyOut(out, 'present value', pv);
-  out.work.push('PV = pmt\u00b7(1 \u2212 (1 + i)^(\u2212N))/i');
+  out.work.push('PV = pmt·(1 − (1 + i)^(−N))/i');
   out.value = { q: pv };
   return out;
 });
@@ -12503,7 +12503,7 @@ defCmd('npv', (n) => {
   const cf = cashflows(n, 1);
   const v = cf.reduce((s, c, t) => s + c / Math.pow(1 + r, t), 0);
   const out = newOut();
-  out.work.push('NPV = \u03a3 CF\u209c/(1 + r)\u1d57, with the first cash flow at t = 0');
+  out.work.push('NPV = Σ CFₜ/(1 + r)ᵗ, with the first cash flow at t = 0');
   return numOut(out, v, 'NPV');
 });
 defCmd('irr', (n) => {
@@ -12536,7 +12536,7 @@ defCmd('effrate effectiverate apy', (n) => {
   const e = Q1.add(r.div(m)).pow(Number(m.n)).sub(Q1);
   const out = newOut();
   out.answer.push('effective annual rate = ' + fmtNum(e.toNumber() * 100) + ' %');
-  out.work.push('(1 + r/n)^n \u2212 1');
+  out.work.push('(1 + r/n)^n − 1');
   out.value = { q: e };
   return out;
 });
@@ -12556,7 +12556,7 @@ defCmd('pctchange percentchange', (n) => {
   const ch = b.sub(a).div(a).mul(qInt(100));
   const out = newOut();
   out.answer.push(qText(ch) + ' %  (' + (ch.sign() >= 0 ? 'increase' : 'decrease') + ')');
-  out.work.push('(new \u2212 old)/old \u00d7 100');
+  out.work.push('(new − old)/old × 100');
   out.value = { q: ch };
   return out;
 });
@@ -12598,7 +12598,7 @@ defCmd('sci scientific', (n) => {
     e++;
   }
   const out = newOut();
-  out.answer.push(m.isInt() || m.d <= 1000000n ? decimalOrInt(m) + ' \u00d7 10' + toSup(String(e)) : fmtNum(m.toNumber()) + ' \u00d7 10' + toSup(String(e)));
+  out.answer.push(m.isInt() || m.d <= 1000000n ? decimalOrInt(m) + ' × 10' + toSup(String(e)) : fmtNum(m.toNumber()) + ' × 10' + toSup(String(e)));
   out.work.push('Engineering notation: exponent ' + Math.floor(e / 3) * 3);
   return out;
 });
@@ -12658,7 +12658,7 @@ defCmd('suvat kinematics', (n) => {
   if (Object.keys(K).length < 5) throw new MathError('these three quantities do not determine the motion (try another combination)');
   const label = { s: 'displacement s', u: 'initial speed u', v: 'final speed v', a: 'acceleration a', t: 'time t' };
   'suvat'.split('').forEach((c) => out.answer.push(label[c] + ' = ' + fmtNum(K[c])));
-  out.work.push('Equations of constant acceleration: v = u + at,  s = ut + \u00bdat\u00b2,  v\u00b2 = u\u00b2 + 2as,  s = (u + v)t/2');
+  out.work.push('Equations of constant acceleration: v = u + at,  s = ut + ½at²,  v² = u² + 2as,  s = (u + v)t/2');
   if (rounds.includes('v') || rounds.includes('u')) out.notes.push('A square root can also be negative; this is the positive (forward) case.');
   return out;
 });
@@ -12678,7 +12678,7 @@ defCmd('projectile', (n) => {
   out.answer.push('time of flight = ' + fmtNum(T) + ' s');
   out.answer.push('range = ' + fmtNum(vx * T));
   out.answer.push('maximum height = ' + fmtNum((vy * vy) / (2 * g)));
-  out.work.push('v\u2093 = v\u00b7cos \u03b8 = ' + fmtNum(vx) + ',  v_y = v\u00b7sin \u03b8 = ' + fmtNum(vy) + ';  g = ' + fmtNum(g) + ' (launch and landing at the same height, no air resistance)');
+  out.work.push('vₓ = v·cos θ = ' + fmtNum(vx) + ',  v_y = v·sin θ = ' + fmtNum(vy) + ';  g = ' + fmtNum(g) + ' (launch and landing at the same height, no air resistance)');
   return out;
 });
 defCmd('freefall', (n) => {
@@ -12689,15 +12689,15 @@ defCmd('freefall', (n) => {
   const out = newOut();
   out.answer.push('time to fall = ' + fmtNum(t) + ' s');
   out.answer.push('impact speed = ' + fmtNum(g * t));
-  out.work.push('h = \u00bdgt\u00b2,  v = gt  with g = ' + fmtNum(g));
+  out.work.push('h = ½gt²,  v = gt  with g = ' + fmtNum(g));
   return out;
 });
 
 // ---- text patterns for units and chemistry (run before the text is lowercased) -------------------------------------------
-const NUMBER_RE = '(-?(?:\\d[\\d,]*(?:\\.\\d+)?(?:e[+-]?\\d+)?(?:\\s*\\*?\\s*(?:pi|\u03c0))?|(?:pi|\u03c0))(?:\\s*\\/\\s*\\d+)?)';
-const UNIT_RE = '([A-Za-z\u00b0\u00b5\u03bc][A-Za-z\u00b0\u00b5\u03bc0-9\u00b2\u00b3^*\\/\u00b7.]*)';
+const NUMBER_RE = '(-?(?:\\d[\\d,]*(?:\\.\\d+)?(?:e[+-]?\\d+)?(?:\\s*\\*?\\s*(?:pi|π))?|(?:pi|π))(?:\\s*\\/\\s*\\d+)?)';
+const UNIT_RE = '([A-Za-z°µμ][A-Za-z°µμ0-9²³^*\\/·.]*)';
 function isUnitWord(u) {
-  const t = u.replace(/^\u00b0/, '');
+  const t = u.replace(/^°/, '');
   return !!(parseUnit(u) || parseUnit(t) || tempKind(u) || tempKind(t));
 }
 function cleanNum(s) {
@@ -12739,22 +12739,22 @@ function convertRatios(s) {
   return s;
 }
 function convertApplied(s) {
-  s = s.replace(/([\u222b\u2211\u03a3\u220f\u03a0])([\u2080-\u2089]+)/g, (m, c, d) => c + '_' + Array.from(d).map((x) => String(x.charCodeAt(0) - 0x2080)).join(''));
+  s = s.replace(/([∫∑Σ∏Π])([₀-₉]+)/g, (m, c, d) => c + '_' + Array.from(d).map((x) => String(x.charCodeAt(0) - 0x2080)).join(''));
   s = convertRatios(s);
-  if (!/[A-Za-z]/.test(s)) return /(?:\.{3}|\u2026)|[\u222a\u2229\u2282\u2286\u00d7\u0394]/.test(s) ? convertWords(s) : s;
+  if (!/[A-Za-z]/.test(s)) return /(?:\.{3}|…)|[∪∩⊂⊆×Δ]/.test(s) ? convertWords(s) : s;
   s = convertPlotWords(s);
   s = convertWords(s);
   // balancing chemical equations and formula commands
-  s = s.replace(/[\u2080-\u2089]/g, (c) => String(c.charCodeAt(0) - 0x2080));
+  s = s.replace(/[₀-₉]/g, (c) => String(c.charCodeAt(0) - 0x2080));
   s = convertChem2(s);
   s = convertGeometry3d(s);
   s = convertCoord2d(s);
   s = convertPlot2(s);
   s = convertSeriesSentence(s);
   s = convertStepNotation(s);
-  s = s.replace(/\bbalance\s*(?:the\s+)?(?:equation|reaction)?\s*[:(]?\s*([A-Za-z0-9()\[\]\u00b7+ ]+?(?:->|=>|\u2192|\u27f6|\u21cc|=)[A-Za-z0-9()\[\]\u00b7+ ]+?)\s*(?:\)\s*)?(?=$|[;\n])/gi, (m, rxn) => 'balance(' + chemIndex(rxn.trim().replace(/\)$/, '')) + ')');
+  s = s.replace(/\bbalance\s*(?:the\s+)?(?:equation|reaction)?\s*[:(]?\s*([A-Za-z0-9()\[\]·+ ]+?(?:->|=>|→|⟶|⇌|=)[A-Za-z0-9()\[\]·+ ]+?)\s*(?:\)\s*)?(?=$|[;\n])/gi, (m, rxn) => 'balance(' + chemIndex(rxn.trim().replace(/\)$/, '')) + ')');
   // a bare reaction such as "H2 + O2 -> H2O": every term a real formula and the same elements on both sides
-  s = s.replace(/^\s*([A-Za-z0-9()\[\]\u00b7+ ]+?)\s*(?:->|=>|\u2192|\u27f6|\u21cc)\s*([A-Za-z0-9()\[\]\u00b7+ ]+?)\s*$/, (m, lhs, rhs) => {
+  s = s.replace(/^\s*([A-Za-z0-9()\[\]·+ ]+?)\s*(?:->|=>|→|⟶|⇌)\s*([A-Za-z0-9()\[\]·+ ]+?)\s*$/, (m, lhs, rhs) => {
     const side = (str) => {
       const els = new Set();
       str.split('+').forEach((term) => {
@@ -12775,21 +12775,21 @@ function convertApplied(s) {
       return m;
     }
   });
-  s = s.replace(/\bmolar\s+mass\s+(?:of\s+)?\(?\s*([A-Z][A-Za-z0-9()\[\]\u00b7.*]*)/g, (m, f) => 'molarmass(' + chemIndex(trimFormula(f)) + ')');
-  s = replaceCalls(s, ['molarmass'], (name, inner) => (/^\s*[A-Z][A-Za-z0-9()\[\]\u00b7.*]*\s*$/.test(inner) ? name + '(' + chemIndex(inner.trim()) + ')' : null));
-  s = replaceCalls(s, ['percentcomp', 'composition', 'masspercent'], (name, inner) => (/^\s*[A-Z][A-Za-z0-9()\[\]\u00b7.*]*\s*$/.test(inner) ? name + '(' + chemIndex(inner.trim()) + ')' : null));
+  s = s.replace(/\bmolar\s+mass\s+(?:of\s+)?\(?\s*([A-Z][A-Za-z0-9()\[\]·.*]*)/g, (m, f) => 'molarmass(' + chemIndex(trimFormula(f)) + ')');
+  s = replaceCalls(s, ['molarmass'], (name, inner) => (/^\s*[A-Z][A-Za-z0-9()\[\]·.*]*\s*$/.test(inner) ? name + '(' + chemIndex(inner.trim()) + ')' : null));
+  s = replaceCalls(s, ['percentcomp', 'composition', 'masspercent'], (name, inner) => (/^\s*[A-Z][A-Za-z0-9()\[\]·.*]*\s*$/.test(inner) ? name + '(' + chemIndex(inner.trim()) + ')' : null));
   s = replaceCalls(s, ['moles', 'grams'], (name, inner) => {
     const k = inner.lastIndexOf(',');
     const f = k < 0 ? '' : inner.slice(k + 1).trim();
-    return /^[A-Z][A-Za-z0-9()\[\]\u00b7.*]*$/.test(f) ? name + '(' + inner.slice(0, k).trim() + ', ' + chemIndex(f) + ')' : null;
+    return /^[A-Z][A-Za-z0-9()\[\]·.*]*$/.test(f) ? name + '(' + inner.slice(0, k).trim() + ', ' + chemIndex(f) + ')' : null;
   });
   // unit conversions: "convert 5 km to miles", "5 km in miles", "how many ft are in 2 m"
   s = s.replace(new RegExp('how\\s+many\\s+' + UNIT_RE + '\\s+(?:are\\s+|is\\s+)?(?:there\\s+)?in\\s+' + NUMBER_RE + '\\s*' + UNIT_RE, 'gi'), (m, to, num, from) => (isUnitWord(to) && isUnitWord(from) ? 'convert(' + cleanNum(num) + ', ' + unitIndex(from) + ', ' + unitIndex(to) + ')' : m));
-  s = s.replace(new RegExp('(convert\\s+)?' + NUMBER_RE + '\\s*' + UNIT_RE + '\\s+(to|into|in|as|->|\u2192)\\s+' + UNIT_RE, 'gi'), (m, kw, num, from, conn, to) => {
+  s = s.replace(new RegExp('(convert\\s+)?' + NUMBER_RE + '\\s*' + UNIT_RE + '\\s+(to|into|in|as|->|→)\\s+' + UNIT_RE, 'gi'), (m, kw, num, from, conn, to) => {
     if (!isUnitWord(from) || !isUnitWord(to)) return m;
     // "in" and "as" also occur in ordinary sentences, so without the word "convert" both units must be unmistakable
     const strong = (u, other) => u.length >= 2 && (u.toLowerCase() !== 'in' || (other.length >= 2 && other.toLowerCase() !== 'in'));
-    const loose = /^(to|into|->|\u2192)$/i.test(conn);
+    const loose = /^(to|into|->|→)$/i.test(conn);
     if (!kw && !loose && !(strong(from, to) && strong(to, from))) return m;
     return 'convert(' + cleanNum(num) + ', ' + unitIndex(from) + ', ' + unitIndex(to) + ')';
   });
@@ -13108,7 +13108,7 @@ defCmd('plot graph', (n) => {
     const info = analyseFunction(f, range[0], range[1]);
     const z = dedupeNum(info.zeros);
     const pre = args.length > 1 ? labels[k] + ': ' : '';
-    if (z.length) out.work.push(pre + 'zeros (x-intercepts) at ' + v + ' \u2248 ' + z.slice(0, 8).map(fmtNum).join(', ') + (z.length > 8 ? ', \u2026' : ''));
+    if (z.length) out.work.push(pre + 'zeros (x-intercepts) at ' + v + ' ≈ ' + z.slice(0, 8).map(fmtNum).join(', ') + (z.length > 8 ? ', …' : ''));
     else out.work.push(pre + 'no zeros in this range');
     if (info.yint !== null) out.work.push(pre + 'y-intercept: ' + fmtNum(info.yint));
     info.extrema.slice(0, 6).forEach((e) => out.work.push(pre + (e.max ? 'local maximum' : 'local minimum') + ' near (' + fmtNum(e.x) + ', ' + fmtNum(e.y) + ')'));
@@ -13164,7 +13164,7 @@ defCmd('plotpolar', (n) => {
   const out = newOut();
   const labels = ['r = ' + showRaw(args[0])];
   out.answer.push('Polar curve ' + labels[0] + '  for ' + v + ' from ' + fmtNum(range[0]) + ' to ' + fmtNum(range[1]) + ' (the picture is shown in the chat)');
-  out.work.push('largest distance from the origin \u2248 ' + fmtNum(Math.max(...pts.map((p) => Math.hypot(p.x, p.y)))));
+  out.work.push('largest distance from the origin ≈ ' + fmtNum(Math.max(...pts.map((p) => Math.hypot(p.x, p.y)))));
   return finishPlot(out, { curves: [curve], xr: [-m, m], yr: [-m, m], labels, equal: true });
 });
 
@@ -13211,7 +13211,7 @@ HELP.words = [
   '  stats 2    "P(Z < 1.5)"  "P(-1 < Z < 1)"  "t critical value for 95% confidence with 15 degrees of freedom"  "z critical value for 99%"  "standard error of the mean with sd 12 and n = 36"  "expected number of heads in 100 coin flips"  "probability of at least one six in 4 rolls of a die"',
   '             "equation of the regression line for x = [1,2,3,4] and y = [2,4,5,8]"  "predict y when x = 5 from x = [1,2,3,4] and y = [2,4,5,8]"  "pH of 0.01 M HCl"  "future value of $500 per month at 6% for 10 years"  "present value of $10000 in 5 years at 4%"',
   '  algebra 2  "discriminant of x^2 - 4x + 7"  "complete the square for x^2 + 6x + 2"  "vertex of y = 2x^2 - 8x + 5"  "foci of the ellipse x^2/25 + y^2/9 = 1"  "expand log(x^2 * y)"  "condense 2*log(x) + log(y)"  "the 4th term of (x+y)^9"',
-  '             "simplify the ratio 12:18"  "3:4 = x:12"  "write 0.00045 in scientific notation"  "A = {1,2,3}, B = {2,3,4}, find A union B"  "{1,2,3} \u2229 {2,3,4}"  "number of subsets of {1,2,3,4}"  "hexadecimal FF to decimal"',
+  '             "simplify the ratio 12:18"  "3:4 = x:12"  "write 0.00045 in scientific notation"  "A = {1,2,3}, B = {2,3,4}, find A union B"  "{1,2,3} ∩ {2,3,4}"  "number of subsets of {1,2,3,4}"  "hexadecimal FF to decimal"',
   '             "95% confidence interval for the mean with sample mean 50, standard deviation 8, n = 36"  "probability of at least 2 successes in 5 trials with p = 0.3"  "probability of at least one head in 3 coin flips"',
   '  stats 3    "X is normal with mean 100 and sd 15, find P(85 < X < 115)"  "P(X = 3) for a binomial with n = 10 and p = 0.3"  "Poisson with mean 4, P(X <= 2)"  "the 90th percentile of a normal distribution with mean 100 and sd 15"',
   '             "one-sample t test with sample mean 103, hypothesized mean 100, sd 12, n = 49"  "z test with sample mean 52, mu = 50, sigma 4, n = 25"  "probability of drawing 2 red then 1 blue from 5 red and 3 blue without replacement"',
@@ -13246,11 +13246,11 @@ HELP.syntax = [
   '  digits and letters:  2x + 3 = 7,  x^2,  x^(1/3),  sqrt(x),  cbrt(x),  root(3, x),  |x|,  pi,  e,  i (imaginary unit)',
   '  fractions: 1/2, (x+1)/(x-1), \\frac{a}{b} is understood;  percent: 15% of 80;  factorial: 5!',
   '  functions: sin cos tan cot sec csc asin acos atan sinh cosh tanh exp ln log (base 10) log(x, base) log2 abs floor ceil round(x, d)',
-  '  degrees: 30\u00b0 is read as 30*pi/180;  letters keep their case (F = m a, E = m c^2 are different from f, e)',
-  '  subscripts: x_1, x1 (when x2 also appears), R_1;  derivatives: y\', y\'\', dy/dx, d/dx;  integrals: \u222b_a^b f dx;  limits: lim_(x->a);  sums: \u03a3_(k=1)^n',
+  '  degrees: 30° is read as 30*pi/180;  letters keep their case (F = m a, E = m c^2 are different from f, e)',
+  '  subscripts: x_1, x1 (when x2 also appears), R_1;  derivatives: y\', y\'\', dy/dx, d/dx;  integrals: ∫_a^b f dx;  limits: lim_(x->a);  sums: Σ_(k=1)^n',
   '  several problems: separate with ; or a new line.  Matrices: [[1,2],[3,4]].  Points: [x, y].  Lists: [1, 2, 3].',
   '  worksheet text is cleaned: "Q3.", "Problem 2:", "(a)", "1)", bullets, **bold**, "(solve for x)" and "=> x = ?" are dropped; a numbered list ("1) ... 2) ...", "(a) ... (b) ...") becomes separate problems, except the equations of one system',
-  '  values after the formula: "F = m*a with m = 5 and a = 2", "y = 2x + 1 when x = 3", "v = u + a*t, u = 3, a = 2, t = 4" put the numbers in place of the letters;  sums "\u03a3 k from 1 to 10", "\u03a3\u2081^10 k", integrals "\u222b\u2080^\u03c0 sin x dx"',
+  '  values after the formula: "F = m*a with m = 5 and a = 2", "y = 2x + 1 when x = 3", "v = u + a*t, u = 3, a = 2, t = 4" put the numbers in place of the letters;  sums "Σ k from 1 to 10", "Σ₁^10 k", integrals "∫₀^π sin x dx"',
   '  commands can be mixed with arithmetic:  ncr(5,2) * 3 + 1,   integrate(x^2, x, 0, 1) + sqrt(2)',
   '  named arguments: triangle(a=3, b=4, C=90),  suvat(u=0, a=9.8, t=3),  circle(d=10)',
   '  the tool field "solve_for" picks the unknown when a formula has several letters.',
@@ -13260,7 +13260,7 @@ HELP.equations = [
   '  one unknown: any polynomial, rational, radical, exponential, logarithmic, trig or absolute-value equation (exact when possible)',
   '  systems: x + y = 10; x - y = 2     (linear exactly, non-linear by search)',
   '  inequalities: x^2 - 5x + 6 < 0,  (x+1)/(x-2) >= 0,  |x - 3| <= 2,  1 < 2x + 1 <= 7',
-  '  in an interval:  sin(x) = 1/2, 0 <= x <= 2pi    cos(x) = 0.5 for x in [0, 360\u00b0]    x^3 - x = 0 on (-2, 2)   (the solutions inside the interval, exact when possible)',
+  '  in an interval:  sin(x) = 1/2, 0 <= x <= 2pi    cos(x) = 0.5 for x in [0, 360°]    x^3 - x = 0 on (-2, 2)   (the solutions inside the interval, exact when possible)',
   '  identities:  sin(2x) = 2 sin(x) cos(x)  is reported as true for every x;  "verify ..." and "prove that ..." work too',
   '  formulas with several letters:  v = u + a*t, solve for t     d = v*t + a*t^2/2; solve for t     1/f = 1/u + 1/v for v',
   '  complex numbers: (3+4i)(1-2i),  sqrt(-4),  z^2 = 3 + 4i,  (2+i)z = 3 - i,  nthroots(8, 3)   (see help algebra)',
@@ -13268,7 +13268,7 @@ HELP.equations = [
 ].join('\n');
 HELP.calculus = [
   'CALCULUS',
-  '  integrate(f, x)                    indefinite integral (checked by differentiating); also \u222b f dx',
+  '  integrate(f, x)                    indefinite integral (checked by differentiating); also ∫ f dx',
   '  integrate(f, x, a, b)              definite integral, a and b may be oo / -oo (improper)',
   '  diff(f, x)  diff(f, x, n)          derivative, n-th derivative;   f\' and dy/dx also work;   diffat(f, x, a)  derivative at a point;   evalat(f, x, a)  value at a point',
   '  limit(f, x, a)  limit(f, x, a, 1)  limit; the 4th argument 1 or -1 selects the side;  a may be oo',
@@ -13277,20 +13277,20 @@ HELP.calculus = [
   '  tangent(f, x, a)                   tangent and normal line at x = a',
   '  linapprox(f, x, a)  linapprox(f, x, a, x0)  [linearapprox, linearization]  L(x) = f(a) + f\'(a)(x - a); with x0 also the estimate, the actual value and the error',
   '  mvt(f, x, a, b)  [meanvaluethm]  rolle(f, x, a, b)  ivt(f, x, a, b)  ivt(f, x, a, b, k)  [intermediatevalue]   the mean value, Rolle and intermediate value theorems: conditions checked, every c found',
-  '  seriessum([1, 2, 3], 100)  [patternsum]  sum of an arithmetic or geometric pattern from its first terms and the last term (oo for infinite): seriessum([1, 1/2, 1/4], oo); also 1/n\u00b2, 1/n!, alternating ... patterns; written "1 + 2 + 3 + ... + 100"',
+  '  seriessum([1, 2, 3], 100)  [patternsum]  sum of an arithmetic or geometric pattern from its first terms and the last term (oo for infinite): seriessum([1, 1/2, 1/4], oo); also 1/n², 1/n!, alternating ... patterns; written "1 + 2 + 3 + ... + 100"',
   '  critical(f, x)  critical(f, x, a, b)   critical points with max/min classification; with [a, b] also the absolute max and min',
   '  inflection(f, x)   analyze(f, x)       full study: domain, intercepts, asymptotes, increasing/decreasing, extrema, inflection, concavity',
   '  domain(f, x)   inversefunction(f, x)   compose(f, g, x)   implicit(x^2 + y^2 - 25)  (dy/dx and d2y/dx2)   newton(f, x, x0)',
   '  areabetween(f, g, x)  or  areabetween(f, g, x, a, b)   volumerev(f, x, a, b)  volumerev(f, g, x, a, b)  (about the x-axis)',
   '  shells(f, x, a, b)  (about the y-axis)   arclength(f, x, a, b)   surfacearea of revolution: surfacearearev(f, x, a, b)   avgvalue(f, x, a, b)',
   '  convergence(n^2/2^n, n)  [converge, seriestest]  does the series converge? (term, geometric, ratio, root, p-series comparison, integral and alternating tests; absolute or conditional)   convergence(1/(n*ln(n)^2), n, 2)  starts at n = 2',
-  '  radius(x^n/n, n, x, 1)  [radiusofconvergence, intervalofconvergence]  radius and interval of convergence of a power series (end points tested);  sentences work too:  "Does the series sum of n^2/2^n converge?"   "Find the interval of convergence of \u03a3_(n=1)^\u221e (x-2)^n/(n 3^n)"',
+  '  radius(x^n/n, n, x, 1)  [radiusofconvergence, intervalofconvergence]  radius and interval of convergence of a power series (end points tested);  sentences work too:  "Does the series sum of n^2/2^n converge?"   "Find the interval of convergence of Σ_(n=1)^∞ (x-2)^n/(n 3^n)"',
   '  fourier(x^2, x, -pi, pi)  [fourierseries]  Fourier series on (a, b): a0/2, general a_n and b_n, first harmonics;  piecewise: fourier(-1, 1, x, -pi, 0, pi) (f1 on (-pi, 0), f2 on (0, pi));  fouriercos(x, x, pi)  fouriersin(1, x, pi)  half-range cosine / sine series on (0, L);  terms=6 shows more harmonics',
   '  differential equations and Laplace transforms:  help ode',
 ].join('\n');
 HELP.logic = [
   'LOGIC AND GRAPHS',
-  '  truth tables:  truth table of p and (q or not r)   p -> q   (p and q) or not r   p xor q   (connectives: and or not xor -> <-> nand nor, or the symbols \u2227 \u2228 \u00ac \u2295 \u2192 \u2194)',
+  '  truth tables:  truth table of p and (q or not r)   p -> q   (p and q) or not r   p xor q   (connectives: and or not xor -> <-> nand nor, or the symbols ∧ ∨ ¬ ⊕ → ↔)',
   '                 not (p and q) equivalent to (not p) or (not q)    tells whether two formulas are equivalent;  also tautology / contradiction, normal forms and the simplest sum of products',
   '  graphs are lists of edges:  graphinfo([[1,2],[2,3],[3,1],[3,4]]) [graphtheory]  (degrees, components, bipartite, Euler path)   digraph(edges)',
   '     weighted:  shortestpath([[a,b,4],[a,c,1],[c,b,2]], a, b) [dijkstra]   mst([[a,b,4],[a,c,1],[c,b,2]]) [kruskal]   maxflow([[s,a,10],[a,t,7]], s, t)',
@@ -13299,11 +13299,11 @@ HELP.logic = [
 ].join('\n');
 HELP.curves = [
   'PARAMETRIC AND POLAR CURVES, MOTION IN SPACE, LINE INTEGRALS',
-  '  parametric:  paramdiff(x(t), y(t), t, t0)  (dy/dx, d\u00b2y/dx\u00b2, tangent line)   paramlength(x(t), y(t), t, a, b)  or  paramlength([x(t), y(t), z(t)], t, a, b)   paramarea(x(t), y(t), t, a, b)',
-  '  polar:  polararea(r, t, a, b)   polarlength(r, t, a, b)   polarslope(r, t, t0)      e.g. polararea(1 + cos(t), t, 0, 2*pi)    (t stands for the angle \u03b8)',
-  '  coordinates:  topolar(x, y)  torect(r, \u03b8)  tocylindrical(x, y, z)  fromcylindrical(r, \u03b8, z)  tospherical(x, y, z)  fromspherical(\u03c1, \u03c6, \u03b8)',
+  '  parametric:  paramdiff(x(t), y(t), t, t0)  (dy/dx, d²y/dx², tangent line)   paramlength(x(t), y(t), t, a, b)  or  paramlength([x(t), y(t), z(t)], t, a, b)   paramarea(x(t), y(t), t, a, b)',
+  '  polar:  polararea(r, t, a, b)   polarlength(r, t, a, b)   polarslope(r, t, t0)      e.g. polararea(1 + cos(t), t, 0, 2*pi)    (t stands for the angle θ)',
+  '  coordinates:  topolar(x, y)  torect(r, θ)  tocylindrical(x, y, z)  fromcylindrical(r, θ, z)  tospherical(x, y, z)  fromspherical(ρ, φ, θ)',
   '  motion:  velocity([x(t), y(t), z(t)], t, t0) [acceleration, speed]   curvature([x(t), y(t)], t, t0)  or  curvature(f, x, x0)   tnb([x(t), y(t), z(t)], t, t0)  (T, N, B, curvature, torsion)',
-  '  fields:  lineintegral([P, Q], [x(t), y(t)], t, a, b)  (\u222bF\u00b7dr)   lineintegral(f, [x(t), y(t)], t, a, b)  (\u222bf ds)   potential([P, Q, R])  (conservative? potential function)',
+  '  fields:  lineintegral([P, Q], [x(t), y(t)], t, a, b)  (∫F·dr)   lineintegral(f, [x(t), y(t)], t, a, b)  (∫f ds)   potential([P, Q, R])  (conservative? potential function)',
   '  see also: grad, curl, divergence in  help multivar;  arclength(f, x, a, b)  for y = f(x)',
 ].join('\n');
 HELP.numerical = [
@@ -13334,10 +13334,10 @@ HELP.multivar = [
   '  critical points of f(x, y) (and f(x, y, z)) with the second-derivative test:   critical(x^3 - 3*x*y + y^3, x, y)',
   '  Lagrange multipliers:   lagrange(x*y, x + y, 10, x, y)   (maximise/minimise f on g = c);  lagrange(f, g, x, y) means g = 0',
   '  double and triple integrals are nested:   integrate(integrate(x*y, y, 0, x), x, 0, 2)   (inner limits may contain the outer variable)',
-  '  applications (limits are listed from the OUTER variable to the INNER one; single letters; \u03b8 is t, \u03c6 is f, \u03c1 is r):',
+  '  applications (limits are listed from the OUTER variable to the INNER one; single letters; θ is t, φ is f, ρ is r):',
   '     lamina(rho, x, a, b, y, g1, g2)   mass, centre of mass, moments and inertia of a lamina       solid(rho, x, a, b, y, g1, g2, z, h1, h2)   the same for a solid',
-  '     polarint(f, t, 0, 2*pi, r, 0, 1)   cylint(f, t, t0, t1, r, r0, r1, z, z0, z1)   sphint(f, t, 0, 2*pi, f, 0, pi, r, 0, 1)   (x, y, z in f are replaced by the coordinates; Jacobians r and r\u00b2 sin \u03c6)',
-  '     surfacearea(x^2 + y^2, x, 0, 1, y, 0, 1)  [surfarea]  graph or parametric surfacearea([cos(u), sin(u), v], u, 0, 2*pi, v, 0, 1)      flux([x, y, z], [sin(f)*cos(t), sin(f)*sin(t), cos(f)], f, 0, pi, t, 0, 2*pi)  [surfaceintegral]  flux through a surface (normal r_u \u00d7 r_v; -1 as a last argument reverses it)',
+  '     polarint(f, t, 0, 2*pi, r, 0, 1)   cylint(f, t, t0, t1, r, r0, r1, z, z0, z1)   sphint(f, t, 0, 2*pi, f, 0, pi, r, 0, 1)   (x, y, z in f are replaced by the coordinates; Jacobians r and r² sin φ)',
+  '     surfacearea(x^2 + y^2, x, 0, 1, y, 0, 1)  [surfarea]  graph or parametric surfacearea([cos(u), sin(u), v], u, 0, 2*pi, v, 0, 1)      flux([x, y, z], [sin(f)*cos(t), sin(f)*sin(t), cos(f)], f, 0, pi, t, 0, 2*pi)  [surfaceintegral]  flux through a surface (normal r_u × r_v; -1 as a last argument reverses it)',
   '     green(-y, x, x, -1, 1, y, -sqrt(1 - x^2), sqrt(1 - x^2))   divtheorem([x, y, z], x, 0, 1, y, 0, 1, z, 0, 1) [gauss]   stokes([-y, x, 0], [r*cos(t), r*sin(t), 1 - r^2], r, 0, 1, t, 0, 2*pi)    (exact when the integrator finds antiderivatives, otherwise a decimal)',
 ].join('\n');
 HELP.optimize = [
@@ -13354,15 +13354,15 @@ HELP.algebra = [
   '  factor(x^4 - 1)   factor(360)   expand((x+1)^5)   simplify(sin(x)^2 + cos(x)^2)',
   '  apart((3x+2)/(x^2-x-2))            partial fractions;   divide(x^3+1, x+1)   polynomial division',
   '  gcd(12, 18) gcd(x^2-1, x^2+2x+1)   lcm(4, 6)   (also with 3 or more numbers)',
-  '  ratroots(2x^3 - 3x^2 - 8x - 3)  [rationalroots]  rational zeros with the candidates \u00b1p/q      endbehavior(-2x^3 + x)  as x \u2192 \u00b1\u221e (limits, degree and leading coefficient)      evenodd(x^3 - x)  [parity]  even, odd or neither',
-  '  rangeof(x/(x^2+1))  [functionrange]  range as intervals (e.g. [-1/2, 1/2], (-\u221e, 0) \u222a (0, \u221e)), from the extrema, end values and limits      coeff((1 + 2x)^6, x, 3)  [coefficient]  coefficient of x^3 in an expansion (k = 0: the constant term)',
+  '  ratroots(2x^3 - 3x^2 - 8x - 3)  [rationalroots]  rational zeros with the candidates ±p/q      endbehavior(-2x^3 + x)  as x → ±∞ (limits, degree and leading coefficient)      evenodd(x^3 - x)  [parity]  even, odd or neither',
+  '  rangeof(x/(x^2+1))  [functionrange]  range as intervals (e.g. [-1/2, 1/2], (-∞, 0) ∪ (0, ∞)), from the extrema, end values and limits      coeff((1 + 2x)^6, x, 3)  [coefficient]  coefficient of x^3 in an expansion (k = 0: the constant term)',
   '  sinusoid(3*sin(2x - pi) + 1)  [trigprops]  amplitude, period, frequency, phase shift, vertical shift, midline, maximum and minimum (sin, cos; tan, cot, sec, csc give period and asymptotes)',
   '  quadratics: discriminant(x^2 - 4x + 7)  [disc]   completesquare(x^2 + 6x + 2)   vertex(2x^2 - 8x + 5)  (vertex, axis, minimum / maximum, y-intercept)      a term of a binomial expansion: binomterm(x, y, 9, 4)  (the 4th term of (x + y)^9)',
-  '  logarithms: expand(log(x^2*y)) [logexpand]  ->  2 log(x) + log(y);   logcondense(2*log(x) + log(y)) [condenselog]  ->  log(x\u00b2y);  log is base 10, also ln, log2, log(x, 5)',
-  '  radicals: rationalize(1/(sqrt(3)+1))  [rationalise, radsimp, denest]  exact a + b\u221ac form with no root in a denominator; also expands (2+sqrt(3))^2 and denests sqrt(5+2*sqrt(6)); with letters: rationalize(x/(sqrt(x)+1))',
+  '  logarithms: expand(log(x^2*y)) [logexpand]  ->  2 log(x) + log(y);   logcondense(2*log(x) + log(y)) [condenselog]  ->  log(x²y);  log is base 10, also ln, log2, log(x, 5)',
+  '  radicals: rationalize(1/(sqrt(3)+1))  [rationalise, radsimp, denest]  exact a + b√c form with no root in a denominator; also expands (2+sqrt(3))^2 and denests sqrt(5+2*sqrt(6)); with letters: rationalize(x/(sqrt(x)+1))',
   '  trigonometry: simplify(sin(2x)/sin(x))  [trigsimp]  the shortest equivalent form (Pythagorean and double-angle identities, tan / cot / sec / csc ratios; one variable)',
   '                trigexpand(cos(3x))  [expandtrig]  sum and multiple-angle formulas, also expand(sin(a+b)), trigexpand(tan(x+y))      tosum(sin(x)*cos(3x))  [powerreduce]  product-to-sum and power reduction, e.g. sin(x)^4',
-  '                exact values: sin(15\u00b0), tan(22.5\u00b0), cos(pi/5), sec(pi/6), cot(3pi/8);  with inverse functions: tan(asin(3/5)), cos(2*acos(1/3)), sin(atan(3)+atan(4));  tan(pi/2) is reported as undefined',
+  '                exact values: sin(15°), tan(22.5°), cos(pi/5), sec(pi/6), cot(3pi/8);  with inverse functions: tan(asin(3/5)), cos(2*acos(1/3)), sin(atan(3)+atan(4));  tan(pi/2) is reported as undefined',
   '  complex: write i;  (1+i)^10,  1/(2+i),  abs(3+4i),  e^(i*pi),  conj(z),  re(z),  im(z),  arg(z)',
   '           polar(1+i)   rect(r, theta)   cis(theta)   nthroots(z, n)   unityroots(n)',
   '           z^2 + 2z + 5 = 0,  (2+i)z = 3 - i   (equations of degree 1 or 2 with complex coefficients)',
@@ -13374,11 +13374,11 @@ HELP.matrix = [
   '  eigen(A) [eig]  (eigenvalues + eigenvectors)   diagonalize(A)   lu(A)   linsolve(A, b)   A*B   A^3   A^-1   2A + B',
   '  dot(u, v) cross(u, v) norm(v) [magnitude, length] normalize(v) angle(u, v) proj(u, v) [projection]',
   '  gramschmidt([1,1,0],[1,0,1],[0,1,1])  [orthogonalize, orthonormalize]   orthogonal and orthonormal basis (rows of a matrix also work)',
-  '  qr(A) [qrdecomposition]  Q (orthonormal columns) and R (upper triangular), exact radicals   cholesky(A) [choleskydecomposition, ldl]  A = G G\u1d40 and the rational L D L\u1d40',
+  '  qr(A) [qrdecomposition]  Q (orthonormal columns) and R (upper triangular), exact radicals   cholesky(A) [choleskydecomposition, ldl]  A = G Gᵀ and the rational L D Lᵀ',
   '  definite(A) [posdef, positivedefinite, definiteness, classifymatrix]  positive / negative (semi)definite or indefinite, with minors and eigenvalue signs',
-  '  pinv(A) [pseudoinverse, moorepenrose]  exact Moore-Penrose inverse   leastsquares(A, b) [lstsq, normalequations]  x\u0302, fitted values, residual (minimum-norm when rank-deficient)',
+  '  pinv(A) [pseudoinverse, moorepenrose]  exact Moore-Penrose inverse   leastsquares(A, b) [lstsq, normalequations]  x̂, fitted values, residual (minimum-norm when rank-deficient)',
   '  svd(A) [singularvalues]  singular values (exact when possible), rank, norm, condition number, U and V as decimals',
-  '  expm(A) [matrixexp, matrixexponential]  e^A   expm(A, t)  e^(At) exactly when the eigenvalues are rational or A is 2\u00d72   jordan(A) [jordanform]  Jordan form J and P with A = P J P\u207b\u00b9 (rational eigenvalues)',
+  '  expm(A) [matrixexp, matrixexponential]  e^A   expm(A, t)  e^(At) exactly when the eigenvalues are rational or A is 2×2   jordan(A) [jordanform]  Jordan form J and P with A = P J P⁻¹ (rational eigenvalues)',
   '  A system  2x + y = 5; x - y = 1  can also be written directly as equations.',
   'independent([1,2,3],[4,5,6],[7,8,9])  [linindep]  linearly independent or dependent (with a relation)   inspan([1,2,3],[1,0,1],[0,1,1])  [span]  is the vector in the span, with the coefficients   nullity(A)  rank, nullity and a basis of the null space',
 ].join('\n');
@@ -13386,17 +13386,17 @@ HELP.number = [
   'NUMBER THEORY, COUNTING, SEQUENCES, SETS',
   '  isprime(n) nextprime(n) prevprime(n) primes(a, b) primepi(n) factor(n) divisors(n) totient(n) sigma(n) numdivisors(n) mobius(n) radical(n) digitsum(n)',
   '  mod(a, m)  or  17 mod 5       modinv(a, m)   modpow(b, e, m)   orderof(a, m)   primitiveroot(p)   legendre(a, p)',
-  '  crt([2,3],[3,5])  or  x \u2261 2 (mod 3), x \u2261 3 (mod 5)       3x \u2261 4 (mod 7)  =  congruence(3x, 4, 7) [solvecongruence]       diophantine(3x + 5y, 1)  (3x+5y=1 in integers)',
+  '  crt([2,3],[3,5])  or  x ≡ 2 (mod 3), x ≡ 3 (mod 5)       3x ≡ 4 (mod 7)  =  congruence(3x, 4, 7) [solvecongruence]       diophantine(3x + 5y, 1)  (3x+5y=1 in integers)',
   '  factorial(n)  ncr(n, k)  (or 5 choose 2, C(5,2), 5C2)   npr(n, k)   multiset(n, k)   multinomial(2,3,1)   catalan(n)',
   '  fibonacci(n) lucas(n) derangements(n) stirling1(n,k) stirling2(n,k) bell(n) partitions(n)',
   '  dice(2, 6)  dice(3, 6, 10)  (distribution / P(sum = 10) of 3 six-sided dice)   anagrams of MISSISSIPPI  (distinct arrangements of the letters)   birthday(23)   pascal(6)   circular(8)',
   '  sequence(2, 6, 12, 20)   next terms + general term (arithmetic, geometric, polynomial, Fibonacci-type)',
   '  arith(a1, d, n)  nth term and sum;   geom(a1, r, n)  nth term and sum (infinite sum when |r| < 1)',
-  '  sets (lists in brackets): union([1,2,3],[2,3,4]) intersection(A, B) setdiff(A, B) symdiff(A, B) setcomplement(A, U) cardinality(A) issubset(A, B) powerset(A) [subsets, lists them; powerset(5) = 32] cartesian(A, B); also written "A = {1,2,3}, B = {2,3,4}, find A \u222a B"',
+  '  sets (lists in brackets): union([1,2,3],[2,3,4]) intersection(A, B) setdiff(A, B) symdiff(A, B) setcomplement(A, U) cardinality(A) issubset(A, B) powerset(A) [subsets, lists them; powerset(5) = 32] cartesian(A, B); also written "A = {1,2,3}, B = {2,3,4}, find A ∪ B"',
   '  perfect(28) [isperfect]  perfect / abundant / deficient   perfectsq(49)  perfectcb(27)   tofraction(0.75)  todecimal(1/7)  (repeating block found by long division)   repeatdec(0, 1, 1, 6, 1) = 0.1(6) = 1/6   nthterm([5, 8, 11], 20)  (the 20th term of a pattern, with its general term)',
   '  digits in any base up to 36: frombase(1011, 2)  frombase([15, 15], 16) = FF;  "hexadecimal FF to decimal", "0xFF to decimal"',
-  '  euclid(252, 105) [bezout]  gcd steps and B\u00e9zout coefficients   cfrac(355/113), cfrac(sqrt(7)), cfrac(pi, 8) [continuedfraction]   pell(61) pell(13, -1)   collatz(27)   egyptian(4/13)   sum2sq(65)   farey(5)   hanoi(4)   josephus(7, 3)   polygonal(5, 10) [figurate, triangular]',
-  '  recurrences:  a_n = 5a_(n-1) - 6a_(n-2), a_0 = 1, a_1 = 0   (closed form + first terms)   or  linrec([5, -6], 0, [1, 0], 10)  for a(n) = 5a(n\u22121) \u2212 6a(n\u22122) + f(n) [recurrence]',
+  '  euclid(252, 105) [bezout]  gcd steps and Bézout coefficients   cfrac(355/113), cfrac(sqrt(7)), cfrac(pi, 8) [continuedfraction]   pell(61) pell(13, -1)   collatz(27)   egyptian(4/13)   sum2sq(65)   farey(5)   hanoi(4)   josephus(7, 3)   polygonal(5, 10) [figurate, triangular]',
+  '  recurrences:  a_n = 5a_(n-1) - 6a_(n-2), a_0 = 1, a_1 = 0   (closed form + first terms)   or  linrec([5, -6], 0, [1, 0], 10)  for a(n) = 5a(n−1) − 6a(n−2) + f(n) [recurrence]',
   '  binary(10) octal(64) hex(255) tobase(n, b) frombase(1011, 2);   0xFF, 0b101, 1011_2, (ff)_16 are understood',
 ].join('\n');
 HELP.stats = [
@@ -13415,7 +13415,7 @@ HELP.stats = [
   '  other tests:  anova([g1], [g2], [g3])   corrtest(xs, ys)   vartest(s, n, sigma0)   ftest2(s1, n1, s2, n2)   varinterval(s, n, 0.95)   samplesize(sigma, E, conf)   samplesizeprop(E, conf, p)   clt(mu, sigma, n, x)   binomnormal(n, p, k)',
   '  descriptive:  outliers(list)  fivenum  mad  skewness  kurtosis  geomean  harmean  rms  cv  wmean([values], [weights])  zscores  percentrank(list, x)  freqtable(list, width)  stemleaf(list)  grouped([midpoints], [freqs])  ranks  spearman(xs, ys)  kendall(xs, ys)',
   '  regression:  multireg([[x1, x2], ...], [y...], [x1, x2])   expreg  powerreg  logreg (xs, ys, x0)     Markov chains: markov([[0.9,0.1],[0.5,0.5]], 3, [1,0])     coupon(n)',
-  'regression inference and rank / exact tests:  reginf(xs, ys)  reginf(xs, ys, 0.9, x0)  slope and intercept (SE, t, p, confidence intervals), r\u00b2, F, interval at x0      mannwhitney(xs, ys) [ranksum]   wilcoxon(d)  wilcoxon(before, after)   kruskalwallis(g1, g2, g3)   signtest(xs, median)   fisherexact([[8,2],[1,5]])   mcnemar([[59,6],[16,80]])',
+  'regression inference and rank / exact tests:  reginf(xs, ys)  reginf(xs, ys, 0.9, x0)  slope and intercept (SE, t, p, confidence intervals), r², F, interval at x0      mannwhitney(xs, ys) [ranksum]   wilcoxon(d)  wilcoxon(before, after)   kruskalwallis(g1, g2, g3)   signtest(xs, median)   fisherexact([[8,2],[1,5]])   mcnemar([[59,6],[16,80]])',
   '  ztest(mean, mu0, sigma, n)   ttest(mean, s, n, mu0)  or ttest([data], mu0)   proptest(x, n, p0)   chisqtest([[10,20],[30,40]])  or  chisqtest(observed, expected)',
 ].join('\n');
 HELP.geometry = [
@@ -13443,14 +13443,14 @@ HELP.geometry = [
 ].join('\n');
 HELP.units = [
   'UNITS AND PHYSICS',
-  '  convert 5 km to miles    72 \u00b0F to \u00b0C    60 mph to km/h    2.5 GB to MB    1 atm to psi   (length, mass, time, area, volume, speed, force, pressure, energy, power, data, angle, temperature)',
+  '  convert 5 km to miles    72 °F to °C    60 mph to km/h    2.5 GB to MB    1 atm to psi   (length, mass, time, area, volume, speed, force, pressure, energy, power, data, angle, temperature)',
   '  pctchange(old, new)   pctof(part, whole)   ratio(12, 18, 30)   sci(12345.678)   sigfigs(x, n)',
   '  suvat(u=0, a=9.8, t=3)  (give 3 of s u v a t)   projectile(20, 30)  (speed, angle in degrees)   freefall(45)',
   '  any physics formula: write it as an equation and solve for a letter  (F = m*a;  v^2 = u^2 + 2*a*s solve for s)',
   '  (chemistry and finance have their own topics: help chemistry, help finance)',
 ].join('\n');
 HELP.chemistry = [
-  'CHEMISTRY   (formulas are written as usual: Ca(OH)2, CuSO4\u00b75H2O, Fe2(SO4)3)',
+  'CHEMISTRY   (formulas are written as usual: Ca(OH)2, CuSO4·5H2O, Fe2(SO4)3)',
   '  molarmass(Ca(OH)2)   percentcomp(C6H12O6)   moles(18, H2O)   grams(2, NaCl)   molarity(0.5, 2)  molarity(5.85, NaCl, 0.5)',
   '  balance H2 + O2 -> H2O   (a bare reaction "H2 + O2 -> H2O" is balanced too)',
   '  stoich(H2 + O2 -> H2O, 4 g H2, H2O)  [stoichiometry]   grams / moles of a wanted substance;   limiting(H2 + O2 -> H2O, 4 g H2, 32 g O2)  [limitingreagent]   limiting reagent, theoretical yield, excess left   percentyield(actual, theoretical)',
@@ -13518,7 +13518,7 @@ function lpConstraintTexts(text) {
   s = s.replace(/((?:\u0002?[a-z](?:_\(?\w+\)?)?\s*,\s*)+\u0002?[a-z](?:_\(?\w+\)?)?)\s*(>=|<=|>|<)\s*([^,;\n]+)/g, (m, vars, op, rhs) => vars.split(',').map((v) => v.trim() + ' ' + op + ' ' + rhs.trim()).join('; '));
   return s.split(/[;\n,]/).map((t) => t.trim()).filter(Boolean);
 }
-const LP_SHOW = { '<=': '\u2264', '>=': '\u2265', '<': '<', '>': '>', '=': '=' };
+const LP_SHOW = { '<=': '≤', '>=': '≥', '<': '<', '>': '>', '=': '=' };
 
 function solveSquare(A, b) {
   const n = A.length;
@@ -13583,7 +13583,7 @@ function tryLinearProgram(text) {
   const form = (lhs, rhs) => affineForm({ lhs, rhs }, names);
   const obj = form(objNode, { t: 'num', q: Q0, f: 0, text: '0' });
   if (!obj) throw new MathError('the objective must be linear in the variables');
-  // constraints as  a\u00b7x <= b
+  // constraints as  a·x <= b
   const rows = [];
   const shown = [];
   conds.forEach((c) => {
@@ -13709,14 +13709,14 @@ function vCell(v) {
   const x = vNum(v);
   return fmtNum(x);
 }
-/** "= p/q (= decimal)" or "\u2248 decimal" for an answer line (the sign is included). */
+/** "= p/q (= decimal)" or "≈ decimal" for an answer line (the sign is included). */
 function vEq(v) {
   if (isQv(v)) {
     const t = v.toString();
     if (v.isInt()) return '= ' + t;
     if (t.length <= 24) return '= ' + t + ' (' + approxSym(v.toNumber()) + ' ' + fmtNum(v.toNumber()) + ')';
   }
-  return '\u2248 ' + fmtNum(vNum(v));
+  return '≈ ' + fmtNum(vNum(v));
 }
 /** f evaluated at the given variable values: exact when everything is rational and the result is a rational number. */
 function nvValueAt(S, env) {
@@ -13749,21 +13749,21 @@ function stepsBetween(a, b, h, what) {
   const k = vDiv(span, h);
   const kn = vNum(k);
   const r = Math.round(kn);
-  if (!isFinite(kn) || r < 1 || Math.abs(kn - r) > 1e-9) throw new MathError(what + ': (end \u2212 start)/h must be a whole number of steps (here ' + fmtNum(kn) + ')');
+  if (!isFinite(kn) || r < 1 || Math.abs(kn - r) > 1e-9) throw new MathError(what + ': (end − start)/h must be a whole number of steps (here ' + fmtNum(kn) + ')');
   if (r > 400) throw new MathError('at most 400 steps are supported');
   return r;
 }
 function listRows(rows, head, tail) {
   if (rows.length <= head + tail + 1) return rows;
-  return rows.slice(0, head).concat(['\u2026'], rows.slice(rows.length - tail));
+  return rows.slice(0, head).concat(['…'], rows.slice(rows.length - tail));
 }
 
 // ---- Euler and Runge-Kutta ---------------------------------------------------------------------------------------------------------
 const ODE_METHODS = {
-  euler: { name: "Euler's method", formula: 'y_(n+1) = y_n + h\u00b7f(x_n, y_n)', order: 1 },
-  heun: { name: "improved Euler (Heun's) method", formula: 'y_(n+1) = y_n + h/2\u00b7(f(x_n, y_n) + f(x_n + h, y_n + h\u00b7f(x_n, y_n)))', order: 2 },
-  midpoint: { name: 'the midpoint method', formula: 'y_(n+1) = y_n + h\u00b7f(x_n + h/2, y_n + h/2\u00b7f(x_n, y_n))', order: 2 },
-  rk4: { name: 'the classical Runge\u2013Kutta method (RK4)', formula: 'k1 = f(x, y), k2 = f(x + h/2, y + h\u00b7k1/2), k3 = f(x + h/2, y + h\u00b7k2/2), k4 = f(x + h, y + h\u00b7k3);  y_(n+1) = y_n + h/6\u00b7(k1 + 2k2 + 2k3 + k4)', order: 4 },
+  euler: { name: "Euler's method", formula: 'y_(n+1) = y_n + h·f(x_n, y_n)', order: 1 },
+  heun: { name: "improved Euler (Heun's) method", formula: 'y_(n+1) = y_n + h/2·(f(x_n, y_n) + f(x_n + h, y_n + h·f(x_n, y_n)))', order: 2 },
+  midpoint: { name: 'the midpoint method', formula: 'y_(n+1) = y_n + h·f(x_n + h/2, y_n + h/2·f(x_n, y_n))', order: 2 },
+  rk4: { name: 'the classical Runge–Kutta method (RK4)', formula: 'k1 = f(x, y), k2 = f(x + h/2, y + h·k1/2), k3 = f(x + h/2, y + h·k2/2), k4 = f(x + h, y + h·k3);  y_(n+1) = y_n + h/6·(k1 + 2k2 + 2k3 + k4)', order: 4 },
 };
 function odeVariables(f) {
   const vs = Array.from(varsOfS(f));
@@ -13853,17 +13853,17 @@ defCmd('euler eulermethod', odeSolver('euler'));
 defCmd('heun improvedeuler', odeSolver('heun'));
 defCmd('rk2 midpointmethod', odeSolver('midpoint'));
 defCmd('rk4 rungekutta', odeSolver('rk4'));
-for (const [nm, label] of [['euler', "Euler's method"], ['heun', "Heun's method"], ['rk2', 'the midpoint method'], ['rk4', 'Runge\u2013Kutta (RK4)']]) {
+for (const [nm, label] of [['euler', "Euler's method"], ['heun', "Heun's method"], ['rk2', 'the midpoint method'], ['rk4', 'Runge–Kutta (RK4)']]) {
   COMMANDS[nm].show = (n) => label + " for y' = " + showRaw(n.args[0]) + ', y(' + showRaw(n.args[1]) + ') = ' + showRaw(n.args[2]) + ', h = ' + showRaw(n.args[3]) + ', up to x = ' + showRaw(n.args[4]);
 }
 
 // ---- Riemann sums and quadrature rules ----------------------------------------------------------------------------------------------------
 const RULE_INFO = {
-  trapezoid: { label: 'trapezoid rule T', formula: 'h/2\u00b7(f(x\u2080) + 2f(x\u2081) + \u2026 + 2f(x\u2099\u208b\u2081) + f(x\u2099))', p: 2 },
-  midpoint: { label: 'midpoint rule M', formula: 'h\u00b7(f(m\u2081) + \u2026 + f(m\u2099)) with m\u1d62 the midpoints of the subintervals', p: 2 },
-  simpson: { label: "Simpson's rule S", formula: 'h/3\u00b7(f(x\u2080) + 4f(x\u2081) + 2f(x\u2082) + \u2026 + 4f(x\u2099\u208b\u2081) + f(x\u2099))', p: 4 },
-  left: { label: 'left Riemann sum L', formula: 'h\u00b7(f(x\u2080) + \u2026 + f(x\u2099\u208b\u2081))', p: 1 },
-  right: { label: 'right Riemann sum R', formula: 'h\u00b7(f(x\u2081) + \u2026 + f(x\u2099))', p: 1 },
+  trapezoid: { label: 'trapezoid rule T', formula: 'h/2·(f(x₀) + 2f(x₁) + … + 2f(xₙ₋₁) + f(xₙ))', p: 2 },
+  midpoint: { label: 'midpoint rule M', formula: 'h·(f(m₁) + … + f(mₙ)) with mᵢ the midpoints of the subintervals', p: 2 },
+  simpson: { label: "Simpson's rule S", formula: 'h/3·(f(x₀) + 4f(x₁) + 2f(x₂) + … + 4f(xₙ₋₁) + f(xₙ))', p: 4 },
+  left: { label: 'left Riemann sum L', formula: 'h·(f(x₀) + … + f(xₙ₋₁))', p: 1 },
+  right: { label: 'right Riemann sum R', formula: 'h·(f(x₁) + … + f(xₙ))', p: 1 },
 };
 function maxAbsDerivative(S, v, order, a, b) {
   let D = S;
@@ -13947,18 +13947,18 @@ function quadRule(kind) {
     }
     const out = newOut();
     out.answer.push(info.label + '_' + nn + ' ' + vEq(result));
-    out.work.push('h = (b \u2212 a)/n = ' + vCell(h) + ';  ' + info.formula);
+    out.work.push('h = (b − a)/n = ' + vCell(h) + ';  ' + info.formula);
     listRows(rows, 12, 3).forEach((r) => out.work.push(r));
     const ex = exactIntegral(S, v, a, b, aS, bS);
     if (ex) {
-      out.work.push('Exact value of the integral: ' + (ex.S && fmtS(ex.S) !== fmtNum(ex.num) ? fmtS(ex.S) + ' \u2248 ' : '') + fmtNum(ex.num) + ';  error of this approximation = ' + fmtNum(Math.abs(ex.num - vNum(result))));
+      out.work.push('Exact value of the integral: ' + (ex.S && fmtS(ex.S) !== fmtNum(ex.num) ? fmtS(ex.S) + ' ≈ ' : '') + fmtNum(ex.num) + ';  error of this approximation = ' + fmtNum(Math.abs(ex.num - vNum(result))));
     }
     if (info.p > 1) {
       const K = maxAbsDerivative(S, v, info.p, vNum(a), vNum(b));
       if (isFinite(K)) {
         const L = vNum(b) - vNum(a);
         const bound = kind === 'simpson' ? (K * L ** 5) / (180 * nn ** 4) : kind === 'trapezoid' ? (K * L ** 3) / (12 * nn * nn) : (K * L ** 3) / (24 * nn * nn);
-        out.work.push('Error bound: |E| \u2264 K\u00b7(b \u2212 a)^' + (kind === 'simpson' ? '5/(180n\u2074)' : '3/(' + (kind === 'trapezoid' ? '12' : '24') + 'n\u00b2)') + ' with K = max|f' + (kind === 'simpson' ? '\u2057' : '\u2033') + '| \u2248 ' + fmtNum(K) + ' on [a, b]  \u2192  |E| \u2264 ' + fmtNum(bound));
+        out.work.push('Error bound: |E| ≤ K·(b − a)^' + (kind === 'simpson' ? '5/(180n⁴)' : '3/(' + (kind === 'trapezoid' ? '12' : '24') + 'n²)') + ' with K = max|f' + (kind === 'simpson' ? '⁗' : '″') + '| ≈ ' + fmtNum(K) + ' on [a, b]  →  |E| ≤ ' + fmtNum(bound));
       }
     }
     out.value = { num: vNum(result) };
@@ -14007,8 +14007,8 @@ function smallestN(kind, nodeArgs) {
   need = Math.max(need, kind === 'simpson' ? 2 : 1);
   const out = newOut();
   out.answer.push('n = ' + need + '  (smallest n guaranteed by the error bound for the ' + info.label.replace(/ [A-Z]$/, '') + ')');
-  out.work.push('K = max|f' + (kind === 'simpson' ? '\u2057' : '\u2033') + '| \u2248 ' + fmtNum(K) + ' on [' + fmtNum(lo) + ', ' + fmtNum(hi) + ']');
-  out.work.push(kind === 'simpson' ? '|E| \u2264 K(b \u2212 a)\u2075/(180n\u2074) < ' + fmtNum(tol) : '|E| \u2264 K(b \u2212 a)\u00b3/(' + (kind === 'trapezoid' ? '12' : '24') + 'n\u00b2) < ' + fmtNum(tol));
+  out.work.push('K = max|f' + (kind === 'simpson' ? '⁗' : '″') + '| ≈ ' + fmtNum(K) + ' on [' + fmtNum(lo) + ', ' + fmtNum(hi) + ']');
+  out.work.push(kind === 'simpson' ? '|E| ≤ K(b − a)⁵/(180n⁴) < ' + fmtNum(tol) : '|E| ≤ K(b − a)³/(' + (kind === 'trapezoid' ? '12' : '24') + 'n²) < ' + fmtNum(tol));
   out.value = { q: qInt(need) };
   return out;
 }
@@ -14054,9 +14054,9 @@ defCmd('bisection bisect', (n) => {
     }
   }
   const out = newOut();
-  out.answer.push('x \u2248 ' + fmtNum(c) + '   (c' + it + ' after ' + it + ' step' + (it === 1 ? '' : 's') + '; the root lies in [' + fmtNum(a) + ', ' + fmtNum(b) + '], so the error is at most ' + fmtNum((b - a) / 2) + ')');
+  out.answer.push('x ≈ ' + fmtNum(c) + '   (c' + it + ' after ' + it + ' step' + (it === 1 ? '' : 's') + '; the root lies in [' + fmtNum(a) + ', ' + fmtNum(b) + '], so the error is at most ' + fmtNum((b - a) / 2) + ')');
   listRows(rows, 14, 4).forEach((r) => out.work.push(r));
-  out.work.push('Each step halves the interval; after n steps the error is at most (b \u2212 a)/2\u207f.');
+  out.work.push('Each step halves the interval; after n steps the error is at most (b − a)/2ⁿ.');
   out.value = { num: c };
   return out;
 });
@@ -14081,8 +14081,8 @@ defCmd('secant secantmethod', (n) => {
     if (Math.abs(f(x1)) < 1e-14) break;
   }
   const out = newOut();
-  out.answer.push('x \u2248 ' + fmtNum(x1));
-  out.work.push('x_(n+1) = x_n \u2212 f(x_n)(x_n \u2212 x_(n\u22121))/(f(x_n) \u2212 f(x_(n\u22121)))');
+  out.answer.push('x ≈ ' + fmtNum(x1));
+  out.work.push('x_(n+1) = x_n − f(x_n)(x_n − x_(n−1))/(f(x_n) − f(x_(n−1)))');
   rows.forEach((r) => out.work.push(r));
   out.value = { num: x1 };
   return out;
@@ -14112,8 +14112,8 @@ defCmd('falseposition regulafalsi', (n) => {
     }
   }
   const out = newOut();
-  out.answer.push('x \u2248 ' + fmtNum(c));
-  out.work.push('c = (a\u00b7f(b) \u2212 b\u00b7f(a))/(f(b) \u2212 f(a));  the sign of f(c) decides which endpoint is replaced');
+  out.answer.push('x ≈ ' + fmtNum(c));
+  out.work.push('c = (a·f(b) − b·f(a))/(f(b) − f(a));  the sign of f(c) decides which endpoint is replaced');
   rows.forEach((r) => out.work.push(r));
   out.value = { num: c };
   return out;
@@ -14139,11 +14139,11 @@ defCmd('fixedpoint fixedpointiteration', (n) => {
     if (Math.abs(x) > 1e12) throw new MathError('the iteration diverges');
   }
   const out = newOut();
-  out.answer.push('x \u2248 ' + fmtNum(x) + (converged ? '  (converged: x = g(x))' : '  (after ' + steps + ' steps)'));
+  out.answer.push('x ≈ ' + fmtNum(x) + (converged ? '  (converged: x = g(x))' : '  (after ' + steps + ' steps)'));
   out.work.push('x_(n+1) = g(x_n);  g\'(x) = ' + fmtS(simp(diffS(S, v))));
   rows.forEach((r) => out.work.push(r));
   const slope = Math.abs(evalAt(simp(diffS(S, v)), v, x));
-  if (isFinite(slope)) out.notes.push('|g\'(x)| at the fixed point is ' + fmtNum(slope) + (slope < 1 ? ' < 1, so the iteration converges there.' : ' \u2265 1, so the iteration is not attracted to this point.'));
+  if (isFinite(slope)) out.notes.push('|g\'(x)| at the fixed point is ' + fmtNum(slope) + (slope < 1 ? ' < 1, so the iteration converges there.' : ' ≥ 1, so the iteration is not attracted to this point.'));
   out.value = { num: x };
   return out;
 });
@@ -14191,10 +14191,10 @@ defCmd('interpolate lagrange_interp interpolation newtoninterp', (n) => {
   });
   poly = ptrim(poly);
   const out = newOut();
-  out.answer.push('P(x) = ' + polyText(poly, 'x') + '   (the polynomial of degree \u2264 ' + (m - 1) + ' through the ' + m + ' points)');
+  out.answer.push('P(x) = ' + polyText(poly, 'x') + '   (the polynomial of degree ≤ ' + (m - 1) + ' through the ' + m + ' points)');
   const newtonTerms = coef.map((c, k) => (k === 0 ? c.toString() : '(' + c.toString() + ')' + xs.slice(0, k).map((xk) => '(x ' + (xk.sign() < 0 ? '+ ' + xk.abs().toString() : xk.isZero() ? '' : '- ' + xk.toString()) + ')').join('').replace('(x )', 'x')));
   out.work.push('Newton form: P(x) = ' + newtonTerms.join(' + '));
-  out.work.push('Divided differences f[x\u2080], f[x\u2080,x\u2081], \u2026 : ' + coef.map((c) => c.toString()).join(',  '));
+  out.work.push('Divided differences f[x₀], f[x₀,x₁], … : ' + coef.map((c) => c.toString()).join(',  '));
   if (n.args[2]) {
     const x0 = constQ(n.args[2]);
     const val = peval(poly, x0);
@@ -14202,7 +14202,7 @@ defCmd('interpolate lagrange_interp interpolation newtoninterp', (n) => {
     out.value = { q: val };
   } else out.value = { S: polyToS(poly, 'x') };
   const ok = xs.every((xv, i) => peval(poly, xv).eq(ys[i]));
-  out.check = ok ? 'P(x\u1d62) = y\u1d62 at every given point' : null;
+  out.check = ok ? 'P(xᵢ) = yᵢ at every given point' : null;
   return out;
 });
 defCmd('polyfit polynomialfit leastsquarespoly', (n) => {
@@ -14226,11 +14226,11 @@ defCmd('polyfit polynomialfit leastsquarespoly', (n) => {
   const sst = ys.reduce((s, y) => s.add(y.sub(mean).mul(y.sub(mean))), Q0);
   const out = newOut();
   out.answer.push('y = ' + polyText(c, 'x'));
-  out.work.push('Normal equations (V\u1d40V)c = V\u1d40y with V the Vandermonde matrix, solved exactly');
-  out.work.push('sum of squared residuals = ' + qText(sse) + (sst.isZero() ? '' : ';  R\u00b2 = ' + qText(Q1.sub(sse.div(sst)))));
+  out.work.push('Normal equations (VᵀV)c = Vᵀy with V the Vandermonde matrix, solved exactly');
+  out.work.push('sum of squared residuals = ' + qText(sse) + (sst.isZero() ? '' : ';  R² = ' + qText(Q1.sub(sse.div(sst)))));
   if (n.args[3]) {
     const x0 = constQ(n.args[3]);
-    out.answer.push('y(' + x0.toString() + ') \u2248 ' + qText(peval(c, x0)));
+    out.answer.push('y(' + x0.toString() + ') ≈ ' + qText(peval(c, x0)));
   }
   out.value = { S: polyToS(c, 'x') };
   return out;
@@ -14251,7 +14251,7 @@ defCmd('difftable differences finitedifferences', (n) => {
   }
   const constant = row.length > 0 && row.every((q) => q.eq(row[0]));
   out.answer.push(constant && row.length > 1 ? 'the differences of order ' + order + ' are constant (' + row[0].toString() + '): the values follow a polynomial of degree ' + order : 'no constant difference was reached with these ' + rows[0].split(',').length + ' values');
-  rows.forEach((r, i) => out.work.push((i === 0 ? 'values: ' : '\u0394' + (i > 1 ? toSup(String(i)) : '') + ':  ') + r));
+  rows.forEach((r, i) => out.work.push((i === 0 ? 'values: ' : 'Δ' + (i > 1 ? toSup(String(i)) : '') + ':  ') + r));
   return out;
 });
 defCmd('spline cubicspline naturalspline', (n) => {
@@ -14287,12 +14287,12 @@ defCmd('spline cubicspline naturalspline', (n) => {
     pieces.push({ a, b, c, d, x0: xs[i], x1: xs[i + 1] });
     const t = shiftText(xs[i]);
     const parts = [a.isZero() ? '' : a.toString()];
-    [[b, t], [c, t + '\u00b2'], [d, t + '\u00b3']].forEach(([co, tx]) => {
+    [[b, t], [c, t + '²'], [d, t + '³']].forEach(([co, tx]) => {
       if (!co.isZero()) parts.push((co.eq(Q1) ? '' : co.eq(qInt(-1)) ? '-' : '(' + co.toString() + ')') + tx);
     });
-    out.answer.push('S' + (i + 1) + '(x) = ' + (parts.filter(Boolean).join(' + ').replace(/\+ -/g, '- ') || '0') + '    for ' + xs[i].toString() + ' \u2264 x \u2264 ' + xs[i + 1].toString());
+    out.answer.push('S' + (i + 1) + '(x) = ' + (parts.filter(Boolean).join(' + ').replace(/\+ -/g, '- ') || '0') + '    for ' + xs[i].toString() + ' ≤ x ≤ ' + xs[i + 1].toString());
   }
-  out.work.push('Natural cubic spline: continuous with continuous first and second derivatives, and S\u2033 = 0 at both ends');
+  out.work.push('Natural cubic spline: continuous with continuous first and second derivatives, and S″ = 0 at both ends');
   if (n.args[2]) {
     const x0 = constQ(n.args[2]);
     const p = pieces.find((pc) => x0.sub(pc.x0).sign() >= 0 && pc.x1.sub(x0).sign() >= 0);
@@ -14320,12 +14320,12 @@ defCmd('numdiff numericaldifferentiation finitedifference', (n) => {
   const second = (f(x0 + h) - 2 * f(x0) + f(x0 - h)) / (h * h);
   const exact2 = evalAt(simp(diffS(diffS(S, v), v)), v, x0);
   const out = newOut();
-  out.answer.push("central difference: f'(" + fmtNum(x0) + ') \u2248 ' + fmtNum(ctr) + '   (exact ' + fmtNum(exact) + ', error ' + fmtNum(Math.abs(ctr - exact)) + ')');
-  out.work.push('forward  (f(x+h) \u2212 f(x))/h = ' + fmtNum(fwd) + ',  error ' + fmtNum(Math.abs(fwd - exact)));
-  out.work.push('backward (f(x) \u2212 f(x\u2212h))/h = ' + fmtNum(bwd) + ',  error ' + fmtNum(Math.abs(bwd - exact)));
-  out.work.push('central  (f(x+h) \u2212 f(x\u2212h))/(2h) = ' + fmtNum(ctr) + ',  error ' + fmtNum(Math.abs(ctr - exact)));
-  out.work.push('five-point  (\u2212f(x+2h) + 8f(x+h) \u2212 8f(x\u2212h) + f(x\u22122h))/(12h) = ' + fmtNum(five) + ',  error ' + fmtNum(Math.abs(five - exact)));
-  out.work.push("second derivative (f(x+h) \u2212 2f(x) + f(x\u2212h))/h\u00b2 = " + fmtNum(second) + ' (exact ' + fmtNum(exact2) + ')');
+  out.answer.push("central difference: f'(" + fmtNum(x0) + ') ≈ ' + fmtNum(ctr) + '   (exact ' + fmtNum(exact) + ', error ' + fmtNum(Math.abs(ctr - exact)) + ')');
+  out.work.push('forward  (f(x+h) − f(x))/h = ' + fmtNum(fwd) + ',  error ' + fmtNum(Math.abs(fwd - exact)));
+  out.work.push('backward (f(x) − f(x−h))/h = ' + fmtNum(bwd) + ',  error ' + fmtNum(Math.abs(bwd - exact)));
+  out.work.push('central  (f(x+h) − f(x−h))/(2h) = ' + fmtNum(ctr) + ',  error ' + fmtNum(Math.abs(ctr - exact)));
+  out.work.push('five-point  (−f(x+2h) + 8f(x+h) − 8f(x−h) + f(x−2h))/(12h) = ' + fmtNum(five) + ',  error ' + fmtNum(Math.abs(five - exact)));
+  out.work.push("second derivative (f(x+h) − 2f(x) + f(x−h))/h² = " + fmtNum(second) + ' (exact ' + fmtNum(exact2) + ')');
   out.value = { num: ctr };
   return out;
 });
@@ -14362,7 +14362,7 @@ function paramVar(comps, hintNode) {
   if (!vs.size) return 't';
   throw new MathError('say which letter is the parameter (found ' + Array.from(vs).sort().join(', ') + ')');
 }
-/** sqrt of a sum of squares, with perfect-square factors taken out:  sqrt(4t\u00b2 + 9t\u2074) = |t|\u00b7sqrt(4 + 9t\u00b2),  sqrt(2 + 2cos t) = 2|cos(t/2)|. */
+/** sqrt of a sum of squares, with perfect-square factors taken out:  sqrt(4t² + 9t⁴) = |t|·sqrt(4 + 9t²),  sqrt(2 + 2cos t) = 2|cos(t/2)|. */
 function sqrtParts(R, v) {
   let e = simp(expandS(R));
   try {
@@ -14383,7 +14383,7 @@ function sqrtParts(R, v) {
     });
     if (outside.length) return { outside: simp(sMul(outside)), inside: simp(sMul([sN(fp.content)].concat(inside))) };
   }
-  // half-angle:  A + A cos u = 2A cos\u00b2(u/2),  A \u2212 A cos u = 2A sin\u00b2(u/2)
+  // half-angle:  A + A cos u = 2A cos²(u/2),  A − A cos u = 2A sin²(u/2)
   const terms = termsOf(e);
   if (terms.length === 2) {
     const [c0, c1] = terms.map((tm) => splitCoef(tm));
@@ -14509,7 +14509,7 @@ defCmd('paramdiff parametricdiff dydxparam', (n) => {
   const second = simp(sDiv(simp(diffS(slope, t)), dx));
   const out = newOut();
   out.answer.push('dy/dx = (dy/d' + t + ')/(dx/d' + t + ') = ' + fmtS(slope));
-  out.answer.push('d\u00b2y/dx\u00b2 = (d/d' + t + ' (dy/dx))/(dx/d' + t + ') = ' + fmtS(second));
+  out.answer.push('d²y/dx² = (d/d' + t + ' (dy/dx))/(dx/d' + t + ') = ' + fmtS(second));
   out.work.push('dx/d' + t + ' = ' + fmtS(dx) + ',  dy/d' + t + ' = ' + fmtS(dy));
   if (n.args[3]) {
     const t0 = geoVal(n.args[3]);
@@ -14521,7 +14521,7 @@ defCmd('paramdiff parametricdiff dydxparam', (n) => {
       out.answer.push('at ' + t + ' = ' + fmtS(t0) + ': the point is (' + fmtS(px) + ', ' + fmtS(py) + ') and the tangent is vertical (dx/d' + t + ' = 0)');
     } else {
       const m = at(slope);
-      out.answer.push('at ' + t + ' = ' + fmtS(t0) + ': the point is (' + fmtS(px) + ', ' + fmtS(py) + '), slope = ' + symText(m) + ', d\u00b2y/dx\u00b2 = ' + symText(at(second)));
+      out.answer.push('at ' + t + ' = ' + fmtS(t0) + ': the point is (' + fmtS(px) + ', ' + fmtS(py) + '), slope = ' + symText(m) + ', d²y/dx² = ' + symText(at(second)));
       if (m.k === 'n') out.answer.push('tangent line: y = ' + fmtS(simp(expandS(sAdd([sMul([m, sV('x')]), sSub(py, sMul([m, px]))])))));
     }
   }
@@ -14556,7 +14556,7 @@ defCmd('paramlength curvelength parametriclength', (n) => {
   const d = vDiffS(comps, t);
   const R = simp(sAdd(d.map(sq)));
   const out = newOut();
-  out.work.push('L = \u222b \u221a((dx/d' + t + ')\u00b2 + (dy/d' + t + ')\u00b2' + (comps.length === 3 ? ' + (dz/d' + t + ')\u00b2' : '') + ') d' + t + ' from ' + intLimitsText(a, b) + ',  velocity = ' + vecText(d));
+  out.work.push('L = ∫ √((dx/d' + t + ')² + (dy/d' + t + ')²' + (comps.length === 3 ? ' + (dz/d' + t + ')²' : '') + ') d' + t + ' from ' + intLimitsText(a, b) + ',  velocity = ' + vecText(d));
   outLineFor('arc length', sqrtIntegral(R, t, a, b), out);
   return out;
 });
@@ -14566,7 +14566,7 @@ defCmd('paramarea areaunderparam', (n) => {
   const ys = fromAst(n.args[1]);
   const t = paramVar([xs, ys], n.args[2]);
   const out = newOut();
-  out.work.push('A = \u222b y\u00b7(dx/d' + t + ') d' + t + ' from ' + intLimitsText(bnd(n.args[3]), bnd(n.args[4])) + ',  dx/d' + t + ' = ' + fmtS(simp(diffS(xs, t))));
+  out.work.push('A = ∫ y·(dx/d' + t + ') d' + t + ' from ' + intLimitsText(bnd(n.args[3]), bnd(n.args[4])) + ',  dx/d' + t + ' = ' + fmtS(simp(diffS(xs, t))));
   outLineFor('area under the curve', integralValue(simp(sMul([ys, diffS(xs, t)])), t, bnd(n.args[3]), bnd(n.args[4])), out);
   out.notes.push('This is the signed area between the curve and the x-axis (negative where the curve runs right-to-left or below the axis).');
   return out;
@@ -14580,26 +14580,26 @@ function polarArgs(n, usage, lo, hi) {
   return { r, t };
 }
 defCmd('polararea areapolar', (n) => {
-  const { r, t } = polarArgs(n, 'r(\u03b8), the angle variable and the limits a, b: polararea(1 + cos(t), t, 0, 2*pi)', 4, 4);
+  const { r, t } = polarArgs(n, 'r(θ), the angle variable and the limits a, b: polararea(1 + cos(t), t, 0, 2*pi)', 4, 4);
   const a = bnd(n.args[2]);
   const b = bnd(n.args[3]);
   const out = newOut();
-  out.work.push('A = \u00bd \u222b r\u00b2 d' + t + ' from ' + intLimitsText(a, b) + ',  r = ' + fmtS(simp(r)));
+  out.work.push('A = ½ ∫ r² d' + t + ' from ' + intLimitsText(a, b) + ',  r = ' + fmtS(simp(r)));
   outLineFor('area', integralValue(simp(sMul([sN(new Q(1n, 2n)), sq(r)])), t, a, b), out);
   return out;
 });
 defCmd('polarlength polararclength', (n) => {
-  const { r, t } = polarArgs(n, 'r(\u03b8), the angle variable and the limits a, b: polarlength(1 + cos(t), t, 0, 2*pi)', 4, 4);
+  const { r, t } = polarArgs(n, 'r(θ), the angle variable and the limits a, b: polarlength(1 + cos(t), t, 0, 2*pi)', 4, 4);
   const a = bnd(n.args[2]);
   const b = bnd(n.args[3]);
   const R = simp(sAdd([sq(r), sq(diffS(r, t))]));
   const out = newOut();
-  out.work.push('L = \u222b \u221a(r\u00b2 + (dr/d' + t + ')\u00b2) d' + t + ' from ' + intLimitsText(a, b) + ',  r\u00b2 + r\'\u00b2 = ' + fmtS(R));
+  out.work.push('L = ∫ √(r² + (dr/d' + t + ')²) d' + t + ' from ' + intLimitsText(a, b) + ',  r² + r\'² = ' + fmtS(R));
   outLineFor('arc length', sqrtIntegral(R, t, a, b), out);
   return out;
 });
 defCmd('polarslope polardiff', (n) => {
-  const { r, t } = polarArgs(n, 'r(\u03b8), the angle variable and optionally \u03b8\u2080: polarslope(1 + cos(t), t, pi/2)', 2, 3);
+  const { r, t } = polarArgs(n, 'r(θ), the angle variable and optionally θ₀: polarslope(1 + cos(t), t, pi/2)', 2, 3);
   const dr = simp(diffS(r, t));
   const st = sFn('sin', [sV(t)]);
   const ct = sFn('cos', [sV(t)]);
@@ -14614,7 +14614,7 @@ defCmd('polarslope polardiff', (n) => {
       return x;
     }
   };
-  out.answer.push('dy/dx = (r\' sin ' + t + ' + r cos ' + t + ')/(r\' cos ' + t + ' \u2212 r sin ' + t + ') = ' + fmtS(simp(sDiv(tidy(num), tidy(den)))));
+  out.answer.push('dy/dx = (r\' sin ' + t + ' + r cos ' + t + ')/(r\' cos ' + t + ' − r sin ' + t + ') = ' + fmtS(simp(sDiv(tidy(num), tidy(den)))));
   out.work.push('x = r cos ' + t + ', y = r sin ' + t + ';  r = ' + fmtS(simp(r)) + ',  r\' = ' + fmtS(dr));
   if (n.args[2]) {
     const t0 = geoVal(n.args[2]);
@@ -14629,13 +14629,13 @@ defCmd('polarslope polardiff', (n) => {
 
 // ---- coordinate systems -------------------------------------------------------------------------------------------------------------------------------------------
 function angleText(theta) {
-  // radians as a rational multiple of \u03c0 when it is one
+  // radians as a rational multiple of π when it is one
   const fr = toFraction(theta / Math.PI, 360);
   if (fr && Math.abs(fr.p / fr.q - theta / Math.PI) < 1e-12) {
     const q = new Q(BigInt(fr.p), BigInt(fr.q));
-    return fmtS(simp(sMul([sN(q), S_PI]))) + ' (' + fmtNum((theta * 180) / Math.PI) + '\u00b0)';
+    return fmtS(simp(sMul([sN(q), S_PI]))) + ' (' + fmtNum((theta * 180) / Math.PI) + '°)';
   }
-  return fmtNum(theta) + ' rad (' + fmtNum((theta * 180) / Math.PI) + '\u00b0)';
+  return fmtNum(theta) + ' rad (' + fmtNum((theta * 180) / Math.PI) + '°)';
 }
 function angleS(theta) {
   const fr = toFraction(theta / Math.PI, 360);
@@ -14649,19 +14649,19 @@ defCmd('topolar rect2polar cartesiantopolar', (n) => {
   const r = simp(sSqrt(simp(expandS(sAdd([sq(x), sq(y)])))));
   const th = Math.atan2(numS(y, {}), numS(x, {}));
   const out = newOut();
-  out.answer.push('r = ' + fmtS(r) + ',  \u03b8 = ' + angleText(th));
-  if (th < 0) out.work.push('The same point has \u03b8 = ' + angleText(th + 2 * Math.PI) + ' (angle measured from 0 to 2\u03c0).');
-  out.work.push('r = \u221a(x\u00b2 + y\u00b2),  \u03b8 = atan2(y, x)');
+  out.answer.push('r = ' + fmtS(r) + ',  θ = ' + angleText(th));
+  if (th < 0) out.work.push('The same point has θ = ' + angleText(th + 2 * Math.PI) + ' (angle measured from 0 to 2π).');
+  out.work.push('r = √(x² + y²),  θ = atan2(y, x)');
   out.value = { S: r };
   return out;
 });
 defCmd('torect polar2rect polartocartesian', (n) => {
-  needArgs(n, 2, 2, 'r and \u03b8: torect(2, pi/3)');
+  needArgs(n, 2, 2, 'r and θ: torect(2, pi/3)');
   const r = geoVal(n.args[0]);
   const th = geoVal(n.args[1]);
   const out = newOut();
   out.answer.push('(x, y) = (' + fmtS(simp(sMul([r, sFn('cos', [th])]))) + ', ' + fmtS(simp(sMul([r, sFn('sin', [th])]))) + ')');
-  out.work.push('x = r cos \u03b8,  y = r sin \u03b8');
+  out.work.push('x = r cos θ,  y = r sin θ');
   return out;
 });
 defCmd('tocylindrical cartesiantocylindrical', (n) => {
@@ -14670,16 +14670,16 @@ defCmd('tocylindrical cartesiantocylindrical', (n) => {
   const r = simp(sSqrt(simp(expandS(sAdd([sq(x), sq(y)])))));
   const th = Math.atan2(numS(y, {}), numS(x, {}));
   const out = newOut();
-  out.answer.push('(r, \u03b8, z) = (' + fmtS(r) + ', ' + angleText(th) + ', ' + fmtS(z) + ')');
-  out.work.push('r = \u221a(x\u00b2 + y\u00b2),  \u03b8 = atan2(y, x),  z = z');
+  out.answer.push('(r, θ, z) = (' + fmtS(r) + ', ' + angleText(th) + ', ' + fmtS(z) + ')');
+  out.work.push('r = √(x² + y²),  θ = atan2(y, x),  z = z');
   return out;
 });
 defCmd('fromcylindrical cylindricaltocartesian', (n) => {
-  needArgs(n, 3, 3, 'r, \u03b8, z: fromcylindrical(2, pi/6, 1)');
+  needArgs(n, 3, 3, 'r, θ, z: fromcylindrical(2, pi/6, 1)');
   const [r, th, z] = n.args.map(geoVal);
   const out = newOut();
   out.answer.push('(x, y, z) = (' + fmtS(simp(sMul([r, sFn('cos', [th])]))) + ', ' + fmtS(simp(sMul([r, sFn('sin', [th])]))) + ', ' + fmtS(z) + ')');
-  out.work.push('x = r cos \u03b8,  y = r sin \u03b8');
+  out.work.push('x = r cos θ,  y = r sin θ');
   return out;
 });
 defCmd('tospherical cartesiantospherical', (n) => {
@@ -14691,17 +14691,17 @@ defCmd('tospherical cartesiantospherical', (n) => {
   const phi = Math.acos(numS(z, {}) / rv);
   const th = Math.atan2(numS(y, {}), numS(x, {}));
   const out = newOut();
-  out.answer.push('(\u03c1, \u03c6, \u03b8) = (' + fmtS(rho) + ', ' + angleText(phi) + ', ' + angleText(th) + ')');
-  out.work.push('\u03c1 = \u221a(x\u00b2 + y\u00b2 + z\u00b2),  \u03c6 = arccos(z/\u03c1) is the angle from the positive z-axis,  \u03b8 = atan2(y, x)');
+  out.answer.push('(ρ, φ, θ) = (' + fmtS(rho) + ', ' + angleText(phi) + ', ' + angleText(th) + ')');
+  out.work.push('ρ = √(x² + y² + z²),  φ = arccos(z/ρ) is the angle from the positive z-axis,  θ = atan2(y, x)');
   return out;
 });
 defCmd('fromspherical sphericaltocartesian', (n) => {
-  needArgs(n, 3, 3, '\u03c1, \u03c6, \u03b8: fromspherical(2, pi/3, pi/4)');
+  needArgs(n, 3, 3, 'ρ, φ, θ: fromspherical(2, pi/3, pi/4)');
   const [rho, phi, th] = n.args.map(geoVal);
   const out = newOut();
   const sp = sFn('sin', [phi]);
   out.answer.push('(x, y, z) = (' + fmtS(simp(sMul([rho, sp, sFn('cos', [th])]))) + ', ' + fmtS(simp(sMul([rho, sp, sFn('sin', [th])]))) + ', ' + fmtS(simp(sMul([rho, sFn('cos', [phi])]))) + ')');
-  out.work.push('x = \u03c1 sin \u03c6 cos \u03b8,  y = \u03c1 sin \u03c6 sin \u03b8,  z = \u03c1 cos \u03c6');
+  out.work.push('x = ρ sin φ cos θ,  y = ρ sin φ sin θ,  z = ρ cos φ');
   return out;
 });
 
@@ -14730,7 +14730,7 @@ defCmd('velocity acceleration speed motion', (n) => {
     const s0 = atT(sp, t, t0);
     if (!isNumVal(s0, 0)) out.work.push('unit tangent T = ' + vecText(vv.map((c) => simp(sDiv(c, s0)))));
     const at = simp(sDiv(vDotS(vv, aa), s0));
-    if (!isNumVal(s0, 0)) out.work.push('tangential acceleration a_T = (v\u00b7a)/|v| = ' + symText(at));
+    if (!isNumVal(s0, 0)) out.work.push('tangential acceleration a_T = (v·a)/|v| = ' + symText(at));
   }
   out.value = { S: sp };
   return out;
@@ -14751,11 +14751,11 @@ defCmd('curvature', (n) => {
     const r = curveOf(n.args[0], 'curvature');
     const t = paramVar(r, n.args[1]);
     const { kappa } = curvatureFor(r, t);
-    out.answer.push('\u03ba = |r\' \u00d7 r\'\'|/|r\'|\u00b3 = ' + fmtS(kappa));
+    out.answer.push('κ = |r\' × r\'\'|/|r\'|³ = ' + fmtS(kappa));
     if (n.args[2]) {
       const t0 = geoVal(n.args[2]);
       const k0 = atT(kappa, t, t0);
-      out.answer.push('at ' + t + ' = ' + fmtS(t0) + ': \u03ba = ' + symText(k0) + (isNumVal(k0, 0) ? '' : ',  radius of curvature R = 1/\u03ba = ' + symText(simp(sPow(k0, SM1)))));
+      out.answer.push('at ' + t + ' = ' + fmtS(t0) + ': κ = ' + symText(k0) + (isNumVal(k0, 0) ? '' : ',  radius of curvature R = 1/κ = ' + symText(simp(sPow(k0, SM1)))));
     }
     out.value = { S: kappa };
     return out;
@@ -14765,12 +14765,12 @@ defCmd('curvature', (n) => {
   const d1 = simp(diffS(f, x));
   const d2 = simp(diffS(d1, x));
   const kappa = simp(sDiv(sFn('abs', [d2]), sPow(simp(sAdd([S1, sq(d1)])), new Q(3n, 2n) && sN(new Q(3n, 2n)))));
-  out.answer.push('\u03ba = |f\u2033|/(1 + f\u2032\u00b2)^(3/2) = ' + fmtS(kappa));
-  out.work.push('f\u2032 = ' + fmtS(d1) + ',  f\u2033 = ' + fmtS(d2));
+  out.answer.push('κ = |f″|/(1 + f′²)^(3/2) = ' + fmtS(kappa));
+  out.work.push('f′ = ' + fmtS(d1) + ',  f″ = ' + fmtS(d2));
   const at = n.args[2] ? geoVal(n.args[2]) : null;
   if (at) {
     const k0 = simp(subsS(kappa, x, at));
-    out.answer.push('at ' + x + ' = ' + fmtS(at) + ': \u03ba = ' + symText(k0) + (isNumVal(k0, 0) ? '' : ',  radius of curvature R = 1/\u03ba = ' + symText(simp(sPow(k0, SM1)))));
+    out.answer.push('at ' + x + ' = ' + fmtS(at) + ': κ = ' + symText(k0) + (isNumVal(k0, 0) ? '' : ',  radius of curvature R = 1/κ = ' + symText(simp(sPow(k0, SM1)))));
   }
   out.value = { S: kappa };
   return out;
@@ -14789,7 +14789,7 @@ defCmd('tnb frenet frenetframe', (n) => {
   const B = unit(cr, crn).map(trigTidy);
   const N = vCrossS(B, T).map(trigTidy);
   const symbolic = () => {
-    out.work.push('formulas: T = ' + vecText(T) + ';  N = ' + vecText(N) + ';  B = ' + vecText(B) + ';  \u03ba = ' + fmtS(kappa) + ';  \u03c4 = ' + fmtS(tau));
+    out.work.push('formulas: T = ' + vecText(T) + ';  N = ' + vecText(N) + ';  B = ' + vecText(B) + ';  κ = ' + fmtS(kappa) + ';  τ = ' + fmtS(tau));
   };
   if (n.args[2]) {
     const t0 = geoVal(n.args[2]);
@@ -14798,15 +14798,15 @@ defCmd('tnb frenet frenetframe', (n) => {
     out.answer.push('T = ' + vecText(g(T)));
     out.answer.push('N = ' + vecText(g(N)));
     out.answer.push('B = ' + vecText(g(B)));
-    out.answer.push('curvature \u03ba = ' + symText(atT(kappa, t, t0)) + ',  torsion \u03c4 = ' + symText(atT(tau, t, t0)));
+    out.answer.push('curvature κ = ' + symText(atT(kappa, t, t0)) + ',  torsion τ = ' + symText(atT(tau, t, t0)));
     if ((vecText(T) + vecText(N) + vecText(B)).length < 400) symbolic();
   } else {
     out.answer.push('T = ' + vecText(T));
     out.answer.push('N = ' + vecText(N));
     out.answer.push('B = ' + vecText(B));
-    out.answer.push('curvature \u03ba = ' + fmtS(kappa) + ',  torsion \u03c4 = ' + fmtS(tau));
+    out.answer.push('curvature κ = ' + fmtS(kappa) + ',  torsion τ = ' + fmtS(tau));
   }
-  out.work.push('T = r\'/|r\'|,  B = (r\' \u00d7 r\'\')/|r\' \u00d7 r\'\'|,  N = B \u00d7 T,  \u03ba = |r\' \u00d7 r\'\'|/|r\'|\u00b3,  \u03c4 = (r\' \u00d7 r\'\')\u00b7r\'\'\'/|r\' \u00d7 r\'\'|\u00b2');
+  out.work.push('T = r\'/|r\'|,  B = (r\' × r\'\')/|r\' × r\'\'|,  N = B × T,  κ = |r\' × r\'\'|/|r\'|³,  τ = (r\' × r\'\')·r\'\'\'/|r\' × r\'\'|²');
   return out;
 });
 
@@ -14830,15 +14830,15 @@ defCmd('lineintegral lineint pathintegral', (n) => {
     if (F.length !== r.length) throw new MathError('the field and the curve must have the same number of components');
     const Fr = F.map((c) => simp(subsMany(c, sub)));
     integrand = vDotS(Fr, v);
-    out.work.push('\u222b F\u00b7dr = \u222b F(r(' + t + '))\u00b7r\'(' + t + ') d' + t + ' from ' + intLimitsText(a, b) + ';  r\' = ' + vecText(v) + ',  F(r(' + t + ')) = ' + vecText(Fr));
-    outLineFor('\u222b F\u00b7dr', integralValue(simp(expandS(integrand)), t, a, b), out);
+    out.work.push('∫ F·dr = ∫ F(r(' + t + '))·r\'(' + t + ') d' + t + ' from ' + intLimitsText(a, b) + ';  r\' = ' + vecText(v) + ',  F(r(' + t + ')) = ' + vecText(Fr));
+    outLineFor('∫ F·dr', integralValue(simp(expandS(integrand)), t, a, b), out);
   } else {
     const f = simp(subsMany(fromAst(n.args[0]), sub));
     const sp = speedS(v, t);
-    out.work.push('\u222b f ds = \u222b f(r(' + t + '))\u00b7|r\'(' + t + ')| d' + t + ' from ' + intLimitsText(a, b) + ';  |r\'| = ' + fmtS(sp));
+    out.work.push('∫ f ds = ∫ f(r(' + t + '))·|r\'(' + t + ')| d' + t + ' from ' + intLimitsText(a, b) + ';  |r\'| = ' + fmtS(sp));
     const R = simp(sMul([sq(f), simp(sAdd(v.map(sq)))]));
-    // sqrt(f\u00b2 \u00b7 |r'|\u00b2) would lose the sign of f, so integrate f\u00b7|r'| directly
-    outLineFor('\u222b f ds', integralValue(simp(sMul([f, sp])), t, a, b), out);
+    // sqrt(f² · |r'|²) would lose the sign of f, so integrate f·|r'| directly
+    outLineFor('∫ f ds', integralValue(simp(sMul([f, sp])), t, a, b), out);
     void R;
   }
   return out;
@@ -14855,8 +14855,8 @@ defCmd('potential potentialfunction conservative', (n) => {
       const d1 = simp(expandS(diffS(F[i], names[j])));
       const d2 = simp(expandS(diffS(F[j], names[i])));
       if (!sameFunction(d1, d2)) {
-        out.answer.push('not conservative: \u2202' + 'PQR'[i] + '/\u2202' + names[j] + ' = ' + fmtS(d1) + ' but \u2202' + 'PQR'[j] + '/\u2202' + names[i] + ' = ' + fmtS(d2));
-        out.work.push('A conservative field must satisfy \u2202P/\u2202y = \u2202Q/\u2202x (and the same for the other pairs).');
+        out.answer.push('not conservative: ∂' + 'PQR'[i] + '/∂' + names[j] + ' = ' + fmtS(d1) + ' but ∂' + 'PQR'[j] + '/∂' + names[i] + ' = ' + fmtS(d2));
+        out.work.push('A conservative field must satisfy ∂P/∂y = ∂Q/∂x (and the same for the other pairs).');
         return out;
       }
     }
@@ -14873,11 +14873,11 @@ defCmd('potential potentialfunction conservative', (n) => {
     f = sAdd([f, g]);
   }
   f = simp(expandS(f));
-  out.answer.push('f = ' + fmtS(f) + ' + C   (\u2207f = F)');
-  out.work.push('curl F = 0, so F is conservative: f_x = P gives f = \u222bP dx + g(y, z), then g is found from the other components');
+  out.answer.push('f = ' + fmtS(f) + ' + C   (∇f = F)');
+  out.work.push('curl F = 0, so F is conservative: f_x = P gives f = ∫P dx + g(y, z), then g is found from the other components');
   const okAll = F.every((c, i) => sameFunction(simp(diffS(f, names[i])), c));
   out.check = okAll ? 'the gradient of f equals F' : null;
-  out.notes.push('For a conservative field the line integral from A to B is f(B) \u2212 f(A), whatever the path.');
+  out.notes.push('For a conservative field the line integral from A to B is f(B) − f(A), whatever the path.');
   out.value = { S: f };
   return out;
 });
@@ -14911,22 +14911,22 @@ function distPair(names, usage, nParams, pdf, cdf, label) {
   });
   if (cdf) {
     defCmd(names.cdf, (n) => {
-      needArgs(n, 1 + nParams, 2 + nParams, usage + ' (a second x gives P(x1 \u2264 X \u2264 x2))');
+      needArgs(n, 1 + nParams, 2 + nParams, usage + ' (a second x gives P(x1 ≤ X ≤ x2))');
       const a = n.args.map(numArg);
       if (a.length === 2 + nParams) {
         const p = a.slice(2);
-        return pOut(newOut(), 'P(' + fmtNum(a[0]) + ' \u2264 X \u2264 ' + fmtNum(a[1]) + ')', cdf(a[1], ...p) - cdf(a[0], ...p));
+        return pOut(newOut(), 'P(' + fmtNum(a[0]) + ' ≤ X ≤ ' + fmtNum(a[1]) + ')', cdf(a[1], ...p) - cdf(a[0], ...p));
       }
-      return pOut(newOut(), 'P(X \u2264 ' + fmtNum(a[0]) + ')', cdf(a[0], ...a.slice(1)));
+      return pOut(newOut(), 'P(X ≤ ' + fmtNum(a[0]) + ')', cdf(a[0], ...a.slice(1)));
     });
   }
 }
 distPair({ pdf: 'unifpdf uniformpdf', cdf: 'unifcdf uniformcdf' }, 'x, a, b (uniform on [a, b])', 2, (x, a, b) => (x >= a && x <= b ? 1 / (b - a) : 0), (x, a, b) => (b <= a ? NaN : x <= a ? 0 : x >= b ? 1 : (x - a) / (b - a)), 'uniform');
-distPair({ pdf: 'exppdf exponentialpdf', cdf: null }, 'x and the rate \u03bb: exppdf(x, rate)', 1, (x, lam) => (x < 0 ? 0 : posArg(lam, '\u03bb') * Math.exp(-lam * x)), null, 'exponential');
-distPair({ pdf: 'gammapdf', cdf: 'gammacdf' }, 'x, shape k and scale \u03b8 (\u03b8 = 1/rate)', 2, (x, k, th) => gammaPdf(x, posArg(k, 'the shape'), posArg(th, 'the scale')), (x, k, th) => igammaP(posArg(k, 'the shape'), Math.max(x, 0) / posArg(th, 'the scale')), 'gamma');
+distPair({ pdf: 'exppdf exponentialpdf', cdf: null }, 'x and the rate λ: exppdf(x, rate)', 1, (x, lam) => (x < 0 ? 0 : posArg(lam, 'λ') * Math.exp(-lam * x)), null, 'exponential');
+distPair({ pdf: 'gammapdf', cdf: 'gammacdf' }, 'x, shape k and scale θ (θ = 1/rate)', 2, (x, k, th) => gammaPdf(x, posArg(k, 'the shape'), posArg(th, 'the scale')), (x, k, th) => igammaP(posArg(k, 'the shape'), Math.max(x, 0) / posArg(th, 'the scale')), 'gamma');
 distPair({ pdf: 'betapdf', cdf: 'betacdf' }, 'x in [0, 1], a and b', 2, (x, a, b) => betaPdf(x, posArg(a, 'a'), posArg(b, 'b')), (x, a, b) => ibeta(Math.min(Math.max(x, 0), 1), posArg(a, 'a'), posArg(b, 'b')), 'beta');
-distPair({ pdf: 'weibullpdf', cdf: 'weibullcdf' }, 'x, shape k and scale \u03bb', 2, (x, k, lam) => (x < 0 ? 0 : (posArg(k, 'k') / lam) * (x / lam) ** (k - 1) * Math.exp(-((x / lam) ** k))), (x, k, lam) => (x <= 0 ? 0 : 1 - Math.exp(-((x / posArg(lam, '\u03bb')) ** posArg(k, 'k')))), 'Weibull');
-distPair({ pdf: 'lognormpdf lognormalpdf', cdf: 'lognormcdf lognormalcdf' }, 'x, \u03bc and \u03c3 of ln X', 2, (x, mu, sg) => (x <= 0 ? 0 : normPdf((Math.log(x) - mu) / posArg(sg, '\u03c3')) / (x * sg)), (x, mu, sg) => (x <= 0 ? 0 : normCdf((Math.log(x) - mu) / posArg(sg, '\u03c3'))), 'lognormal');
+distPair({ pdf: 'weibullpdf', cdf: 'weibullcdf' }, 'x, shape k and scale λ', 2, (x, k, lam) => (x < 0 ? 0 : (posArg(k, 'k') / lam) * (x / lam) ** (k - 1) * Math.exp(-((x / lam) ** k))), (x, k, lam) => (x <= 0 ? 0 : 1 - Math.exp(-((x / posArg(lam, 'λ')) ** posArg(k, 'k')))), 'Weibull');
+distPair({ pdf: 'lognormpdf lognormalpdf', cdf: 'lognormcdf lognormalcdf' }, 'x, μ and σ of ln X', 2, (x, mu, sg) => (x <= 0 ? 0 : normPdf((Math.log(x) - mu) / posArg(sg, 'σ')) / (x * sg)), (x, mu, sg) => (x <= 0 ? 0 : normCdf((Math.log(x) - mu) / posArg(sg, 'σ'))), 'lognormal');
 distPair({ pdf: 'tpdf', cdf: null }, 't and the degrees of freedom', 1, (x, df) => tPdf(x, posArg(df, 'df')), null, 't');
 distPair({ pdf: 'chi2pdf chisqpdf', cdf: null }, 'x and the degrees of freedom', 1, (x, df) => chi2Pdf(x, posArg(df, 'df')), null, 'chi-square');
 distPair({ pdf: 'fpdf', cdf: null }, 'x and the two degrees of freedom', 2, (x, d1, d2) => fPdf(x, posArg(d1, 'df1'), posArg(d2, 'df2')), null, 'F');
@@ -14934,13 +14934,13 @@ defCmd('invf', (n) => {
   needArgs(n, 3, 3, 'the left-tail probability and the two degrees of freedom');
   const [p, d1, d2] = n.args.map(numArg);
   const out = newOut();
-  out.work.push('The f with P(F \u2264 f) = ' + fmtNum(p) + ' (for a right-tail area \u03b1 use 1 \u2212 \u03b1)');
+  out.work.push('The f with P(F ≤ f) = ' + fmtNum(p) + ' (for a right-tail area α use 1 − α)');
   return numOut(out, invCdf((f) => fCdf(f, d1, d2), p, 0, 5), 'f');
 });
 defCmd('invgamma', (n) => {
-  needArgs(n, 3, 3, 'the left-tail probability, the shape k and the scale \u03b8');
+  needArgs(n, 3, 3, 'the left-tail probability, the shape k and the scale θ');
   const [p, k, th] = n.args.map(numArg);
-  return numOut(newOut(), invCdf((x) => igammaP(posArg(k, 'k'), Math.max(x, 0) / posArg(th, '\u03b8')), p, 0, k * th + 5), 'x');
+  return numOut(newOut(), invCdf((x) => igammaP(posArg(k, 'k'), Math.max(x, 0) / posArg(th, 'θ')), p, 0, k * th + 5), 'x');
 });
 defCmd('invbeta', (n) => {
   needArgs(n, 3, 3, 'the left-tail probability, a and b');
@@ -14957,10 +14957,10 @@ defCmd('invbeta', (n) => {
   return numOut(out, (lo + hi) / 2, 'x');
 });
 defCmd('invexp invexponential', (n) => {
-  needArgs(n, 2, 2, 'the left-tail probability and the rate \u03bb');
+  needArgs(n, 2, 2, 'the left-tail probability and the rate λ');
   const [p, lam] = n.args.map(numArg);
   if (!(p > 0 && p < 1)) throw new MathError('the probability must be strictly between 0 and 1');
-  return numOut(newOut(), -Math.log(1 - p) / posArg(lam, '\u03bb'), 'x');
+  return numOut(newOut(), -Math.log(1 - p) / posArg(lam, 'λ'), 'x');
 });
 function negBinPmf(k, r, p) {
   return Math.exp(lgamma(k + r) - lgamma(k + 1) - lgamma(r) + r * Math.log(p) + k * Math.log(1 - p));
@@ -14968,18 +14968,18 @@ function negBinPmf(k, r, p) {
 defCmd('negbinpdf negbinomialpdf', (n) => {
   needArgs(n, 3, 3, 'k (the failures), r (the successes needed) and p: negbinpdf(3, 2, 0.5)');
   const [k, r, p] = n.args.map(numArg);
-  if (!Number.isInteger(k) || k < 0 || !Number.isInteger(r) || r < 1 || !(p > 0 && p <= 1)) throw new MathError('k \u2265 0 and r \u2265 1 must be whole numbers and 0 < p \u2264 1');
+  if (!Number.isInteger(k) || k < 0 || !Number.isInteger(r) || r < 1 || !(p > 0 && p <= 1)) throw new MathError('k ≥ 0 and r ≥ 1 must be whole numbers and 0 < p ≤ 1');
   const out = newOut();
-  out.work.push('P(X = k) = C(k + r \u2212 1, k)\u00b7p\u02b3\u00b7(1 \u2212 p)\u1d4f: k failures before the r-th success;  mean ' + fmtNum((r * (1 - p)) / p) + ', variance ' + fmtNum((r * (1 - p)) / (p * p)));
+  out.work.push('P(X = k) = C(k + r − 1, k)·pʳ·(1 − p)ᵏ: k failures before the r-th success;  mean ' + fmtNum((r * (1 - p)) / p) + ', variance ' + fmtNum((r * (1 - p)) / (p * p)));
   return pOut(out, 'P(X = ' + k + ')', negBinPmf(k, r, p));
 });
 defCmd('negbincdf negbinomialcdf', (n) => {
   needArgs(n, 3, 3, 'k, r and p');
   const [k, r, p] = n.args.map(numArg);
-  if (!Number.isInteger(k) || k < 0 || !Number.isInteger(r) || r < 1 || !(p > 0 && p <= 1)) throw new MathError('k \u2265 0 and r \u2265 1 must be whole numbers and 0 < p \u2264 1');
+  if (!Number.isInteger(k) || k < 0 || !Number.isInteger(r) || r < 1 || !(p > 0 && p <= 1)) throw new MathError('k ≥ 0 and r ≥ 1 must be whole numbers and 0 < p ≤ 1');
   let s = 0;
   for (let i = 0; i <= k; i++) s += negBinPmf(i, r, p);
-  return pOut(newOut(), 'P(X \u2264 ' + k + ')', Math.min(s, 1));
+  return pOut(newOut(), 'P(X ≤ ' + k + ')', Math.min(s, 1));
 });
 
 // ---- two-sample, paired, ANOVA, correlation, variance tests ---------------------------------------------------------------------------------------
@@ -15016,8 +15016,8 @@ function ttest2Cmd(pooled) {
   const t = (a.mean - b.mean) / se;
   const cdf = tCdf(t, df);
   const out = newOut();
-  out.work.push((pooled ? 'Pooled-variance t test: sp = ' + fmtNum(sp) + ', ' : 'Welch t test (unequal variances): ') + 'x\u0304\u2081 \u2212 x\u0304\u2082 = ' + fmtNum(a.mean - b.mean) + ',  SE = ' + fmtNum(se) + ',  df = ' + fmtNum(df) + (pooled ? '' : '  (use ttest2pooled for the equal-variance version)'));
-  return testOut(out, t, 't', 2 * (1 - tCdf(Math.abs(t), df)), cdf, 1 - cdf, 't = (x\u0304\u2081 \u2212 x\u0304\u2082)/SE');
+  out.work.push((pooled ? 'Pooled-variance t test: sp = ' + fmtNum(sp) + ', ' : 'Welch t test (unequal variances): ') + 'x̄₁ − x̄₂ = ' + fmtNum(a.mean - b.mean) + ',  SE = ' + fmtNum(se) + ',  df = ' + fmtNum(df) + (pooled ? '' : '  (use ttest2pooled for the equal-variance version)'));
+  return testOut(out, t, 't', 2 * (1 - tCdf(Math.abs(t), df)), cdf, 1 - cdf, 't = (x̄₁ − x̄₂)/SE');
   };
 }
 defCmd('ttest2 twosamplet', ttest2Cmd(false));
@@ -15030,7 +15030,7 @@ function tinterval2Cmd(pooled) {
   const { se, df } = welch(a, b, pooled);
   const t = invCdf((x) => tCdf(x, df), (1 + c) / 2, -5, 5);
   const out = newOut();
-  out.work.push((pooled ? 'pooled' : 'Welch') + ' df = ' + fmtNum(df) + ',  SE = ' + fmtNum(se) + ',  difference of means x\u0304\u2081 \u2212 x\u0304\u2082 = ' + fmtNum(a.mean - b.mean));
+  out.work.push((pooled ? 'pooled' : 'Welch') + ' df = ' + fmtNum(df) + ',  SE = ' + fmtNum(se) + ',  difference of means x̄₁ − x̄₂ = ' + fmtNum(a.mean - b.mean));
   return intervalOut(out, a.mean - b.mean, t * se, t, 't*', c);
   };
 }
@@ -15048,15 +15048,15 @@ defCmd('pairedt ttestpaired pairedttest', (n) => {
   const t = md / (sd / Math.sqrt(nn));
   const cdf = tCdf(t, df);
   const out = newOut();
-  out.work.push('differences d = first \u2212 second: ' + d.map((v) => v.toString()).join(', '));
+  out.work.push('differences d = first − second: ' + d.map((v) => v.toString()).join(', '));
   out.work.push('mean difference = ' + fmtNum(md) + ',  s_d = ' + fmtNum(sd) + ',  df = ' + df);
-  return testOut(out, t, 't', 2 * (1 - tCdf(Math.abs(t), df)), cdf, 1 - cdf, 't = d\u0304/(s_d/\u221an)');
+  return testOut(out, t, 't', 2 * (1 - tCdf(Math.abs(t), df)), cdf, 1 - cdf, 't = d̄/(s_d/√n)');
 });
 defCmd('ztest2', (n) => {
-  needArgs(n, 6, 6, 'm1, \u03c31, n1, m2, \u03c32, n2');
+  needArgs(n, 6, 6, 'm1, σ1, n1, m2, σ2, n2');
   const [m1, s1, n1, m2, s2, n2] = n.args.map(numArg);
   const z = (m1 - m2) / Math.sqrt((s1 * s1) / n1 + (s2 * s2) / n2);
-  return testOut(newOut(), z, 'z', 2 * normCdf(-Math.abs(z)), normCdf(z), 1 - normCdf(z), 'z = (x\u0304\u2081 \u2212 x\u0304\u2082)/\u221a(\u03c3\u2081\u00b2/n\u2081 + \u03c3\u2082\u00b2/n\u2082)');
+  return testOut(newOut(), z, 'z', 2 * normCdf(-Math.abs(z)), normCdf(z), 1 - normCdf(z), 'z = (x̄₁ − x̄₂)/√(σ₁²/n₁ + σ₂²/n₂)');
 });
 defCmd('prop2test twoproptest', (n) => {
   needArgs(n, 4, 4, 'x1, n1, x2, n2');
@@ -15065,7 +15065,7 @@ defCmd('prop2test twoproptest', (n) => {
   const p2 = x2 / n2;
   const pp = (x1 + x2) / (n1 + n2);
   const z = (p1 - p2) / Math.sqrt(pp * (1 - pp) * (1 / n1 + 1 / n2));
-  return testOut(newOut(), z, 'z', 2 * normCdf(-Math.abs(z)), normCdf(z), 1 - normCdf(z), 'p\u0302\u2081 = ' + fmtNum(p1) + ', p\u0302\u2082 = ' + fmtNum(p2) + ', pooled p\u0302 = ' + fmtNum(pp) + ';  z = (p\u0302\u2081 \u2212 p\u0302\u2082)/\u221a(p\u0302(1 \u2212 p\u0302)(1/n\u2081 + 1/n\u2082))');
+  return testOut(newOut(), z, 'z', 2 * normCdf(-Math.abs(z)), normCdf(z), 1 - normCdf(z), 'p̂₁ = ' + fmtNum(p1) + ', p̂₂ = ' + fmtNum(p2) + ', pooled p̂ = ' + fmtNum(pp) + ';  z = (p̂₁ − p̂₂)/√(p̂(1 − p̂)(1/n₁ + 1/n₂))');
 });
 defCmd('prop2interval twopropinterval', (n) => {
   needArgs(n, 5, 5, 'x1, n1, x2, n2 and the confidence level');
@@ -15075,7 +15075,7 @@ defCmd('prop2interval twopropinterval', (n) => {
   const p2 = x2 / n2;
   const z = invNorm((1 + c) / 2);
   const out = newOut();
-  out.work.push('p\u0302\u2081 \u2212 p\u0302\u2082 = ' + fmtNum(p1 - p2) + ';  margin = z*\u00b7\u221a(p\u0302\u2081(1 \u2212 p\u0302\u2081)/n\u2081 + p\u0302\u2082(1 \u2212 p\u0302\u2082)/n\u2082)');
+  out.work.push('p̂₁ − p̂₂ = ' + fmtNum(p1 - p2) + ';  margin = z*·√(p̂₁(1 − p̂₁)/n₁ + p̂₂(1 − p̂₂)/n₂)');
   return intervalOut(out, p1 - p2, z * Math.sqrt((p1 * (1 - p1)) / n1 + (p2 * (1 - p2)) / n2), z, 'z*', c);
 });
 defCmd('anova onewayanova', (n) => {
@@ -15108,7 +15108,7 @@ defCmd('anova onewayanova', (n) => {
   out.work.push('within        ' + qText(ssw).padEnd(16) + String(dfw).padEnd(6) + qText(msw));
   out.work.push('total         ' + qText(ssb.add(ssw)).padEnd(16) + String(N - 1));
   out.work.push('group means: ' + groups.map((g) => qText(sumQ(g).div(qInt(g.length)))).join(', ') + ';  grand mean ' + qText(grand));
-  out.notes.push('Reject H0 (all group means equal) when the p-value is below the significance level \u03b1.');
+  out.notes.push('Reject H0 (all group means equal) when the p-value is below the significance level α.');
   out.value = { num: p };
   return out;
 });
@@ -15124,7 +15124,7 @@ defCmd('corrtest correlationtest', (n) => {
   const cdf = tCdf(t, df);
   const out = newOut();
   out.work.push('r = ' + fmtNum(r) + ',  n = ' + nn);
-  return testOut(out, t, 't', 2 * (1 - tCdf(Math.abs(t), df)), cdf, 1 - cdf, 't = r\u221a(n \u2212 2)/\u221a(1 \u2212 r\u00b2),  df = n \u2212 2 = ' + df + ';  H0: \u03c1 = 0');
+  return testOut(out, t, 't', 2 * (1 - tCdf(Math.abs(t), df)), cdf, 1 - cdf, 't = r√(n − 2)/√(1 − r²),  df = n − 2 = ' + df + ';  H0: ρ = 0');
 });
 defCmd('varinterval sdinterval', (n) => {
   needArgs(n, 3, 3, 'the sample standard deviation s, n and the confidence level: varinterval(2.5, 20, 0.95)  (or [data] and the level)');
@@ -15145,21 +15145,21 @@ defCmd('varinterval sdinterval', (n) => {
   const lo = invCdf((x) => chi2Cdf(x, df), (1 - c) / 2, 0, df + 10);
   const hi = invCdf((x) => chi2Cdf(x, df), (1 + c) / 2, 0, df + 10);
   const out = newOut();
-  out.answer.push(fmtNum(c * 100) + '% confidence interval for \u03c3\u00b2: (' + fmtNum((df * s * s) / hi) + ', ' + fmtNum((df * s * s) / lo) + ')');
-  out.answer.push('for \u03c3: (' + fmtNum(Math.sqrt((df * s * s) / hi)) + ', ' + fmtNum(Math.sqrt((df * s * s) / lo)) + ')');
-  out.work.push('df = ' + df + ',  \u03c7\u00b2(left) = ' + fmtNum(lo) + ',  \u03c7\u00b2(right) = ' + fmtNum(hi) + ';  interval for \u03c3\u00b2 = ((n \u2212 1)s\u00b2/\u03c7\u00b2right, (n \u2212 1)s\u00b2/\u03c7\u00b2left)');
+  out.answer.push(fmtNum(c * 100) + '% confidence interval for σ²: (' + fmtNum((df * s * s) / hi) + ', ' + fmtNum((df * s * s) / lo) + ')');
+  out.answer.push('for σ: (' + fmtNum(Math.sqrt((df * s * s) / hi)) + ', ' + fmtNum(Math.sqrt((df * s * s) / lo)) + ')');
+  out.work.push('df = ' + df + ',  χ²(left) = ' + fmtNum(lo) + ',  χ²(right) = ' + fmtNum(hi) + ';  interval for σ² = ((n − 1)s²/χ²right, (n − 1)s²/χ²left)');
   return out;
 });
 defCmd('vartest chisqvartest', (n) => {
-  needArgs(n, 3, 3, 'the sample standard deviation s, n and the hypothesised \u03c30: vartest(2.5, 20, 2)');
+  needArgs(n, 3, 3, 'the sample standard deviation s, n and the hypothesised σ0: vartest(2.5, 20, 2)');
   const [s, nn, s0] = n.args.map(numArg);
   const df = nn - 1;
   const chi = (df * s * s) / (s0 * s0);
   const cdf = chi2Cdf(chi, df);
   const out = newOut();
-  out.answer.push('\u03c7\u00b2 = ' + fmtNum(chi) + ' (df ' + df + ')');
+  out.answer.push('χ² = ' + fmtNum(chi) + ' (df ' + df + ')');
   out.answer.push('p-value: two-tailed ' + fmtP(2 * Math.min(cdf, 1 - cdf)) + ',  left-tailed ' + fmtP(cdf) + ',  right-tailed ' + fmtP(1 - cdf));
-  out.work.push('\u03c7\u00b2 = (n \u2212 1)s\u00b2/\u03c30\u00b2;  H0: \u03c3 = ' + fmtNum(s0));
+  out.work.push('χ² = (n − 1)s²/σ0²;  H0: σ = ' + fmtNum(s0));
   out.value = { num: 2 * Math.min(cdf, 1 - cdf) };
   return out;
 });
@@ -15171,20 +15171,20 @@ defCmd('ftest2 variancetest', (n) => {
   const F = (s1 * s1) / (s2 * s2);
   const cdf = fCdf(F, n1 - 1, n2 - 1);
   const out = newOut();
-  out.answer.push('F = s\u2081\u00b2/s\u2082\u00b2 = ' + fmtNum(F) + ' (df ' + (n1 - 1) + ', ' + (n2 - 1) + ')');
+  out.answer.push('F = s₁²/s₂² = ' + fmtNum(F) + ' (df ' + (n1 - 1) + ', ' + (n2 - 1) + ')');
   out.answer.push('p-value: two-tailed ' + fmtP(2 * Math.min(cdf, 1 - cdf)) + ',  left-tailed ' + fmtP(cdf) + ',  right-tailed ' + fmtP(1 - cdf));
   out.value = { num: 2 * Math.min(cdf, 1 - cdf) };
   return out;
 });
 defCmd('samplesize samplesizemean', (n) => {
-  needArgs(n, 3, 3, '\u03c3, the margin of error E and the confidence level: samplesize(15, 3, 0.95)');
+  needArgs(n, 3, 3, 'σ, the margin of error E and the confidence level: samplesize(15, 3, 0.95)');
   const [sg, E] = n.args.slice(0, 2).map(numArg);
   const c = levelOf(n.args[2]);
   const z = invNorm((1 + c) / 2);
   const need = Math.ceil((z * sg / E) ** 2 - 1e-12);
   const out = newOut();
   out.answer.push('n = ' + need + '  (round up)');
-  out.work.push('n = (z*\u00b7\u03c3/E)\u00b2 = (' + fmtNum(z) + '\u00b7' + fmtNum(sg) + '/' + fmtNum(E) + ')\u00b2 = ' + fmtNum((z * sg / E) ** 2));
+  out.work.push('n = (z*·σ/E)² = (' + fmtNum(z) + '·' + fmtNum(sg) + '/' + fmtNum(E) + ')² = ' + fmtNum((z * sg / E) ** 2));
   out.value = { q: qInt(need) };
   return out;
 });
@@ -15198,19 +15198,19 @@ defCmd('samplesizeprop', (n) => {
   const need = Math.ceil(raw - 1e-12);
   const out = newOut();
   out.answer.push('n = ' + need + '  (round up)');
-  out.work.push('n = z*\u00b2\u00b7p(1 \u2212 p)/E\u00b2 = ' + fmtNum(z) + '\u00b2\u00b7' + fmtNum(p) + '\u00b7' + fmtNum(1 - p) + '/' + fmtNum(E) + '\u00b2 = ' + fmtNum(raw));
+  out.work.push('n = z*²·p(1 − p)/E² = ' + fmtNum(z) + '²·' + fmtNum(p) + '·' + fmtNum(1 - p) + '/' + fmtNum(E) + '² = ' + fmtNum(raw));
   out.value = { q: qInt(need) };
   return out;
 });
 defCmd('clt samplingdist', (n) => {
-  needArgs(n, 4, 5, '\u03bc, \u03c3, n and x (or a, b): clt(100, 15, 36, 105)');
+  needArgs(n, 4, 5, 'μ, σ, n and x (or a, b): clt(100, 15, 36, 105)');
   const [mu, sg, nn] = n.args.slice(0, 3).map(numArg);
   const rest = n.args.slice(3).map(numArg);
   const se = sg / Math.sqrt(nn);
   const out = newOut();
-  out.work.push('The sample mean has mean ' + fmtNum(mu) + ' and standard error \u03c3/\u221an = ' + fmtNum(se) + ' (normal for large n, or any n if the population is normal)');
-  if (rest.length === 1) return pOut(out, 'P(x\u0304 \u2264 ' + fmtNum(rest[0]) + ')', normCdf((rest[0] - mu) / se));
-  return pOut(out, 'P(' + fmtNum(rest[0]) + ' \u2264 x\u0304 \u2264 ' + fmtNum(rest[1]) + ')', normCdf((rest[1] - mu) / se) - normCdf((rest[0] - mu) / se));
+  out.work.push('The sample mean has mean ' + fmtNum(mu) + ' and standard error σ/√n = ' + fmtNum(se) + ' (normal for large n, or any n if the population is normal)');
+  if (rest.length === 1) return pOut(out, 'P(x̄ ≤ ' + fmtNum(rest[0]) + ')', normCdf((rest[0] - mu) / se));
+  return pOut(out, 'P(' + fmtNum(rest[0]) + ' ≤ x̄ ≤ ' + fmtNum(rest[1]) + ')', normCdf((rest[1] - mu) / se) - normCdf((rest[0] - mu) / se));
 });
 defCmd('binomnormal normalapprox', (n) => {
   needArgs(n, 3, 4, 'n, p and k (or a, b) with the continuity correction: binomnormal(100, 0.5, 55)');
@@ -15219,9 +15219,9 @@ defCmd('binomnormal normalapprox', (n) => {
   const mu = nn * p;
   const sg = Math.sqrt(nn * p * (1 - p));
   const out = newOut();
-  out.work.push('Normal approximation: mean np = ' + fmtNum(mu) + ', sd \u221a(np(1 \u2212 p)) = ' + fmtNum(sg) + (nn * p >= 10 && nn * (1 - p) >= 10 ? '' : '  (warning: np or n(1 \u2212 p) is below 10, so the approximation is rough)'));
-  if (ks.length === 1) return pOut(out, 'P(X \u2264 ' + ks[0] + ') \u2248', normCdf((ks[0] + 0.5 - mu) / sg));
-  return pOut(out, 'P(' + ks[0] + ' \u2264 X \u2264 ' + ks[1] + ') \u2248', normCdf((ks[1] + 0.5 - mu) / sg) - normCdf((ks[0] - 0.5 - mu) / sg));
+  out.work.push('Normal approximation: mean np = ' + fmtNum(mu) + ', sd √(np(1 − p)) = ' + fmtNum(sg) + (nn * p >= 10 && nn * (1 - p) >= 10 ? '' : '  (warning: np or n(1 − p) is below 10, so the approximation is rough)'));
+  if (ks.length === 1) return pOut(out, 'P(X ≤ ' + ks[0] + ') ≈', normCdf((ks[0] + 0.5 - mu) / sg));
+  return pOut(out, 'P(' + ks[0] + ' ≤ X ≤ ' + ks[1] + ') ≈', normCdf((ks[1] + 0.5 - mu) / sg) - normCdf((ks[0] - 0.5 - mu) / sg));
 });
 
 // ---- descriptive statistics ---------------------------------------------------------------------------------------------------------------------------------
@@ -15235,7 +15235,7 @@ defCmd('outliers outlier', (n) => {
   const out = newOut();
   const outs = vs.filter((v) => v.sub(lo).sign() < 0 || v.sub(hi).sign() > 0);
   out.answer.push(outs.length ? 'outliers: ' + outs.map((v) => v.toString()).join(', ') : 'no outliers');
-  out.work.push('Q1 = ' + qText(q1) + ', Q3 = ' + qText(q3) + ', IQR = ' + qText(iqr) + ';  fences: Q1 \u2212 1.5\u00b7IQR = ' + qText(lo) + ',  Q3 + 1.5\u00b7IQR = ' + qText(hi));
+  out.work.push('Q1 = ' + qText(q1) + ', Q3 = ' + qText(q3) + ', IQR = ' + qText(iqr) + ';  fences: Q1 − 1.5·IQR = ' + qText(lo) + ',  Q3 + 1.5·IQR = ' + qText(hi));
   void k;
   return out;
 });
@@ -15255,7 +15255,7 @@ defCmd('mad meanabsdev', (n) => {
   const out = newOut();
   out.answer.push('mean absolute deviation = ' + qText(mean));
   out.answer.push('median absolute deviation = ' + qText(medAbs));
-  out.work.push('mean absolute deviation = \u03a3|x \u2212 mean|/n (mean = ' + qText(m) + ');  median absolute deviation = median of |x \u2212 median| (median = ' + qText(med) + ')');
+  out.work.push('mean absolute deviation = Σ|x − mean|/n (mean = ' + qText(m) + ');  median absolute deviation = median of |x − median| (median = ' + qText(med) + ')');
   out.value = { q: mean };
   return out;
 });
@@ -15271,9 +15271,9 @@ defCmd('skewness kurtosis moments', (n) => {
   const g2 = qFloat(mk(4)) / qFloat(m2) ** 2 - 3;
   const out = newOut();
   const G1 = (g1 * Math.sqrt(N * (N - 1))) / (N - 2);
-  out.answer.push('skewness g\u2081 = ' + fmtNum(g1) + '  (sample-adjusted G\u2081 = ' + fmtNum(G1) + ')');
-  if (N >= 4) out.answer.push('excess kurtosis g\u2082 = ' + fmtNum(g2) + '  (sample-adjusted G\u2082 = ' + fmtNum((((N - 1) / ((N - 2) * (N - 3))) * ((N + 1) * g2 + 6))) + ')');
-  out.work.push('g\u2081 = m\u2083/m\u2082^(3/2),  g\u2082 = m\u2084/m\u2082\u00b2 \u2212 3 with m\u2096 = \u03a3(x \u2212 mean)\u1d4f/n');
+  out.answer.push('skewness g₁ = ' + fmtNum(g1) + '  (sample-adjusted G₁ = ' + fmtNum(G1) + ')');
+  if (N >= 4) out.answer.push('excess kurtosis g₂ = ' + fmtNum(g2) + '  (sample-adjusted G₂ = ' + fmtNum((((N - 1) / ((N - 2) * (N - 3))) * ((N + 1) * g2 + 6))) + ')');
+  out.work.push('g₁ = m₃/m₂^(3/2),  g₂ = m₄/m₂² − 3 with mₖ = Σ(x − mean)ᵏ/n');
   out.value = { num: g1 };
   return out;
 });
@@ -15292,7 +15292,7 @@ defCmd('harmean harmonicmean', (n) => {
   const vs = dataOf(n.args, 'harmean');
   if (vs.some((v) => v.isZero())) throw new MathError('the harmonic mean needs non-zero numbers');
   const out = newOut();
-  out.work.push('n / \u03a3(1/x)');
+  out.work.push('n / Σ(1/x)');
   return qvOut(out, qInt(vs.length).div(sumQ(vs.map((v) => v.inv()))));
 });
 defCmd('rms rootmeansquare', (n) => {
@@ -15301,7 +15301,7 @@ defCmd('rms rootmeansquare', (n) => {
   const S = qSqrtS(q);
   const out = newOut();
   out.answer.push(symText(S));
-  out.work.push('\u221a(\u03a3x\u00b2/n) with mean of squares ' + qText(q));
+  out.work.push('√(Σx²/n) with mean of squares ' + qText(q));
   out.value = { S };
   return out;
 });
@@ -15323,7 +15323,7 @@ defCmd('wmean weightedmean', (n) => {
   const tw = sumQ(ws);
   if (tw.isZero()) throw new MathError('the weights add up to 0');
   const out = newOut();
-  out.work.push('\u03a3(w\u00b7x)/\u03a3w = ' + sumQ(xs.map((x, i) => x.mul(ws[i]))).toString() + '/' + tw.toString());
+  out.work.push('Σ(w·x)/Σw = ' + sumQ(xs.map((x, i) => x.mul(ws[i]))).toString() + '/' + tw.toString());
   return qvOut(out, sumQ(xs.map((x, i) => x.mul(ws[i]))).div(tw));
 });
 defCmd('zscores', (n) => {
@@ -15334,7 +15334,7 @@ defCmd('zscores', (n) => {
   const sd = qSqrtS(v);
   const out = newOut();
   out.answer.push(vs.map((x) => fmtS(simp(sDiv(sN(x.sub(m)), sd)))).join(',  '));
-  out.work.push('z = (x \u2212 mean)/s with mean ' + qText(m) + ' and s = ' + symText(sd) + ' (sample standard deviation)');
+  out.work.push('z = (x − mean)/s with mean ' + qText(m) + ' and s = ' + symText(sd) + ' (sample standard deviation)');
   return out;
 });
 defCmd('percentrank', (n) => {
@@ -15345,7 +15345,7 @@ defCmd('percentrank', (n) => {
   const equal = vs.filter((v) => v.eq(x)).length;
   const out = newOut();
   out.answer.push('percentile rank of ' + x.toString() + ' = ' + fmtNum(((below + equal / 2) / vs.length) * 100) + ' %   (' + below + ' below, ' + equal + ' equal, of ' + vs.length + ')');
-  out.work.push('(number below + \u00bd\u00b7number equal)/n \u00d7 100');
+  out.work.push('(number below + ½·number equal)/n × 100');
   return out;
 });
 defCmd('freqtable frequencytable', (n) => {
@@ -15368,7 +15368,7 @@ defCmd('freqtable frequencytable', (n) => {
   out.answer.push('class            freq   rel.freq   cum.freq');
   classes.forEach((k) => {
     cum += k.f;
-    out.answer.push((k.lo.toString() + ' \u2013 <' + k.hi.toString()).padEnd(17) + String(k.f).padEnd(7) + fmtNum(k.f / vs.length).padEnd(11) + cum);
+    out.answer.push((k.lo.toString() + ' – <' + k.hi.toString()).padEnd(17) + String(k.f).padEnd(7) + fmtNum(k.f / vs.length).padEnd(11) + cum);
   });
   out.work.push('n = ' + vs.length + ' values; each class includes its lower limit and excludes its upper limit');
   return out;
@@ -15402,7 +15402,7 @@ defCmd('grouped groupeddata', (n) => {
   out.answer.push('mean = ' + qText(m));
   if (N.sub(Q1).sign() > 0) out.answer.push('sample variance = ' + qText(ss.div(N.sub(Q1))) + ',  sample sd = ' + sqrtQText(ss.div(N.sub(Q1))));
   out.answer.push('population variance = ' + qText(ss.div(N)) + ',  population sd = ' + sqrtQText(ss.div(N)));
-  out.work.push('N = \u03a3f = ' + N.toString() + ';  mean = \u03a3(f\u00b7x)/N;  variance = \u03a3 f(x \u2212 mean)\u00b2/(N or N \u2212 1)');
+  out.work.push('N = Σf = ' + N.toString() + ';  mean = Σ(f·x)/N;  variance = Σ f(x − mean)²/(N or N − 1)');
   out.value = { q: m };
   return out;
 });
@@ -15435,7 +15435,7 @@ defCmd('spearman spearmanrho', (n) => {
   const r2 = sxy.mul(sxy).div(sxx.mul(syy));
   const S = sxy.sign() < 0 ? sNeg(qSqrtS(r2)) : qSqrtS(r2);
   const out = newOut();
-  out.answer.push('\u03c1 = ' + symText(S));
+  out.answer.push('ρ = ' + symText(S));
   out.work.push('Pearson correlation of the ranks: x ranks ' + rx.map((r) => r.toString()).join(', ') + ';  y ranks ' + ry.map((r) => r.toString()).join(', '));
   out.value = { S };
   return out;
@@ -15460,8 +15460,8 @@ defCmd('kendall kendalltau', (n) => {
   const denom = Math.sqrt((conc + disc + tx) * (conc + disc + ty));
   if (!denom) throw new MathError('Kendall\'s tau is undefined for these lists');
   const out = newOut();
-  out.answer.push('\u03c4_b = ' + fmtNum((conc - disc) / denom));
-  out.work.push(conc + ' concordant pairs, ' + disc + ' discordant pairs (ties handled by \u03c4_b)');
+  out.answer.push('τ_b = ' + fmtNum((conc - disc) / denom));
+  out.work.push(conc + ' concordant pairs, ' + disc + ' discordant pairs (ties handled by τ_b)');
   return out;
 });
 
@@ -15489,9 +15489,9 @@ defCmd('multireg multipleregression multilinreg', (n) => {
   const my = sumQ(y).div(qInt(y.length));
   const sst = sumQ(y.map((v) => v.sub(my).mul(v.sub(my))));
   const out = newOut();
-  out.answer.push('y = ' + c.map((v, j) => (j === 0 ? v.toString() : (v.sign() < 0 ? '\u2212 ' + v.abs().toString() : '+ ' + v.toString()) + '\u00b7x' + j)).join(' '));
-  out.work.push('Normal equations (X\u1d40X)\u03b2 = X\u1d40y solved exactly, with a column of ones for the intercept');
-  out.work.push('SSE = ' + qText(sse) + (sst.isZero() ? '' : ',  R\u00b2 = ' + qText(Q1.sub(sse.div(sst)))));
+  out.answer.push('y = ' + c.map((v, j) => (j === 0 ? v.toString() : (v.sign() < 0 ? '− ' + v.abs().toString() : '+ ' + v.toString()) + '·x' + j)).join(' '));
+  out.work.push('Normal equations (XᵀX)β = Xᵀy solved exactly, with a column of ones for the intercept');
+  out.work.push('SSE = ' + qText(sse) + (sst.isZero() ? '' : ',  R² = ' + qText(Q1.sub(sse.div(sst)))));
   out.work.push('fitted values: ' + pred.map((v) => fmtNum(qFloat(v))).join(', '));
   if (n.args[2]) {
     const x0 = dataOf([n.args[2]], 'multireg');
@@ -15524,23 +15524,23 @@ function curveFit(kind) {
     if (kind === 'expreg') {
       if (Y.some((v) => v <= 0)) throw new MathError('exponential regression needs positive y values');
       fit = linearized(X, Y, (v) => v, Math.log, kind);
-      out.answer.push('y = ' + fmtNum(Math.exp(fit.a)) + ' \u00b7 ' + fmtNum(Math.exp(fit.b)) + '^x    (= ' + fmtNum(Math.exp(fit.a)) + ' \u00b7 e^(' + fmtNum(fit.b) + 'x))');
-      out.work.push('Fit ln y = ln a + x\u00b7ln b by least squares;  R\u00b2 of the linearised fit = ' + fmtNum(fit.r2));
+      out.answer.push('y = ' + fmtNum(Math.exp(fit.a)) + ' · ' + fmtNum(Math.exp(fit.b)) + '^x    (= ' + fmtNum(Math.exp(fit.a)) + ' · e^(' + fmtNum(fit.b) + 'x))');
+      out.work.push('Fit ln y = ln a + x·ln b by least squares;  R² of the linearised fit = ' + fmtNum(fit.r2));
     } else if (kind === 'powerreg') {
       if (X.some((v) => v <= 0) || Y.some((v) => v <= 0)) throw new MathError('power regression needs positive x and y values');
       fit = linearized(X, Y, Math.log, Math.log, kind);
-      out.answer.push('y = ' + fmtNum(Math.exp(fit.a)) + ' \u00b7 x^' + fmtNum(fit.b));
-      out.work.push('Fit ln y = ln a + b\u00b7ln x by least squares;  R\u00b2 of the linearised fit = ' + fmtNum(fit.r2));
+      out.answer.push('y = ' + fmtNum(Math.exp(fit.a)) + ' · x^' + fmtNum(fit.b));
+      out.work.push('Fit ln y = ln a + b·ln x by least squares;  R² of the linearised fit = ' + fmtNum(fit.r2));
     } else {
       if (X.some((v) => v <= 0)) throw new MathError('logarithmic regression needs positive x values');
       fit = linearized(X, Y, Math.log, (v) => v, kind);
-      out.answer.push('y = ' + fmtNum(fit.a) + ' + ' + fmtNum(fit.b) + ' \u00b7 ln(x)');
-      out.work.push('Fit y = a + b\u00b7ln x by least squares;  R\u00b2 = ' + fmtNum(fit.r2));
+      out.answer.push('y = ' + fmtNum(fit.a) + ' + ' + fmtNum(fit.b) + ' · ln(x)');
+      out.work.push('Fit y = a + b·ln x by least squares;  R² = ' + fmtNum(fit.r2));
     }
     if (n.args[2]) {
       const x0 = numArg(n.args[2]);
       const yh = kind === 'expreg' ? Math.exp(fit.a + fit.b * x0) : kind === 'powerreg' ? Math.exp(fit.a) * x0 ** fit.b : fit.a + fit.b * Math.log(x0);
-      out.answer.push('prediction at x = ' + fmtNum(x0) + ': y \u2248 ' + fmtNum(yh));
+      out.answer.push('prediction at x = ' + fmtNum(x0) + ': y ≈ ' + fmtNum(yh));
       out.value = { num: yh };
     }
     return out;
@@ -15556,21 +15556,21 @@ defCmd('markov markovchain', (n) => {
   if (n.args[0].t !== 'list' || n.args[0].items.some((r) => r.t !== 'list')) throw new MathError('the transition matrix is written like [[0.9, 0.1], [0.5, 0.5]]');
   const P = n.args[0].items.map((r) => dataOf([r], 'markov'));
   const m = P.length;
-  if (m < 2 || m > 10 || P.some((r) => r.length !== m)) throw new MathError('the matrix must be square, between 2\u00d72 and 10\u00d710');
+  if (m < 2 || m > 10 || P.some((r) => r.length !== m)) throw new MathError('the matrix must be square, between 2×2 and 10×10');
   P.forEach((r, i) => {
     if (r.some((v) => v.sign() < 0)) throw new MathError('probabilities cannot be negative');
     if (!sumQ(r).eq(Q1)) throw new MathError('row ' + (i + 1) + ' adds up to ' + sumQ(r).toString() + ', not 1');
   });
   const out = newOut();
-  // stationary distribution: \u03c0(P \u2212 I) = 0 with \u03a3\u03c0 = 1
+  // stationary distribution: π(P − I) = 0 with Σπ = 1
   const A = [];
   for (let j = 0; j < m; j++) A.push(P.map((r, i) => (i === j ? r[j].sub(Q1) : r[j])).concat([Q0]));
   A.push(new Array(m).fill(Q1).concat([Q1]));
   const { M, pivots, inconsistent } = rrefQ(A, m);
   if (!inconsistent && pivots.length === m) {
     const pi = M.slice(0, m).map((r) => r[m]);
-    out.answer.push('stationary distribution \u03c0 = [' + pi.map((v) => v.toString()).join(', ') + ']  (\u2248 [' + pi.map((v) => fmtNum(qFloat(v))).join(', ') + '])');
-    out.work.push('Solve \u03c0P = \u03c0 with \u03a3\u03c0\u1d62 = 1 exactly');
+    out.answer.push('stationary distribution π = [' + pi.map((v) => v.toString()).join(', ') + ']  (≈ [' + pi.map((v) => fmtNum(qFloat(v))).join(', ') + '])');
+    out.work.push('Solve πP = π with Σπᵢ = 1 exactly');
   } else {
     out.answer.push('no single stationary distribution (the chain has more than one closed class)');
   }
@@ -15582,7 +15582,7 @@ defCmd('markov markovchain', (n) => {
     let v = n.args[2] ? listArg(n.args[2], 'markov') : P.map((_, i) => (i === 0 ? Q1 : Q0));
     if (v.length !== m) throw new MathError('the starting distribution needs ' + m + ' entries');
     for (let s = 0; s < steps; s++) v = v.map((_, j) => sumQ(v.map((x, i) => x.mul(P[i][j]))));
-    out.answer.push('after ' + steps + ' step' + (steps === 1 ? '' : 's') + ': [' + v.map((x) => x.toString()).join(', ') + ']  (\u2248 [' + v.map((x) => fmtNum(qFloat(x))).join(', ') + '])');
+    out.answer.push('after ' + steps + ' step' + (steps === 1 ? '' : 's') + ': [' + v.map((x) => x.toString()).join(', ') + ']  (≈ [' + v.map((x) => fmtNum(qFloat(x))).join(', ') + '])');
   }
   return out;
 });
@@ -15594,8 +15594,8 @@ defCmd('coupon couponcollector', (n) => {
   for (let k = 1n; k <= nn; k++) h = h.add(new Q(1n, k));
   const e = h.mul(new Q(nn));
   const out = newOut();
-  out.answer.push('expected number of draws = n\u00b7H\u2099 = ' + (nn <= 60n ? qText(e) : '\u2248 ' + fmtNum(qFloat(e))));
-  out.work.push('n\u00b7(1 + 1/2 + \u2026 + 1/n) with n = ' + nn);
+  out.answer.push('expected number of draws = n·Hₙ = ' + (nn <= 60n ? qText(e) : '≈ ' + fmtNum(qFloat(e))));
+  out.work.push('n·(1 + 1/2 + … + 1/n) with n = ' + nn);
   out.value = { num: qFloat(e) };
   return out;
 });
@@ -15625,12 +15625,12 @@ defCmd('euclid bezout egcdsteps', (n) => {
   const s = a0 < 0n ? -s0 : s0;
   const t = b0 < 0n ? -t0 : t0;
   out.answer.push('gcd(' + a0 + ', ' + b0 + ') = ' + g);
-  out.answer.push('B\u00e9zout: ' + g + ' = ' + qParenBig(s) + '\u00b7' + a0 + ' + ' + qParenBig(t) + '\u00b7' + b0);
-  rows.forEach((r) => out.work.push(r.x + ' = ' + r.q + '\u00b7' + r.y + ' + ' + r.r));
+  out.answer.push('Bézout: ' + g + ' = ' + qParenBig(s) + '·' + a0 + ' + ' + qParenBig(t) + '·' + b0);
+  rows.forEach((r) => out.work.push(r.x + ' = ' + r.q + '·' + r.y + ' + ' + r.r));
   out.work.push('lcm(' + a + ', ' + b + ') = ' + (g === 0n ? 0n : (a / g) * b));
-  if (g !== 1n) out.work.push('the numbers are not coprime (gcd \u2260 1), so there is no modular inverse of either one modulo the other');
+  if (g !== 1n) out.work.push('the numbers are not coprime (gcd ≠ 1), so there is no modular inverse of either one modulo the other');
   else if (b !== 0n && a !== 0n) out.work.push('gcd = 1: ' + a + ' has inverse ' + (((s0 % b) + b) % b) + ' modulo ' + b + ' (and ' + b + ' has inverse ' + (((t0 % a) + a) % a) + ' modulo ' + a + ')');
-  out.check = s * a0 + t * b0 === g ? 'the B\u00e9zout coefficients give back the gcd' : null;
+  out.check = s * a0 + t * b0 === g ? 'the Bézout coefficients give back the gcd' : null;
   out.value = { q: new Q(g) };
   return out;
 });
@@ -15687,7 +15687,7 @@ function convergentsOf(terms) {
   }
   return out;
 }
-/** a + b\u00b7sqrt(d) with rational a, b and a whole d (not a perfect square), or null. */
+/** a + b·sqrt(d) with rational a, b and a whole d (not a perfect square), or null. */
 function asQuadSurd(S) {
   let a = Q0;
   let b = Q0;
@@ -15708,7 +15708,7 @@ function asQuadSurd(S) {
   }
   return d === null || b.isZero() ? null : { a, b, d };
 }
-/** Continued fraction of (P + sqrt(D))/Q with Q > 0 and Q | D \u2212 P\u00b2: the purely periodic tail is detected exactly. */
+/** Continued fraction of (P + sqrt(D))/Q with Q > 0 and Q | D − P²: the purely periodic tail is detected exactly. */
 function cfOfQuadratic(P, D, Q) {
   const r = isqrtBig(D);
   const terms = [];
@@ -15743,7 +15743,7 @@ defCmd('cfrac continuedfraction cf', (n) => {
   }
   const qs = asQuadSurd(S);
   if (qs && qs.a.add(qs.b.mul(new Q(isqrtBig(qs.d)))).sign() > 0 && qs.b.sign() > 0 && isqrtBig(qs.d) ** 2n !== qs.d) {
-    // x = (A + B sqrt(d))/C  ->  (P + sqrt(D))/Q  with Q | D \u2212 P\u00b2
+    // x = (A + B sqrt(d))/C  ->  (P + sqrt(D))/Q  with Q | D − P²
     const C = qs.a.d * qs.b.d / bgcd(qs.a.d, qs.b.d);
     const A = qs.a.n * (C / qs.a.d);
     const B = qs.b.n * (C / qs.b.d);
@@ -15767,7 +15767,7 @@ defCmd('cfrac continuedfraction cf', (n) => {
   // known constants with a closed pattern or tables; otherwise doubles
   let terms;
   const key0 = fmtS(S);
-  if (key0 === '\u03c0') terms = [3n, 7n, 15n, 1n, 292n, 1n, 1n, 1n, 2n, 1n, 3n, 1n, 14n, 2n, 1n, 1n, 2n, 2n, 2n, 2n, 1n, 84n];
+  if (key0 === 'π') terms = [3n, 7n, 15n, 1n, 292n, 1n, 1n, 1n, 2n, 1n, 3n, 1n, 14n, 2n, 1n, 1n, 2n, 2n, 2n, 2n, 1n, 84n];
   else if (key0 === 'e') terms = [2n, 1n, 2n, 1n, 1n, 4n, 1n, 1n, 6n, 1n, 1n, 8n, 1n, 1n, 10n, 1n, 1n, 12n, 1n, 1n, 14n, 1n, 1n, 16n];
   else {
     terms = [];
@@ -15781,32 +15781,32 @@ defCmd('cfrac continuedfraction cf', (n) => {
     }
   }
   terms = terms.slice(0, want);
-  out.answer.push(fmtS(S) + ' \u2248 ' + show(terms));
+  out.answer.push(fmtS(S) + ' ≈ ' + show(terms));
   const cv = convergentsOf(terms);
   out.work.push('convergents: ' + cv.slice(0, 10).map(([p, q]) => p + '/' + q + ' (' + fmtNum(Number(p) / Number(q)) + ')').join(', '));
-  if (!['\u03c0', 'e'].includes(key0)) out.notes.push('The later terms come from a decimal value and may be inaccurate.');
+  if (!['π', 'e'].includes(key0)) out.notes.push('The later terms come from a decimal value and may be inaccurate.');
   return out;
 });
 defCmd('pell pellequation', (n) => {
-  needArgs(n, 1, 2, 'd (for x\u00b2 \u2212 d\u00b7y\u00b2 = 1) and optionally \u00b11: pell(61), pell(13, -1)');
+  needArgs(n, 1, 2, 'd (for x² − d·y² = 1) and optionally ±1: pell(61), pell(13, -1)');
   const d = intArg(n.args[0]);
   const sign = n.args[1] ? intArg(n.args[1]) : 1n;
   if (d < 2n || d > 100000n) throw new MathError('d must be between 2 and 100000');
-  if (isqrtBig(d) ** 2n === d) throw new MathError('d is a perfect square, so x\u00b2 \u2212 d\u00b7y\u00b2 = ' + sign + ' has only trivial solutions');
+  if (isqrtBig(d) ** 2n === d) throw new MathError('d is a perfect square, so x² − d·y² = ' + sign + ' has only trivial solutions');
   if (sign !== 1n && sign !== -1n) throw new MathError('the right-hand side must be 1 or -1');
   const { a0, period } = cfOfSqrt(d);
   const L = period.length;
   const out = newOut();
   if (sign === -1n && L % 2 === 0) {
-    out.answer.push('x\u00b2 \u2212 ' + d + 'y\u00b2 = \u22121 has no integer solutions (the period of \u221a' + d + ' is even)');
+    out.answer.push('x² − ' + d + 'y² = −1 has no integer solutions (the period of √' + d + ' is even)');
     return out;
   }
   const terms = [a0].concat(Array.from({ length: 2 * L + 1 }, (_, i) => period[i % L]));
   const k = sign === 1n ? (L % 2 === 0 ? L : 2 * L) : L;
   const cv = convergentsOf(terms.slice(0, k));
   const [x1, y1] = cv[cv.length - 1];
-  out.answer.push('smallest solution: x = ' + x1 + ', y = ' + y1 + '   (' + x1 + '\u00b2 \u2212 ' + d + '\u00b7' + y1 + '\u00b2 = ' + (x1 * x1 - d * y1 * y1) + ')');
-  // further solutions (x + y\u221ad)^k
+  out.answer.push('smallest solution: x = ' + x1 + ', y = ' + y1 + '   (' + x1 + '² − ' + d + '·' + y1 + '² = ' + (x1 * x1 - d * y1 * y1) + ')');
+  // further solutions (x + y√d)^k
   const fam = [[x1, y1]];
   const [bx, by] = sign === 1n ? [x1, y1] : [x1 * x1 + d * y1 * y1, 2n * x1 * y1];
   let [cx, cy] = [x1, y1];
@@ -15816,8 +15816,8 @@ defCmd('pell pellequation', (n) => {
     next.push('(' + cx + ', ' + cy + ')');
   }
   void fam;
-  out.work.push('period of \u221a' + d + ' = ' + L + ';  the fundamental solution is a convergent of the continued fraction [' + a0 + '; ' + period.join(', ') + ']');
-  out.work.push((sign === 1n ? 'more solutions: (x + y\u221ad)\u207f, e.g. ' : 'solutions of the \u22121 equation: the odd powers of (x + y\u221ad), e.g. next ') + next.join(', '));
+  out.work.push('period of √' + d + ' = ' + L + ';  the fundamental solution is a convergent of the continued fraction [' + a0 + '; ' + period.join(', ') + ']');
+  out.work.push((sign === 1n ? 'more solutions: (x + y√d)ⁿ, e.g. ' : 'solutions of the −1 equation: the odd powers of (x + y√d), e.g. next ') + next.join(', '));
   return out;
 });
 
@@ -15837,8 +15837,8 @@ defCmd('collatz', (n) => {
   }
   const out = newOut();
   out.answer.push(steps + ' steps to reach 1 (peak value ' + peak + ')');
-  out.work.push('rule: n \u2192 n/2 if n is even, 3n + 1 if n is odd');
-  out.work.push('sequence: ' + seq.join(', ') + (steps + 1 > seq.length ? ', \u2026' : ''));
+  out.work.push('rule: n → n/2 if n is even, 3n + 1 if n is odd');
+  out.work.push('sequence: ' + seq.join(', ') + (steps + 1 > seq.length ? ', …' : ''));
   out.value = { q: qInt(steps) };
   return out;
 });
@@ -15862,7 +15862,7 @@ defCmd('egyptian egyptianfraction', (n) => {
     if (bitLen(r.d) > 400) throw new MathError('the greedy expansion grows too large');
   }
   out.answer.push(q.toString() + ' = ' + parts.join(' + '));
-  out.work.push('greedy algorithm: repeatedly subtract the largest unit fraction 1/\u23081/r\u2309');
+  out.work.push('greedy algorithm: repeatedly subtract the largest unit fraction 1/⌈1/r⌉');
   return out;
 });
 defCmd('sum2sq sumoftwosquares', (n) => {
@@ -15876,10 +15876,10 @@ defCmd('sum2sq sumoftwosquares', (n) => {
     if (reps.length > 40) break;
   }
   const out = newOut();
-  out.answer.push(reps.length ? v + ' = ' + reps.map(([b, a]) => b + '\u00b2 + ' + a + '\u00b2').join(' = ') : v + ' is not a sum of two squares');
+  out.answer.push(reps.length ? v + ' = ' + reps.map(([b, a]) => b + '² + ' + a + '²').join(' = ') : v + ' is not a sum of two squares');
   if (!reps.length) {
     const f = factorBig(v);
-    if (f) out.work.push('A number is a sum of two squares exactly when every prime \u2261 3 (mod 4) occurs to an even power; here ' + factorizationText(f));
+    if (f) out.work.push('A number is a sum of two squares exactly when every prime ≡ 3 (mod 4) occurs to an even power; here ' + factorizationText(f));
   }
   return out;
 });
@@ -15903,11 +15903,12 @@ defCmd('farey fareysequence', (n) => {
   const seen = new Set();
   const all = ['0/1'];
   for (let q = 1; q <= N; q++) for (let p = 0; p <= q; p++) if (gcdNum(p, q) === 1) all.push(p + '/' + q);
-  all.sort((x, y) => eval(x) - eval(y)); // eslint-disable-line no-eval
+  const fracValue = (f) => { const [num, den] = f.split('/'); return Number(num) / Number(den); };
+  all.sort((x, y) => fracValue(x) - fracValue(y));
   all.forEach((s) => { if (!seen.has(s)) { seen.add(s); uniq.push(s); } });
   void seq;
   out.answer.push('F' + N + ' = ' + uniq.join(', ') + '   (' + uniq.length + ' fractions)');
-  out.work.push('all reduced fractions p/q with 0 \u2264 p/q \u2264 1 and q \u2264 ' + N + '; the length is 1 + \u03c6(1) + \u2026 + \u03c6(' + N + ')');
+  out.work.push('all reduced fractions p/q with 0 ≤ p/q ≤ 1 and q ≤ ' + N + '; the length is 1 + φ(1) + … + φ(' + N + ')');
   return out;
 });
 defCmd('hanoi towerofhanoi', (n) => {
@@ -15915,19 +15916,19 @@ defCmd('hanoi towerofhanoi', (n) => {
   if (m < 1n || m > 100000n) throw new MathError('use between 1 and 100000 discs');
   const out = newOut();
   const moves = 2n ** m - 1n;
-  out.answer.push('the minimum number of moves is 2^' + m + ' \u2212 1 = ' + bigText(moves));
+  out.answer.push('the minimum number of moves is 2^' + m + ' − 1 = ' + bigText(moves));
   if (m <= 4n) {
     const list = [];
     const go = (k, from, to, via) => {
       if (k === 0) return;
       go(k - 1, from, via, to);
-      list.push(from + '\u2192' + to);
+      list.push(from + '→' + to);
       go(k - 1, via, to, from);
     };
     go(Number(m), 'A', 'C', 'B');
     out.work.push('moves (pegs A, B, C): ' + list.join(', '));
   }
-  out.work.push('T(n) = 2T(n \u2212 1) + 1 with T(0) = 0');
+  out.work.push('T(n) = 2T(n − 1) + 1 with T(0) = 0');
   out.value = { q: new Q(moves) };
   return out;
 });
@@ -15946,7 +15947,7 @@ defCmd('josephus', (n) => {
   const out = newOut();
   out.answer.push('the survivor is person ' + ring[0] + ' (counting from 1)');
   if (N <= 40) out.work.push('elimination order: ' + order.join(', '));
-  out.work.push('J(1) = 0, J(n) = (J(n \u2212 1) + k) mod n (0-based)');
+  out.work.push('J(1) = 0, J(n) = (J(n − 1) + k) mod n (0-based)');
   out.value = { q: qInt(ring[0]) };
   return out;
 });
@@ -15954,12 +15955,12 @@ defCmd('polygonal figurate triangular', (n) => {
   needArgs(n, 1, 2, 'n (triangular number) or the number of sides s and n: polygonal(5, 10)');
   const s = n.args.length === 2 ? intArg(n.args[0]) : 3n;
   const m = intArg(n.args[n.args.length - 1]);
-  if (s < 3n || m < 0n) throw new MathError('s \u2265 3 and n \u2265 0 are needed');
+  if (s < 3n || m < 0n) throw new MathError('s ≥ 3 and n ≥ 0 are needed');
   const val = (m * ((s - 2n) * m - (s - 4n))) / 2n;
   const names = { 3n: 'triangular', 4n: 'square', 5n: 'pentagonal', 6n: 'hexagonal', 7n: 'heptagonal', 8n: 'octagonal' };
   const out = newOut();
   out.answer.push('P(' + s + ', ' + m + ') = ' + val + '   (the ' + m + '-th ' + (names[s] || s + '-gonal') + ' number)');
-  out.work.push('P(s, n) = n((s \u2212 2)n \u2212 (s \u2212 4))/2;  first terms: ' + Array.from({ length: 8 }, (_, i) => {
+  out.work.push('P(s, n) = n((s − 2)n − (s − 4))/2;  first terms: ' + Array.from({ length: 8 }, (_, i) => {
     const k = BigInt(i + 1);
     return (k * ((s - 2n) * k - (s - 4n))) / 2n;
   }).join(', '));
@@ -16001,7 +16002,7 @@ function convertRecurrenceText(s) {
 function recShow(name) {
   const m = REC_NAME.exec(name);
   if (!m) return name;
-  return m[1] + '(' + (m[2] === 'n' ? 'n' : m[2].startsWith('nm') ? 'n\u2212' + m[2].slice(2) : 'n+' + m[2].slice(2)) + ')';
+  return m[1] + '(' + (m[2] === 'n' ? 'n' : m[2].startsWith('nm') ? 'n−' + m[2].slice(2) : 'n+' + m[2].slice(2)) + ')';
 }
 function tryRecurrence(sts) {
   const names = new Set();
@@ -16045,7 +16046,7 @@ function tryRecurrence(sts) {
   const top = Math.max(...offs);
   const low = Math.min(...offs);
   const order = top - low;
-  if (order < 1) throw new MathError('the recurrence must link a term to earlier terms, such as a_n = 2a_(n\u22121) + 1');
+  if (order < 1) throw new MathError('the recurrence must link a term to earlier terms, such as a_n = 2a_(n−1) + 1');
   if (order > 6) throw new MathError('recurrences of order up to 6 are supported');
   const topId = ids[offs.indexOf(top)];
   const topCoef = simp(diffS(full, topId));
@@ -16071,9 +16072,9 @@ function tryRecurrence(sts) {
   const idxs = Array.from(inits.keys()).sort((p, q) => p - q);
   const start = idxs.length ? idxs[0] : 0;
   if (idxs.length < order) throw new MathError('this recurrence has order ' + order + ': give ' + order + ' initial values such as a_0 = 1' + (order > 1 ? ', a_1 = 2' : ''));
-  for (let i = 0; i < order; i++) if (!inits.has(start + i)) throw new MathError('the initial values must be consecutive (a_' + start + ', a_' + (start + 1) + ', \u2026)');
+  for (let i = 0; i < order; i++) if (!inits.has(start + i)) throw new MathError('the initial values must be consecutive (a_' + start + ', a_' + (start + 1) + ', …)');
   const readAs = sts.map((st) => (st.kind === 'eq' ? showStatement(st) : '')).join(';  ').replace(new RegExp(letter + '_(n[mp]?\\d*)', 'g'), (m) => recShow(m));
-  // the closed form is built for n = 0, 1, \u2026: run the recurrence backwards from the given values when they start later
+  // the closed form is built for n = 0, 1, …: run the recurrence backwards from the given values when they start later
   const full0 = new Map(inits);
   for (let m = start - 1; m >= 0; m--) {
     let v = full0.get(m + order);
@@ -16104,15 +16105,15 @@ function solveLinearRecurrence(cs, f, inits, start, letter, target, listFrom) {
   const nm = (t) => letter + '(' + t + ')';
   const terms = [];
   cs.forEach((c, j) => {
-    if (!c.isZero()) terms.push('(' + c.toString() + ')\u00b7' + nm('n\u2212' + (j + 1)));
+    if (!c.isZero()) terms.push('(' + c.toString() + ')·' + nm('n−' + (j + 1)));
   });
   out.work.push('Type: linear recurrence of order ' + k + ' with constant coefficients:  ' + nm('n') + ' = ' + terms.join(' + ') + (isNumVal(f, 0) ? '' : ' + ' + fmtS(f)));
-  // characteristic roots: \u03bb^k = c1 \u03bb^(k-1) + ... + ck
+  // characteristic roots: λ^k = c1 λ^(k-1) + ... + ck
   const charQ = [];
   for (let j = k; j >= 1; j--) charQ.push(cs[j - 1].neg());
   charQ.push(Q1);
   const roots = charRootsS(charQ);
-  out.work.push('Characteristic equation: ' + polyText(charQ, 'r') + ' = 0   (roots: ' + roots.map((r) => (r.im ? fmtS(r.re) + ' \u00b1 ' + fmtS(r.im) + 'i' : fmtS(r.re)) + (r.mult > 1 ? ' (\u00d7' + r.mult + ')' : '')).join(', ') + ')');
+  out.work.push('Characteristic equation: ' + polyText(charQ, 'r') + ' = 0   (roots: ' + roots.map((r) => (r.im ? fmtS(r.re) + ' ± ' + fmtS(r.im) + 'i' : fmtS(r.re)) + (r.mult > 1 ? ' (×' + r.mult + ')' : '')).join(', ') + ')');
   // homogeneous basis (functions of n)
   const basis = [];
   roots.forEach((r) => {
@@ -16135,7 +16136,7 @@ function solveLinearRecurrence(cs, f, inits, start, letter, target, listFrom) {
     }
   });
   if (basis.length !== k) throw new MathError('I could not find all the roots of the characteristic equation exactly');
-  // particular solution by undetermined coefficients: terms c\u00b7n^d\u00b7b^n (b rational)
+  // particular solution by undetermined coefficients: terms c·n^d·b^n (b rational)
   let part = S0;
   if (!isNumVal(f, 0)) {
     const groups = new Map(); // base string -> {b: Q, deg}
@@ -16217,12 +16218,12 @@ function solveLinearRecurrence(cs, f, inits, start, letter, target, listFrom) {
     const rv = vals.get(m).toNumber();
     if (!(Math.abs(cv - rv) <= 1e-6 * (1 + Math.abs(rv)))) ok = false;
   }
-  out.check = ok ? 'the formula reproduces the terms ' + letter + '(' + start + ') \u2026 ' + letter + '(' + last + ') computed from the recurrence' : null;
+  out.check = ok ? 'the formula reproduces the terms ' + letter + '(' + start + ') … ' + letter + '(' + last + ') computed from the recurrence' : null;
   if (!ok) out.notes.push('The automatic check of the closed form did not pass; please verify it.');
   const shown = [];
   const from = listFrom === undefined ? start : listFrom;
   for (let m = from; m < from + 10; m++) shown.push(vals.get(m).toString());
-  out.work.push('first terms (n = ' + from + ', ' + (from + 1) + ', \u2026): ' + shown.join(', '));
+  out.work.push('first terms (n = ' + from + ', ' + (from + 1) + ', …): ' + shown.join(', '));
   if (target !== null) {
     const tv = recValues(cs, f, inits, start, target).get(target);
     out.answer.push(letter + '(' + target + ') = ' + qText(tv));
@@ -16231,7 +16232,7 @@ function solveLinearRecurrence(cs, f, inits, start, letter, target, listFrom) {
   return out;
 }
 defCmd('linrec recurrence', (n) => {
-  needArgs(n, 3, 4, 'the coefficients [c1, c2, ...] of a(n) = c1\u00b7a(n\u22121) + c2\u00b7a(n\u22122) + \u2026, the extra term f(n) (0 if none), the initial values [a0, a1, ...] and optionally a target index: linrec([1, 1], 0, [0, 1], 10)');
+  needArgs(n, 3, 4, 'the coefficients [c1, c2, ...] of a(n) = c1·a(n−1) + c2·a(n−2) + …, the extra term f(n) (0 if none), the initial values [a0, a1, ...] and optionally a target index: linrec([1, 1], 0, [0, 1], 10)');
   if (n.args[0].t !== 'list' || n.args[2].t !== 'list') throw new MathError('the coefficients and the initial values are lists in square brackets');
   const cs = dataOf([n.args[0]], 'linrec');
   const inits = dataOf([n.args[2]], 'linrec');
@@ -16266,13 +16267,13 @@ const decodeText = (v) => {
 const LOGIC_WORDS = /\b(?:and|or|not|xor|nand|nor|implies|iff|if|then|true|false|equivalent|to|is)\b/gi;
 function looksLikeLogic(t) {
   let u = t.replace(LOGIC_WORDS, ' ');
-  u = u.replace(/[\u2227\u2228\u00ac\u2295\u2194\u21d4\u2192\u21d2\u22bb\u22a4\u22a5&|~!^()\s]|<->|<=>|->|=>|\\(?:land|lor|lnot|neg|oplus|to|implies|iff|leftrightarrow|rightarrow|wedge|vee)/g, ' ');
+  u = u.replace(/[∧∨¬⊕↔⇔→⇒⊻⊤⊥&|~!^()\s]|<->|<=>|->|=>|\\(?:land|lor|lnot|neg|oplus|to|implies|iff|leftrightarrow|rightarrow|wedge|vee)/g, ' ');
   u = u.replace(/\bT\b|\bF\b/g, ' ');
   if (/[^A-Za-z\s]/.test(u)) return false;
   if (/[A-Za-z]{2,}/.test(u)) return false;
-  return /\b(?:and|or|not|xor|nand|nor|implies|iff)\b|\bequivalent\s+to\b|[\u2227\u2228\u00ac\u2295\u2194\u21d4\u2192\u21d2\u22bb]|<->|<=>|->|=>|\\(?:land|lor|lnot|neg)|\bif\b[\s\S]*\bthen\b/i.test(t);
+  return /\b(?:and|or|not|xor|nand|nor|implies|iff)\b|\bequivalent\s+to\b|[∧∨¬⊕↔⇔→⇒⊻]|<->|<=>|->|=>|\\(?:land|lor|lnot|neg)|\bif\b[\s\S]*\bthen\b/i.test(t);
 }
-/** Called first by normalizeText: "truth table of p and (q or not r)", "p -> q \u2261 ~p or q" become logic(<encoded text>). */
+/** Called first by normalizeText: "truth table of p and (q or not r)", "p -> q ≡ ~p or q" become logic(<encoded text>). */
 function convertLogic(raw) {
   let t = String(raw).trim();
   if (!t || /^\s*(?:help|commands)\b/i.test(t)) return raw;
@@ -16298,17 +16299,17 @@ function convertLogic(raw) {
   }
   const cand = t.replace(/\btruth[\s-]*table\b/gi, '').trim();
   if (!cand) return raw;
-  const logic = /^logic\(/i.test(cand) ? false : wantTable || looksLikeLogic(cand.replace(/\u2261/g, ' equivalent to '));
+  const logic = /^logic\(/i.test(cand) ? false : wantTable || looksLikeLogic(cand.replace(/≡/g, ' equivalent to '));
   if (!logic) return raw;
   return 'logic(' + encodeText(cand) + ')';
 }
 const LOGIC_OPS = [
-  { re: /^(?:\u2194|\u21d4|<->|<=>|\biff\b|\bxnor\b|\\leftrightarrow|\\iff)/i, op: 'iff', prec: 1, right: false },
-  { re: /^(?:\u2192|\u21d2|->|=>|\bimplies\b|\\rightarrow|\\to|\\implies)/i, op: 'imp', prec: 2, right: true },
-  { re: /^(?:\u2295|\u22bb|\bxor\b|\\oplus)/i, op: 'xor', prec: 3, right: false },
-  { re: /^(?:\u2228|\bor\b|\||\\lor|\\vee)/i, op: 'or', prec: 4, right: false },
+  { re: /^(?:↔|⇔|<->|<=>|\biff\b|\bxnor\b|\\leftrightarrow|\\iff)/i, op: 'iff', prec: 1, right: false },
+  { re: /^(?:→|⇒|->|=>|\bimplies\b|\\rightarrow|\\to|\\implies)/i, op: 'imp', prec: 2, right: true },
+  { re: /^(?:⊕|⊻|\bxor\b|\\oplus)/i, op: 'xor', prec: 3, right: false },
+  { re: /^(?:∨|\bor\b|\||\\lor|\\vee)/i, op: 'or', prec: 4, right: false },
   { re: /^(?:\bnor\b)/i, op: 'nor', prec: 4, right: false },
-  { re: /^(?:\u2227|\band\b|&&?|\\land|\\wedge|\u00b7)/i, op: 'and', prec: 5, right: false },
+  { re: /^(?:∧|\band\b|&&?|\\land|\\wedge|·)/i, op: 'and', prec: 5, right: false },
   { re: /^(?:\bnand\b)/i, op: 'nand', prec: 5, right: false },
 ];
 function parseLogic(text) {
@@ -16331,7 +16332,7 @@ function parseLogic(text) {
     skip();
     const rest = s.slice(i);
     let m;
-    if ((m = /^(?:\u00ac|~|!|\bnot\b|\\lnot|\\neg)\s*/i.exec(rest))) {
+    if ((m = /^(?:¬|~|!|\bnot\b|\\lnot|\\neg)\s*/i.exec(rest))) {
       i += m[0].length;
       return { t: 'not', a: primary() };
     }
@@ -16343,11 +16344,11 @@ function parseLogic(text) {
       i++;
       return postfix(e);
     }
-    if ((m = /^(?:\u22a4|\btrue\b|\bT\b)/.exec(rest)) && !/^[A-Za-z]{2}/.test(rest.replace(/^T\b/, 'T '))) {
+    if ((m = /^(?:⊤|\btrue\b|\bT\b)/.exec(rest)) && !/^[A-Za-z]{2}/.test(rest.replace(/^T\b/, 'T '))) {
       i += m[0].length;
       return { t: 'const', v: true };
     }
-    if ((m = /^(?:\u22a5|\bfalse\b|\bF\b)/.exec(rest))) {
+    if ((m = /^(?:⊥|\bfalse\b|\bF\b)/.exec(rest))) {
       i += m[0].length;
       return { t: 'const', v: false };
     }
@@ -16359,7 +16360,7 @@ function parseLogic(text) {
     throw new MathError('I could not read the logical formula near "' + rest.slice(0, 12) + '"');
   }
   function postfix(e) {
-    // p' or p\u0304 for negation is not supported; a prime after a letter is read as NOT
+    // p' or p̄ for negation is not supported; a prime after a letter is read as NOT
     if (s[i] === "'") {
       i++;
       return postfix({ t: 'not', a: e });
@@ -16403,14 +16404,14 @@ function evalLogic(n, env) {
   }
 }
 const showLogic = (n, top) => {
-  const SYM = { and: '\u2227', or: '\u2228', xor: '\u2295', imp: '\u2192', iff: '\u2194', nand: '\u2191', nor: '\u2193' };
+  const SYM = { and: '∧', or: '∨', xor: '⊕', imp: '→', iff: '↔', nand: '↑', nor: '↓' };
   if (n.t === 'const') return n.v ? 'T' : 'F';
   if (n.t === 'var') return n.name;
-  if (n.t === 'not') return '\u00ac' + (n.a.t === 'bin' ? '(' + showLogic(n.a, true) + ')' : showLogic(n.a, false));
+  if (n.t === 'not') return '¬' + (n.a.t === 'bin' ? '(' + showLogic(n.a, true) + ')' : showLogic(n.a, false));
   const t = showLogic(n.a, false) + ' ' + SYM[n.op] + ' ' + showLogic(n.b, false);
   return top ? t : '(' + t + ')';
 };
-/** Quine\u2013McCluskey: the minimal sum of products for the given minterms. */
+/** Quine–McCluskey: the minimal sum of products for the given minterms. */
 function minimalSOP(vars, minterms) {
   const nv = vars.length;
   if (!minterms.length) return 'F';
@@ -16483,16 +16484,16 @@ function minimalSOP(vars, minterms) {
   }
   const term = (p) => {
     const lits = [];
-    for (let k = 0; k < nv; k++) if (p.bits[k] !== '-') lits.push(p.bits[k] === '1' ? vars[k] : '\u00ac' + vars[k]);
+    for (let k = 0; k < nv; k++) if (p.bits[k] !== '-') lits.push(p.bits[k] === '1' ? vars[k] : '¬' + vars[k]);
     return lits.join('') || 'T';
   };
-  return chosen.map(term).sort().join(' \u2228 ');
+  return chosen.map(term).sort().join(' ∨ ');
 }
 defCmd('logic truthtable', (n) => {
   needArgs(n, 1, 1, 'a logical formula: write  truth table of p and (q or not r)  or  p -> q  equivalent to  not p or q');
   const raw = decodeText(intArg(n.args[0]));
   const out = newOut();
-  const eqParts = raw.split(/\s*(?:\u2261|\bis\s+equivalent\s+to\b|\bequivalent\s+to\b|\bequivalent\b|\bvs\.?\b)\s*/i).filter(Boolean);
+  const eqParts = raw.split(/\s*(?:≡|\bis\s+equivalent\s+to\b|\bequivalent\s+to\b|\bequivalent\b|\bvs\.?\b)\s*/i).filter(Boolean);
   const formulas = eqParts.map((p) => parseLogic(p.replace(/^[\s:]*(?:is|the|that)\s+/i, '').trim()));
   const vars = Array.from(new Set(formulas.flatMap((f) => f.vars))).sort();
   if (vars.length > 6) throw new MathError('at most 6 variables are supported');
@@ -16517,9 +16518,9 @@ defCmd('logic truthtable', (n) => {
   out.work.push(vars.join(' ') + ' | ' + showLogic(f.tree, true));
   rows.forEach((r) => out.work.push(vars.map((v) => tf(r.env[v])).join(' ') + ' | ' + tf(r.vals[0])));
   if (ones.length && ones.length < rows.length) {
-    out.work.push('disjunctive normal form (minterms): ' + ones.map((r) => '(' + vars.map((v) => (r.env[v] ? v : '\u00ac' + v)).join('\u2227') + ')').join(' \u2228 '));
-    out.work.push('conjunctive normal form (maxterms): ' + rows.filter((r) => !r.vals[0]).map((r) => '(' + vars.map((v) => (r.env[v] ? '\u00ac' + v : v)).join('\u2228') + ')').join(' \u2227 '));
-    out.work.push('simplest sum of products (Quine\u2013McCluskey): ' + minimalSOP(vars, ones.map((r) => r.m)));
+    out.work.push('disjunctive normal form (minterms): ' + ones.map((r) => '(' + vars.map((v) => (r.env[v] ? v : '¬' + v)).join('∧') + ')').join(' ∨ '));
+    out.work.push('conjunctive normal form (maxterms): ' + rows.filter((r) => !r.vals[0]).map((r) => '(' + vars.map((v) => (r.env[v] ? '¬' + v : v)).join('∨') + ')').join(' ∧ '));
+    out.work.push('simplest sum of products (Quine–McCluskey): ' + minimalSOP(vars, ones.map((r) => r.m)));
   }
   return out;
 });
@@ -16600,7 +16601,7 @@ function graphCmd(directed) {
     out.answer.push((g.directed ? 'directed graph' : 'graph') + ' with ' + V + ' vertices and ' + E + ' edges' + (g.weighted ? ' (weighted, total weight ' + sumQ(g.edges.map((e) => e.w)).toString() + ')' : ''));
     if (g.directed) out.answer.push('out-degrees: ' + g.names.map((v) => v + ': ' + deg.get(v)).join(', ') + ';  in-degrees: ' + g.names.map((v) => v + ': ' + indeg.get(v)).join(', '));
     else {
-      out.answer.push('degrees: ' + g.names.map((v) => v + ': ' + deg.get(v)).join(', ') + '   (sum = ' + sumNum(Array.from(deg.values())) + ' = 2\u00b7' + E + ')');
+      out.answer.push('degrees: ' + g.names.map((v) => v + ': ' + deg.get(v)).join(', ') + '   (sum = ' + sumNum(Array.from(deg.values())) + ' = 2·' + E + ')');
       const seq = Array.from(deg.values()).sort((a, b) => b - a);
       out.answer.push('degree sequence: ' + seq.join(', '));
     }
@@ -16630,7 +16631,7 @@ function graphCmd(directed) {
       if (comps.filter((c) => c.some((v) => deg.get(v) > 0)).length <= 1) {
         out.work.push(odd.length === 0 ? 'Euler circuit: yes (every degree is even)' : odd.length === 2 ? 'Euler path: yes, from ' + odd[0] + ' to ' + odd[1] + ' (exactly two odd vertices); no Euler circuit' : 'Euler path: no (' + odd.length + ' vertices have odd degree)');
       } else out.work.push('Euler path: no (the edges are not all in one component)');
-      out.work.push('tree: ' + (comps.length === 1 && E === V - 1 ? 'yes (connected with V \u2212 1 edges)' : 'no') + ';  contains a cycle: ' + (E > V - comps.length ? 'yes' : 'no') + ';  complete: ' + (E === (V * (V - 1)) / 2 && g.edges.every((e) => e.u !== e.v) ? 'yes' : 'no'));
+      out.work.push('tree: ' + (comps.length === 1 && E === V - 1 ? 'yes (connected with V − 1 edges)' : 'no') + ';  contains a cycle: ' + (E > V - comps.length ? 'yes' : 'no') + ';  complete: ' + (E === (V * (V - 1)) / 2 && g.edges.every((e) => e.u !== e.v) ? 'yes' : 'no'));
     }
     // adjacency matrix
     if (V <= 12) {
@@ -16685,10 +16686,10 @@ defCmd('shortestpath dijkstra', (n) => {
   };
   const out = newOut();
   if (goal) {
-    out.answer.push(dist.get(goal) === Infinity ? 'there is no path from ' + start + ' to ' + goal : 'shortest path ' + pathTo(goal).join(' \u2192 ') + ', length ' + fmtNum(dist.get(goal)));
+    out.answer.push(dist.get(goal) === Infinity ? 'there is no path from ' + start + ' to ' + goal : 'shortest path ' + pathTo(goal).join(' → ') + ', length ' + fmtNum(dist.get(goal)));
     out.value = { num: dist.get(goal) };
   } else {
-    g.names.forEach((v) => out.answer.push(start + ' \u2192 ' + v + ': ' + (dist.get(v) === Infinity ? 'unreachable' : fmtNum(dist.get(v)) + '   via ' + pathTo(v).join(' \u2192 '))));
+    g.names.forEach((v) => out.answer.push(start + ' → ' + v + ': ' + (dist.get(v) === Infinity ? 'unreachable' : fmtNum(dist.get(v)) + '   via ' + pathTo(v).join(' → '))));
   }
   out.work.push("Dijkstra's algorithm" + (g.weighted ? '' : ' (no weights given, so every edge counts 1)') + '; vertices settled in the order ' + steps.join(', '));
   return out;
@@ -16716,12 +16717,12 @@ defCmd('mst minimumspanningtree kruskal', (n) => {
       parent.set(a, b);
       chosen.push(e);
       total = total.add(e.w);
-      log.push(e.u + '\u2013' + e.v + ' (' + e.w.toString() + ') added');
-    } else log.push(e.u + '\u2013' + e.v + ' (' + e.w.toString() + ') skipped: it would close a cycle');
+      log.push(e.u + '–' + e.v + ' (' + e.w.toString() + ') added');
+    } else log.push(e.u + '–' + e.v + ' (' + e.w.toString() + ') skipped: it would close a cycle');
   });
   const out = newOut();
   const comps = componentsOf(g).length;
-  out.answer.push((comps > 1 ? 'minimum spanning forest' : 'minimum spanning tree') + ': ' + chosen.map((e) => e.u + '\u2013' + e.v + ' (' + e.w.toString() + ')').join(', ') + ';  total weight ' + qText(total));
+  out.answer.push((comps > 1 ? 'minimum spanning forest' : 'minimum spanning tree') + ': ' + chosen.map((e) => e.u + '–' + e.v + ' (' + e.w.toString() + ')').join(', ') + ';  total weight ' + qText(total));
   out.work.push("Kruskal's algorithm: take the edges by increasing weight, skipping any that closes a cycle");
   log.forEach((l) => out.work.push(l));
   out.value = { q: total };
@@ -16773,7 +16774,7 @@ defCmd('maxflow maximumflow', (n) => {
       path.unshift(prev.get(v));
     }
     flow = flow.add(bott);
-    paths.push(path.join(' \u2192 ') + '  (+' + bott.toString() + ')');
+    paths.push(path.join(' → ') + '  (+' + bott.toString() + ')');
   }
   // minimum cut: vertices reachable from s in the residual graph
   const reach = new Set([s]);
@@ -16790,8 +16791,8 @@ defCmd('maxflow maximumflow', (n) => {
   const cutEdges = g.edges.filter((e) => reach.has(e.u) && !reach.has(e.v));
   const out = newOut();
   out.answer.push('maximum flow from ' + s + ' to ' + t + ' = ' + qText(flow));
-  out.work.push('augmenting paths (Edmonds\u2013Karp): ' + paths.join(';  '));
-  out.work.push('minimum cut: S = {' + Array.from(reach).join(', ') + '}, cut edges ' + cutEdges.map((e) => e.u + '\u2192' + e.v + ' (' + e.w.toString() + ')').join(', ') + ', capacity ' + qText(sumQ(cutEdges.map((e) => e.w))) + ' (equal to the flow: max-flow min-cut)');
+  out.work.push('augmenting paths (Edmonds–Karp): ' + paths.join(';  '));
+  out.work.push('minimum cut: S = {' + Array.from(reach).join(', ') + '}, cut edges ' + cutEdges.map((e) => e.u + '→' + e.v + ' (' + e.w.toString() + ')').join(', ') + ', capacity ' + qText(sumQ(cutEdges.map((e) => e.w))) + ' (equal to the flow: max-flow min-cut)');
   out.value = { q: flow };
   return out;
 });
@@ -16827,7 +16828,7 @@ defCmd('coloring graphcoloring chromatic', (n) => {
     if (go(0, 0)) found = { k, col: col.slice() };
   }
   const out = newOut();
-  out.answer.push('chromatic number \u03c7 = ' + found.k);
+  out.answer.push('chromatic number χ = ' + found.k);
   for (let c = 0; c < found.k; c++) out.work.push('colour ' + (c + 1) + ': ' + g.names.filter((v, i) => found.col[i] === c).join(', '));
   const clique = (() => {
     let best = 1;
@@ -16838,7 +16839,7 @@ defCmd('coloring graphcoloring chromatic', (n) => {
     rec(Array.from({ length: V }, (_, i) => i), 0);
     return best;
   })();
-  out.work.push('largest clique has ' + clique + ' vertices, so \u03c7 \u2265 ' + clique + (clique === found.k ? ' (and this colouring achieves it)' : ''));
+  out.work.push('largest clique has ' + clique + ' vertices, so χ ≥ ' + clique + (clique === found.k ? ' (and this colouring achieves it)' : ''));
   out.value = { q: qInt(found.k) };
   return out;
 });
@@ -16937,7 +16938,7 @@ defMat('qr qrdecomposition', (args, n, out) => {
   const norms = us.map((u) => sSqrt(sN(dotQ(u, u))));
   const Q = mT(us.map((u, j) => u.map((x) => sDiv(sN(x), norms[j]))));
   const R = us.map((u, i) => cols.map((a, j) => (j < i ? sN(Q0) : j === i ? norms[i] : sDiv(sN(dotQ(a, us[i])), norms[i]))));
-  out.work.push('Gram-Schmidt on the columns of A: the columns of Q are the normalised vectors, R = Q\u1d40 A is upper triangular');
+  out.work.push('Gram-Schmidt on the columns of A: the columns of Q are the normalised vectors, R = Qᵀ A is upper triangular');
   out.answer.push('Q =');
   la2Grid(Q.map((r) => r.map(la2Sym))).forEach((l) => out.answer.push(l));
   out.answer.push('R =');
@@ -16945,7 +16946,7 @@ defMat('qr qrdecomposition', (args, n, out) => {
   const Qn = Q.map((r) => r.map(la2Num));
   const Rn = R.map((r) => r.map(la2Num));
   const ok = la2Close(la2NumMul(Qn, Rn), la2ToNum(A), 1e-9) && la2Close(la2NumMul(mT(Qn), Qn), la2ToNum(mIdent(nc)), 1e-9);
-  out.check = ok ? 'Q R = A and Q\u1d40Q = I (checked with decimals)' : null;
+  out.check = ok ? 'Q R = A and QᵀQ = I (checked with decimals)' : null;
   out.__done = true;
   return mat([[Q0]], { __skip: true });
 }, [1, 'a matrix with independent columns']);
@@ -16973,19 +16974,19 @@ defMat('cholesky choleskydecomposition ldl', (args, n, out) => {
   squareCheck(A, 'the Cholesky factorisation');
   if (!la2IsSymmetric(A)) throw new MathError('the matrix must be symmetric (equal to its transpose)');
   const r = la2Ldl(A);
-  if (r.bad !== undefined) throw new MathError('the matrix is not positive definite (the pivot in position ' + (r.bad + 1) + ' is ' + r.d.toString() + ' \u2264 0), so it has no Cholesky factorisation');
+  if (r.bad !== undefined) throw new MathError('the matrix is not positive definite (the pivot in position ' + (r.bad + 1) + ' is ' + r.d.toString() + ' ≤ 0), so it has no Cholesky factorisation');
   const { L, D } = r;
   const nn = A.length;
   const sq = D.map((d) => sSqrt(sN(d)));
   const G = L.map((row, i) => row.map((v, j) => (j > i ? sN(Q0) : sMul([sN(v), sq[j]]))));
-  out.work.push('A = L D L\u1d40 with L unit lower triangular and D = diag(' + D.map((d) => d.toString()).join(', ') + ') (all positive)');
+  out.work.push('A = L D Lᵀ with L unit lower triangular and D = diag(' + D.map((d) => d.toString()).join(', ') + ') (all positive)');
   out.work.push('L =');
   la2Grid(L.map((row) => row.map((q) => q.toString()))).forEach((l) => out.work.push(l));
   out.answer.push('G =');
   la2Grid(G.map((row) => row.map(la2Sym))).forEach((l) => out.answer.push(l));
-  out.answer.push('A = G G\u1d40');
+  out.answer.push('A = G Gᵀ');
   const Gn = G.map((row) => row.map(la2Num));
-  out.check = la2Close(la2NumMul(Gn, mT(Gn)), la2ToNum(A), 1e-9) ? 'G G\u1d40 = A (checked with decimals)' : null;
+  out.check = la2Close(la2NumMul(Gn, mT(Gn)), la2ToNum(A), 1e-9) ? 'G Gᵀ = A (checked with decimals)' : null;
   void nn;
   out.__done = true;
   return mat([[Q0]], { __skip: true });
@@ -17006,7 +17007,7 @@ function la2SignChanges(c) {
 defMat('definite posdef positivedefinite definiteness classifymatrix', (args, n, out) => {
   const A = needMat(args[0], 'definite');
   squareCheck(A, 'definiteness');
-  if (!la2IsSymmetric(A)) throw new MathError('the matrix must be symmetric to be classified (for x\u1d40A x only the symmetric part counts: use (A + A\u1d40)/2)');
+  if (!la2IsSymmetric(A)) throw new MathError('the matrix must be symmetric to be classified (for xᵀA x only the symmetric part counts: use (A + Aᵀ)/2)');
   const nn = A.length;
   const c = charPoly(A);
   // a real-rooted polynomial has exactly as many positive roots as sign changes of its coefficients (Descartes)
@@ -17020,10 +17021,10 @@ defMat('definite posdef positivedefinite definiteness classifymatrix', (args, n,
   out.work.push('Leading principal minors: ' + minors.map((q) => q.toString()).join(', '));
   out.work.push('Eigenvalues: ' + pos + ' positive, ' + neg + ' negative, ' + zeros + ' zero (counted from the characteristic polynomial, exact)');
   let kind;
-  if (pos === nn) kind = 'positive definite (all eigenvalues > 0, x\u1d40A x > 0 for every x \u2260 0)';
-  else if (neg === nn) kind = 'negative definite (all eigenvalues < 0, x\u1d40A x < 0 for every x \u2260 0)';
-  else if (neg === 0) kind = 'positive semidefinite (eigenvalues \u2265 0, with ' + zeros + ' equal to 0)';
-  else if (pos === 0) kind = 'negative semidefinite (eigenvalues \u2264 0, with ' + zeros + ' equal to 0)';
+  if (pos === nn) kind = 'positive definite (all eigenvalues > 0, xᵀA x > 0 for every x ≠ 0)';
+  else if (neg === nn) kind = 'negative definite (all eigenvalues < 0, xᵀA x < 0 for every x ≠ 0)';
+  else if (neg === 0) kind = 'positive semidefinite (eigenvalues ≥ 0, with ' + zeros + ' equal to 0)';
+  else if (pos === 0) kind = 'negative semidefinite (eigenvalues ≤ 0, with ' + zeros + ' equal to 0)';
   else kind = 'indefinite (it has both positive and negative eigenvalues)';
   out.answer.push('the matrix is ' + kind);
   out.__done = true;
@@ -17050,8 +17051,8 @@ defMat('pinv pseudoinverse moorepenrose', (args, n, out) => {
   const PA = mMul(P, A);
   const eq = (X, Y) => X.every((r, i) => r.every((v, j) => v.eq(Y[i][j])));
   const ok = eq(mMul(AP, A), A) && eq(mMul(PA, P), P) && eq(AP, mT(AP)) && eq(PA, mT(PA));
-  out.work.push('Moore-Penrose pseudoinverse A\u207a = F\u1d40(F F\u1d40)\u207b\u00b9(C\u1d40C)\u207b\u00b9C\u1d40 from a rank factorisation A = C F (C = pivot columns of A, F = non-zero rows of rref A); rank ' + mRref(A).pivots.length);
-  out.check = ok ? 'A A\u207a A = A, A\u207a A A\u207a = A\u207a, and A A\u207a, A\u207a A are symmetric' : null;
+  out.work.push('Moore-Penrose pseudoinverse A⁺ = Fᵀ(F Fᵀ)⁻¹(CᵀC)⁻¹Cᵀ from a rank factorisation A = C F (C = pivot columns of A, F = non-zero rows of rref A); rank ' + mRref(A).pivots.length);
+  out.check = ok ? 'A A⁺ A = A, A⁺ A A⁺ = A⁺, and A A⁺, A⁺ A are symmetric' : null;
   return mat(P);
 }, [1, 'a matrix']);
 
@@ -17067,12 +17068,12 @@ defMat('leastsquares lstsq normalequations', (args, n, out) => {
   const fit = mMul(A, x.map((v) => [v])).map((r) => r[0]);
   const res = b.map((v, i) => v.sub(fit[i]));
   const r2 = res.reduce((s, v) => s.add(v.mul(v)), Q0);
-  out.work.push('Normal equations A\u1d40A x = A\u1d40b' + (rank === nc ? ' (A\u1d40A is invertible: the solution is unique)' : ' (A has rank ' + rank + ' < ' + nc + ' columns: the minimum-norm solution is given, any vector of the null space can be added)'));
-  out.answer.push('x\u0302 = [' + x.map((q) => q.toString()).join(', ') + ']');
-  out.answer.push('fitted values A x\u0302 = [' + fit.map((q) => q.toString()).join(', ') + ']');
-  out.answer.push('residual b \u2212 A x\u0302 = [' + res.map((q) => q.toString()).join(', ') + '],  \u2016residual\u2016 = ' + la2Sym(sSqrt(sN(r2))) + ' (squared: ' + r2.toString() + ')');
+  out.work.push('Normal equations AᵀA x = Aᵀb' + (rank === nc ? ' (AᵀA is invertible: the solution is unique)' : ' (A has rank ' + rank + ' < ' + nc + ' columns: the minimum-norm solution is given, any vector of the null space can be added)'));
+  out.answer.push('x̂ = [' + x.map((q) => q.toString()).join(', ') + ']');
+  out.answer.push('fitted values A x̂ = [' + fit.map((q) => q.toString()).join(', ') + ']');
+  out.answer.push('residual b − A x̂ = [' + res.map((q) => q.toString()).join(', ') + '],  ‖residual‖ = ' + la2Sym(sSqrt(sN(r2))) + ' (squared: ' + r2.toString() + ')');
   const orth = mMul(At, res.map((v) => [v])).every((r) => r[0].isZero());
-  out.check = orth ? 'A\u1d40(b \u2212 A x\u0302) = 0: the residual is perpendicular to the columns of A' : null;
+  out.check = orth ? 'Aᵀ(b − A x̂) = 0: the residual is perpendicular to the columns of A' : null;
   out.__done = true;
   return mat([[Q0]], { __skip: true });
 }, [2, 'a matrix A and a vector b']);
@@ -17148,7 +17149,7 @@ defMat('svd singularvalues', (args, n, out) => {
   const k = r.s.length;
   const tol = 1e-10 * (r.s[0] || 1);
   const rank = r.s.filter((s) => s > tol).length;
-  // exact values when the eigenvalues of A\u1d40A can be written down
+  // exact values when the eigenvalues of AᵀA can be written down
   const G = trans ? mMul(A, mT(A)) : mMul(mT(A), A);
   const roots = polyRoots(charPoly(G));
   const exact = [];
@@ -17157,22 +17158,22 @@ defMat('svd singularvalues', (args, n, out) => {
   });
   exact.sort((p, q) => q.val - p.val);
   const useExact = roots.complex.length === 0 && exact.length === k && exact.every((e) => e.text);
-  out.work.push('Singular values are the square roots of the eigenvalues of ' + (trans ? 'A A\u1d40' : 'A\u1d40 A') + '; rank = number of non-zero singular values');
+  out.work.push('Singular values are the square roots of the eigenvalues of ' + (trans ? 'A Aᵀ' : 'Aᵀ A') + '; rank = number of non-zero singular values');
   r.s.forEach((s, i) => {
     const e = useExact ? exact[i] : null;
-    const tx = e && e.text !== fmtNum(s) ? e.text + ' \u2248 ' + fmtNum(s) : fmtNum(s);
-    out.answer.push('\u03c3' + (i + 1) + ' = ' + (Math.abs(s) < tol ? '0' : tx));
+    const tx = e && e.text !== fmtNum(s) ? e.text + ' ≈ ' + fmtNum(s) : fmtNum(s);
+    out.answer.push('σ' + (i + 1) + ' = ' + (Math.abs(s) < tol ? '0' : tx));
   });
   out.answer.push('rank ' + rank + ',  largest singular value (2-norm) ' + fmtNum(r.s[0]) + (rank === k ? ',  condition number ' + fmtNum(r.s[0] / r.s[k - 1]) : ',  condition number infinite (singular)'));
   const fro = A.reduce((s, row) => row.reduce((t, v) => t.add(v.mul(v)), s), Q0);
-  out.work.push('Frobenius norm \u221a(\u03a3 a\u1d62\u2c7c\u00b2) = ' + la2Sym(sSqrt(sN(fro))) + ' = sqrt(\u03c3\u2081\u00b2 + \u03c3\u2082\u00b2 + \u2026)');
+  out.work.push('Frobenius norm √(Σ aᵢⱼ²) = ' + la2Sym(sSqrt(sN(fro))) + ' = sqrt(σ₁² + σ₂² + …)');
   const dec = (M) => la2Grid(M.map((row) => row.map((v) => fmtNum(Math.abs(v) < 1e-12 ? 0 : v))));
-  out.work.push('U (decimals, ' + m + '\u00d7' + k + ') =');
+  out.work.push('U (decimals, ' + m + '×' + k + ') =');
   dec(U).forEach((l) => out.work.push(l));
-  out.work.push('V (decimals, ' + nc + '\u00d7' + k + ') =');
+  out.work.push('V (decimals, ' + nc + '×' + k + ') =');
   dec(V).forEach((l) => out.work.push(l));
   const Rn = la2NumMul(la2NumMul(U, r.s.map((s, i) => r.s.map((_, j) => (i === j ? s : 0)))), mT(V));
-  out.check = la2Close(Rn, la2ToNum(A), 1e-8) ? 'U \u03a3 V\u1d40 reproduces A (checked with decimals)' : null;
+  out.check = la2Close(Rn, la2ToNum(A), 1e-8) ? 'U Σ Vᵀ reproduces A (checked with decimals)' : null;
   out.__done = true;
   return mat([[Q0]], { __skip: true });
 }, [1, 'a matrix']);
@@ -17201,7 +17202,7 @@ defMat('expm matrixexp matrixexponential', (args, n, out) => {
   const A = needMat(args[0], 'expm');
   squareCheck(A, 'the matrix exponential');
   const nn = A.length;
-  if (nn > 6) throw new MathError('expm handles matrices up to 6\u00d76');
+  if (nn > 6) throw new MathError('expm handles matrices up to 6×6');
   let tS = sN(Q1);
   if (args[1]) {
     if (args[1].t === 'num') tS = sN(args[1].q);
@@ -17213,12 +17214,12 @@ defMat('expm matrixexp matrixexponential', (args, n, out) => {
   const c = charPoly(A);
   const roots = polyRoots(c);
   const rational = roots.complex.length === 0 && roots.real.every((r) => r.q);
-  const label = !args[1] ? 'e^A' : tVars.size ? 'e^(A' + Array.from(tVars)[0] + ')' : 'e^(A\u00b7' + la2Sym(tS) + ')';
+  const label = !args[1] ? 'e^A' : tVars.size ? 'e^(A' + Array.from(tVars)[0] + ')' : 'e^(A·' + la2Sym(tS) + ')';
   const tNum = tVars.size ? 0.7 : numS(tS, {});
   const ref = la2ExpmNum(la2ToNum(A).map((r) => r.map((v) => v * tNum)));
   let Ex;
   if (rational) {
-    // generalised eigenspaces: S has a basis of ker (A - \u03bbI)^m for each eigenvalue; E_\u03bb projects onto its block
+    // generalised eigenspaces: S has a basis of ker (A - λI)^m for each eigenvalue; E_λ projects onto its block
     const blocks = [];
     roots.real.forEach((rt) => {
       let M = A.map((row, i) => row.map((v, j) => (i === j ? v.sub(rt.q) : v)));
@@ -17261,7 +17262,7 @@ defMat('expm matrixexp matrixexponential', (args, n, out) => {
     const cs = sFn('cos', [bt]);
     const sn = sDiv(sFn('sin', [bt]), beta);
     Ex = A.map((row, i) => row.map((v, j) => simp(sMul([ea, sAdd([i === j ? cs : sN(Q0), sMul([sn, sN(i === j ? v.sub(alpha) : v)])])]))));
-    out.work.push('Complex eigenvalues ' + alpha.toString() + ' \u00b1 i\u00b7' + la2Sym(beta) + ';  e^(At) = e^(\u03b1t) (cos(\u03b2t) I + sin(\u03b2t)/\u03b2 (A \u2212 \u03b1I))');
+    out.work.push('Complex eigenvalues ' + alpha.toString() + ' ± i·' + la2Sym(beta) + ';  e^(At) = e^(αt) (cos(βt) I + sin(βt)/β (A − αI))');
   } else {
     if (tVars.size) throw new MathError('with irrational eigenvalues or a larger matrix with complex eigenvalues expm needs a numeric t (an exact formula is not available here)');
     const num = ref;
@@ -17271,12 +17272,12 @@ defMat('expm matrixexp matrixexponential', (args, n, out) => {
     out.__done = true;
     return mat([[Q0]], { __skip: true });
   }
-  if (rational) out.work.push('Eigenvalues ' + roots.real.map((r) => r.q.toString() + (r.mult > 1 ? ' (\u00d7' + r.mult + ')' : '')).join(', ') + ';  e^(At) = \u03a3 e^(\u03bbt) \u03a3\u2096 t\u1d4f/k! (A \u2212 \u03bbI)\u1d4f E_\u03bb over the generalised eigenspaces');
+  if (rational) out.work.push('Eigenvalues ' + roots.real.map((r) => r.q.toString() + (r.mult > 1 ? ' (×' + r.mult + ')' : '')).join(', ') + ';  e^(At) = Σ e^(λt) Σₖ tᵏ/k! (A − λI)ᵏ E_λ over the generalised eigenspaces');
   out.answer.push(label + ' =');
   la2Grid(Ex.map((row) => row.map(la2Sym))).forEach((l) => out.answer.push(l));
   const tcheck = tVars.size ? { [Array.from(tVars)[0]]: 0.7 } : {};
   const got = Ex.map((row) => row.map((e) => numS(e, tcheck)));
-  out.check = la2Close(got, ref, 1e-8) ? 'agrees with the series e^M = I + M + M\u00b2/2! + \u2026 evaluated numerically' : null;
+  out.check = la2Close(got, ref, 1e-8) ? 'agrees with the series e^M = I + M + M²/2! + … evaluated numerically' : null;
   out.__done = true;
   return mat([[Q0]], { __skip: true });
 }, [1, 'a square matrix (and optionally t): expm([[1,2],[0,3]], t)']);
@@ -17291,7 +17292,7 @@ defMat('jordan jordanform', (args, n, out) => {
   const A = needMat(args[0], 'jordan');
   squareCheck(A, 'the Jordan form');
   const nn = A.length;
-  if (nn > 6) throw new MathError('jordan handles matrices up to 6\u00d76');
+  if (nn > 6) throw new MathError('jordan handles matrices up to 6×6');
   const roots = polyRoots(charPoly(A));
   if (roots.complex.length || roots.real.some((r) => !r.q)) throw new MathError('I can build the Jordan form when all eigenvalues are rational');
   const lams = roots.real.slice().sort((p, q) => p.val - q.val);
@@ -17325,7 +17326,7 @@ defMat('jordan jordanform', (args, n, out) => {
         sizes.push({ s, chain });
         got++;
       }
-      if (got !== exactly) throw new MathError('could not build the Jordan chains for \u03bb = ' + rt.q.toString());
+      if (got !== exactly) throw new MathError('could not build the Jordan chains for λ = ' + rt.q.toString());
     }
     sizes.forEach(({ s, chain }) => {
       chain.forEach((c, j) => {
@@ -17341,13 +17342,13 @@ defMat('jordan jordanform', (args, n, out) => {
   const Pinv = mInv(P);
   if (!Pinv) throw new MathError('could not build an invertible P');
   const ok = mMul(mMul(P, J), Pinv).every((r, i) => r.every((v, j) => v.eq(A[i][j])));
-  out.work.push('Jordan blocks: ' + blocksText.join(', ') + '  (J\u209b(\u03bb) is an s\u00d7s block with \u03bb on the diagonal and 1 above it)');
+  out.work.push('Jordan blocks: ' + blocksText.join(', ') + '  (Jₛ(λ) is an s×s block with λ on the diagonal and 1 above it)');
   out.answer.push('J =');
   matLines(J).forEach((l) => out.answer.push(l));
   out.answer.push('P =  (columns: a chain of generalised eigenvectors for each block)');
   matLines(P).forEach((l) => out.answer.push(l));
-  out.answer.push('A = P J P\u207b\u00b9');
-  out.check = ok ? 'P J P\u207b\u00b9 = A (exact)' : null;
+  out.answer.push('A = P J P⁻¹');
+  out.check = ok ? 'P J P⁻¹ = A (exact)' : null;
   out.__done = true;
   return mat([[Q0]], { __skip: true });
 }, [1, 'a square matrix with rational eigenvalues']);
@@ -17416,12 +17417,12 @@ const unpairedIn = (conf) => {
   return u;
 };
 function superscript(s) {
-  const map = { '0': '\u2070', '1': '\u00b9', '2': '\u00b2', '3': '\u00b3', '4': '\u2074', '5': '\u2075', '6': '\u2076', '7': '\u2077', '8': '\u2078', '9': '\u2079', '+': '\u207a', '-': '\u207b' };
+  const map = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '+': '⁺', '-': '⁻' };
   return s.split('').map((c) => map[c] || c).join('');
 }
 /** "Fe", "Fe3+", "Fe^3+", "Cl-", "O2-", "Cu(+)" -> { z, charge }. */
 function parseIon(text) {
-  const t = text.trim().replace(/[\u2212\u2013]/g, '-').replace(/\s+/g, '');
+  const t = text.trim().replace(/[−–]/g, '-').replace(/\s+/g, '');
   let m = /^([A-Za-z]+?)(?:\^?\(?(\d*)([+-])\)?|\^?\(?([+-])(\d+)\)?)$/.exec(t);
   if (m && m[3] !== undefined) {
     const mag = m[2] === '' ? 1 : Number(m[2]);
@@ -17586,7 +17587,7 @@ defCmd('empirical empiricalformula', (n) => {
     const mm = Number(parts[1].replace(/[^0-9.]/g, ''));
     if (mm > 0) {
       const mult = Math.round(mm / eMass);
-      if (mult >= 1 && Math.abs(mm / eMass - mult) <= 0.1 * mult + 0.05) out.answer.push('molecular formula ' + formulaText(entries.map(([e, c]) => [e, c * mult])) + '  (molar mass ' + mm + ' / empirical mass ' + fmtNum(eMass) + ' \u2248 ' + mult + ')');
+      if (mult >= 1 && Math.abs(mm / eMass - mult) <= 0.1 * mult + 0.05) out.answer.push('molecular formula ' + formulaText(entries.map(([e, c]) => [e, c * mult])) + '  (molar mass ' + mm + ' / empirical mass ' + fmtNum(eMass) + ' ≈ ' + mult + ')');
       else out.answer.push('the molar mass ' + mm + ' is not a whole-number multiple of the empirical formula mass ' + fmtNum(eMass));
     }
   }
@@ -17606,7 +17607,7 @@ defCmd('molecular molecularformula', (n) => {
     return out;
   }
   out.answer.push('molecular formula ' + formulaText(Array.from(cnt).map(([e, c]) => [e, c * mult])));
-  out.work.push('empirical formula mass ' + fmtNum(eMass) + ' g/mol;  ' + fmtNum(mm) + ' / ' + fmtNum(eMass) + ' \u2248 ' + mult);
+  out.work.push('empirical formula mass ' + fmtNum(eMass) + ' g/mol;  ' + fmtNum(mm) + ' / ' + fmtNum(eMass) + ' ≈ ' + mult);
   return out;
 });
 COMMANDS.molecular.show = (n) => 'molecular formula from ' + CHEM_ARGS[Number(intArg(n.args[0]))] + ' and molar mass ' + showRaw(n.args[1]);
@@ -17614,7 +17615,7 @@ COMMANDS.molecular.show = (n) => 'molecular formula from ' + CHEM_ARGS[Number(in
 // ---- stoichiometry ---------------------------------------------------------------------------------------------------------------------------
 /** Balance "A + B -> C + D": { left, right, coef (left then right), counts }. */
 function chemBalance(rxn) {
-  const sides = rxn.split(/->|=>|\u2192|\u27f6|\u21cc|=/);
+  const sides = rxn.split(/->|=>|→|⟶|⇌|=/);
   if (sides.length !== 2) throw new MathError('the reaction needs one arrow, e.g. H2 + O2 -> H2O');
   const split = (t) => t.split(/\s+\+\s+|\s*\+\s*(?=[0-9]*[A-Z(])/).map((x) => x.trim().replace(/^\d+(?=[A-Z(])/, '')).filter(Boolean);
   const left = split(sides[0]);
@@ -17633,12 +17634,12 @@ function chemBalance(rxn) {
 }
 const rxnText = (b) => {
   const term = (name, c) => (c === 1 ? '' : c) + name;
-  return b.left.map((s, j) => term(s, b.coef[j])).join(' + ') + ' \u2192 ' + b.right.map((s, j) => term(s, b.coef[b.left.length + j])).join(' + ');
+  return b.left.map((s, j) => term(s, b.coef[j])).join(' + ') + ' → ' + b.right.map((s, j) => term(s, b.coef[b.left.length + j])).join(' + ');
 };
 const molarMassOf = (f) => molarOf(parseFormula(f)).toNumber();
 /** "4 g H2", "0.5 mol O2", "2 kg Fe" -> { moles, mass, formula, text } */
 function parseAmount(text) {
-  const m = /^\s*(\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)\s*(kg|mg|g|grams?|mmol|mol|moles?)?\s*(?:of\s+)?([A-Z][A-Za-z0-9()\[\]\u00b7.*]*)\s*$/.exec(text);
+  const m = /^\s*(\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)\s*(kg|mg|g|grams?|mmol|mol|moles?)?\s*(?:of\s+)?([A-Z][A-Za-z0-9()\[\]·.*]*)\s*$/.exec(text);
   if (!m) throw new MathError('write each amount like 4 g H2 or 0.5 mol O2 (number, unit g / kg / mg / mol, formula)');
   const val = Number(m[1]);
   const unit = (m[2] || 'g').toLowerCase();
@@ -17667,7 +17668,7 @@ defCmd('limiting limitingreagent', (n) => {
   const out = newOut();
   out.work.push('balanced: ' + rxnText(b));
   const extents = given.map((g) => ({ g, ext: g.moles / b.coef[b.left.indexOf(g.f)] }));
-  extents.forEach((e) => out.work.push(e.g.text + ' = ' + fmtNum(e.g.moles) + ' mol; moles \u00f7 coefficient = ' + fmtNum(e.ext)));
+  extents.forEach((e) => out.work.push(e.g.text + ' = ' + fmtNum(e.g.moles) + ' mol; moles ÷ coefficient = ' + fmtNum(e.ext)));
   const lim = extents.reduce((p, q) => (q.ext < p.ext ? q : p));
   const ties = extents.filter((e) => Math.abs(e.ext - lim.ext) <= 1e-9 * Math.max(1, lim.ext));
   out.answer.push(ties.length > 1 ? 'no limiting reagent: the reactants are in exactly the stoichiometric ratio' : 'limiting reagent: ' + lim.g.f);
@@ -17720,10 +17721,10 @@ defCmd('weakacid', (n) => {
   if (!(ka > 0) || !(c > 0) || !isFinite(ka) || !isFinite(c)) throw new MathError('Ka and the concentration must be positive numbers');
   const x = (-ka + Math.sqrt(ka * ka + 4 * ka * c)) / 2;
   const out = newOut();
-  out.answer.push('[H\u207a] = ' + fmtNum(x) + ' mol/L,  pH = ' + fmtNum(-Math.log10(x)));
+  out.answer.push('[H⁺] = ' + fmtNum(x) + ' mol/L,  pH = ' + fmtNum(-Math.log10(x)));
   out.answer.push('percent ionization = ' + fmtNum((x / c) * 100) + ' %');
-  out.work.push('HA \u21cc H\u207a + A\u207b:  Ka = x\u00b2/(C \u2212 x)  \u2192  x\u00b2 + Ka\u00b7x \u2212 Ka\u00b7C = 0  \u2192  x = (\u2212Ka + \u221a(Ka\u00b2 + 4\u00b7Ka\u00b7C))/2   (exact quadratic, no approximation)');
-  out.work.push('shortcut x \u2248 \u221a(Ka\u00b7C) = ' + fmtNum(Math.sqrt(ka * c)) + (x / c < 0.05 ? ' (valid: ionization below 5 %)' : ' (not valid: ionization above 5 %)') + ';  pKa = ' + fmtNum(-Math.log10(ka)));
+  out.work.push('HA ⇌ H⁺ + A⁻:  Ka = x²/(C − x)  →  x² + Ka·x − Ka·C = 0  →  x = (−Ka + √(Ka² + 4·Ka·C))/2   (exact quadratic, no approximation)');
+  out.work.push('shortcut x ≈ √(Ka·C) = ' + fmtNum(Math.sqrt(ka * c)) + (x / c < 0.05 ? ' (valid: ionization below 5 %)' : ' (not valid: ionization above 5 %)') + ';  pKa = ' + fmtNum(-Math.log10(ka)));
   out.value = { num: -Math.log10(x) };
   return out;
 });
@@ -17734,25 +17735,25 @@ defCmd('weakbase', (n) => {
   if (!(kb > 0) || !(c > 0)) throw new MathError('Kb and the concentration must be positive');
   const x = (-kb + Math.sqrt(kb * kb + 4 * kb * c)) / 2;
   const out = newOut();
-  out.answer.push('[OH\u207b] = ' + fmtNum(x) + ' mol/L,  pOH = ' + fmtNum(-Math.log10(x)) + ',  pH = ' + fmtNum(14 + Math.log10(x)));
+  out.answer.push('[OH⁻] = ' + fmtNum(x) + ' mol/L,  pOH = ' + fmtNum(-Math.log10(x)) + ',  pH = ' + fmtNum(14 + Math.log10(x)));
   out.answer.push('percent ionization = ' + fmtNum((x / c) * 100) + ' %');
-  out.work.push('B + H\u2082O \u21cc BH\u207a + OH\u207b:  Kb = x\u00b2/(C \u2212 x)  \u2192  x = (\u2212Kb + \u221a(Kb\u00b2 + 4\u00b7Kb\u00b7C))/2;  pH = 14 \u2212 pOH (25 \u00b0C)');
+  out.work.push('B + H₂O ⇌ BH⁺ + OH⁻:  Kb = x²/(C − x)  →  x = (−Kb + √(Kb² + 4·Kb·C))/2;  pH = 14 − pOH (25 °C)');
   out.value = { num: 14 + Math.log10(x) };
   return out;
 });
 defCmd('buffer hendersonhasselbalch', (n) => {
-  needArgs(n, 3, 3, 'pKa (or Ka), the base [A\u207b] and the acid [HA] concentrations, e.g. buffer(4.76, 0.20, 0.10)');
+  needArgs(n, 3, 3, 'pKa (or Ka), the base [A⁻] and the acid [HA] concentrations, e.g. buffer(4.76, 0.20, 0.10)');
   let pka = numArg(n.args[0]);
   const base = numArg(n.args[1]);
   const acid = numArg(n.args[2]);
   if (!(base > 0) || !(acid > 0)) throw new MathError('both concentrations must be positive');
   const out = newOut();
   if (pka > 0 && pka < 1) {
-    out.work.push('the first number is below 1, so it is taken as Ka: pKa = \u2212log\u2081\u2080(Ka) = ' + fmtNum(-Math.log10(pka)));
+    out.work.push('the first number is below 1, so it is taken as Ka: pKa = −log₁₀(Ka) = ' + fmtNum(-Math.log10(pka)));
     pka = -Math.log10(pka);
   }
   const ph = pka + Math.log10(base / acid);
-  out.work.push('Henderson\u2013Hasselbalch: pH = pKa + log\u2081\u2080([A\u207b]/[HA]) = ' + fmtNum(pka) + ' + log\u2081\u2080(' + fmtNum(base) + '/' + fmtNum(acid) + ')');
+  out.work.push('Henderson–Hasselbalch: pH = pKa + log₁₀([A⁻]/[HA]) = ' + fmtNum(pka) + ' + log₁₀(' + fmtNum(base) + '/' + fmtNum(acid) + ')');
   return numOut(out, ph, 'pH');
 });
 /** The unknown of a formula given as the letter x (or ?) among its arguments, or null. */
@@ -17770,8 +17771,8 @@ defCmd('dilution', (n) => {
   else res = (c1 * v1) / c2;
   const names = ['C1', 'V1', 'C2', 'V2'];
   const out = newOut();
-  out.work.push('C1\u00b7V1 = C2\u00b7V2  \u2192  ' + names[k] + ' = ' + (k === 0 ? 'C2\u00b7V2/V1' : k === 1 ? 'C2\u00b7V2/C1' : k === 2 ? 'C1\u00b7V1/V2' : 'C1\u00b7V1/C2'));
-  if (k === 3) out.work.push('solvent to add = V2 \u2212 V1 = ' + fmtNum(res - v1));
+  out.work.push('C1·V1 = C2·V2  →  ' + names[k] + ' = ' + (k === 0 ? 'C2·V2/V1' : k === 1 ? 'C2·V2/C1' : k === 2 ? 'C1·V1/V2' : 'C1·V1/C2'));
+  if (k === 3) out.work.push('solvent to add = V2 − V1 = ' + fmtNum(res - v1));
   return numOut(out, res, names[k]);
 });
 defCmd('molarity', (n) => {
@@ -17803,7 +17804,7 @@ defCmd('idealgas gaslaw', (n) => {
   const res = [(nn * GAS_R * T) / V, (nn * GAS_R * T) / P, (P * V) / (GAS_R * T), (P * V) / (nn * GAS_R)][k];
   const names = ['P (atm)', 'V (L)', 'n (mol)', 'T (K)'];
   const out = newOut();
-  out.work.push('PV = nRT with R = 0.082057366 L\u00b7atm/(mol\u00b7K); P in atm, V in liters, n in moles, T in kelvin');
+  out.work.push('PV = nRT with R = 0.082057366 L·atm/(mol·K); P in atm, V in liters, n in moles, T in kelvin');
   return numOut(out, res, names[k]);
 });
 defCmd('combinedgas', (n) => {
@@ -17822,7 +17823,7 @@ defCmd('combinedgas', (n) => {
   ][k];
   const names = ['P1', 'V1', 'T1 (K)', 'P2', 'V2', 'T2 (K)'];
   const out = newOut();
-  out.work.push('P1\u00b7V1/T1 = P2\u00b7V2/T2 (temperatures in kelvin)');
+  out.work.push('P1·V1/T1 = P2·V2/T2 (temperatures in kelvin)');
   return numOut(out, res, names[k]);
 });
 const fractionArg = (node) => {
@@ -17842,7 +17843,7 @@ defCmd('halflife', (n) => {
     out.answer.push('amount remaining = ' + fmtNum(n0 * f) + ' (of ' + fmtNum(n0) + ')');
     out.value = { num: n0 * f };
   } else out.value = { num: f };
-  out.work.push('N = N\u2080\u00b7(1/2)^(t/t\u00bd);  decay constant \u03bb = ln 2 / t\u00bd = ' + fmtNum(Math.LN2 / th) + ',  mean life 1/\u03bb = ' + fmtNum(th / Math.LN2));
+  out.work.push('N = N₀·(1/2)^(t/t½);  decay constant λ = ln 2 / t½ = ' + fmtNum(Math.LN2 / th) + ',  mean life 1/λ = ' + fmtNum(th / Math.LN2));
   return out;
 });
 defCmd('decaytime', (n) => {
@@ -17851,7 +17852,7 @@ defCmd('decaytime', (n) => {
   const f = fractionArg(n.args[1]);
   if (!(th > 0) || !(f > 0) || f >= 1) throw new MathError('the half-life must be positive and the fraction remaining between 0 and 1');
   const out = newOut();
-  out.work.push('t = t\u00bd \u00b7 log\u2082(1/fraction) = ' + fmtNum(th) + ' \u00b7 ' + fmtNum(Math.log2(1 / f)));
+  out.work.push('t = t½ · log₂(1/fraction) = ' + fmtNum(th) + ' · ' + fmtNum(Math.log2(1 / f)));
   return numOut(out, th * Math.log2(1 / f), 'time');
 });
 
@@ -17894,7 +17895,7 @@ defCmd('amortization amortize schedule', (n) => {
   const out = newOut();
   out.answer.push('payment = ' + fmtMoney(pay) + ' per period (' + N + ' payments), total interest = ' + fmtMoney(totalInt) + ', total paid = ' + fmtMoney(pay * N));
   finTable(rows, ['#', 'payment', 'interest', 'principal', 'balance']).forEach((l) => out.work.push(l));
-  out.work.push('payment = P\u00b7r/(1 \u2212 (1 + r)^\u2212N) with r = ' + fmtNum(rate) + '/' + m + ' per period; interest = balance \u00d7 r; principal = payment \u2212 interest');
+  out.work.push('payment = P·r/(1 − (1 + r)^−N) with r = ' + fmtNum(rate) + '/' + m + ' per period; interest = balance × r; principal = payment − interest');
   out.value = { num: pay };
   return out;
 });
@@ -17905,7 +17906,7 @@ defCmd('loanbalance remainingbalance', (n) => {
   if (k < 0 || k > N) throw new MathError('the number of payments made must be between 0 and ' + N);
   const bal = r === 0 ? P - pay * k : P * Math.pow(1 + r, k) - (pay * (Math.pow(1 + r, k) - 1)) / r;
   const out = newOut();
-  out.work.push('payment = ' + fmtMoney(pay) + ';  balance after k payments = P(1+r)^k \u2212 pay\u00b7((1+r)^k \u2212 1)/r;  interest paid so far = ' + fmtMoney(pay * k - (P - bal)));
+  out.work.push('payment = ' + fmtMoney(pay) + ';  balance after k payments = P(1+r)^k − pay·((1+r)^k − 1)/r;  interest paid so far = ' + fmtMoney(pay * k - (P - bal)));
   out.value = { num: bal };
   void m;
   out.answer.push('balance after ' + k + ' payments = ' + fmtMoney(Math.abs(bal) < 1e-7 ? 0 : bal));
@@ -17927,7 +17928,7 @@ defCmd('payoff', (n) => {
   }
   const N = r === 0 ? P / pay : -Math.log(1 - (r * P) / pay) / Math.log(1 + r);
   out.answer.push('number of payments = ' + fmtNum(N) + ' (about ' + Math.ceil(N - 1e-9) + ' payments, ' + fmtNum(N / m) + ' years)');
-  out.work.push('N = \u2212ln(1 \u2212 r\u00b7P/pay) / ln(1 + r) with r = ' + fmtNum(r) + ' per period');
+  out.work.push('N = −ln(1 − r·P/pay) / ln(1 + r) with r = ' + fmtNum(r) + ' per period');
   out.value = { num: N };
   return out;
 });
@@ -17961,7 +17962,7 @@ defCmd('bond bondprice', (n) => {
   out.answer.push('Macaulay duration = ' + fmtNum(mac) + ' years');
   out.answer.push('modified duration = ' + fmtNum(mac / (1 + i)) + ',  convexity = ' + fmtNum(convex / price));
   out.answer.push('current yield = ' + fmtNum(((F * cr) / price) * 100) + ' %');
-  out.work.push('price = \u03a3 coupon/(1 + y/f)^t + face/(1 + y/f)^N with ' + N + ' periods, coupon ' + fmtMoney(c) + ' per period, periodic yield ' + fmtNum(i));
+  out.work.push('price = Σ coupon/(1 + y/f)^t + face/(1 + y/f)^N with ' + N + ' periods, coupon ' + fmtMoney(c) + ' per period, periodic yield ' + fmtNum(i));
   out.value = { num: price };
   return out;
 });
@@ -17974,7 +17975,7 @@ defCmd('straightline', (n) => {
   const cost = numArg(n.args[0]);
   const salvage = numArg(n.args[1]);
   const life = Math.round(numArg(n.args[2]));
-  if (!(cost > 0) || salvage < 0 || salvage >= cost || life < 1 || life > 100) throw new MathError('check the cost, the salvage value (below the cost) and the life (1\u2013100 years)');
+  if (!(cost > 0) || salvage < 0 || salvage >= cost || life < 1 || life > 100) throw new MathError('check the cost, the salvage value (below the cost) and the life (1–100 years)');
   const d = (cost - salvage) / life;
   const rows = [];
   for (let y = 1; y <= life; y++) rows.push([y, fmtMoney(d), fmtMoney(d * y), fmtMoney(cost - d * y)]);
@@ -17989,7 +17990,7 @@ defCmd('decliningbalance doubledeclining ddb', (n) => {
   const salvage = numArg(n.args[1]);
   const life = Math.round(numArg(n.args[2]));
   const factor = n.args[3] ? numArg(n.args[3]) : 2;
-  if (!(cost > 0) || salvage < 0 || salvage >= cost || life < 1 || life > 100 || !(factor > 0)) throw new MathError('check the cost, the salvage value (below the cost), the life (1\u2013100 years) and the factor');
+  if (!(cost > 0) || salvage < 0 || salvage >= cost || life < 1 || life > 100 || !(factor > 0)) throw new MathError('check the cost, the salvage value (below the cost), the life (1–100 years) and the factor');
   let book = cost;
   const rows = [];
   let acc = 0;
@@ -18009,7 +18010,7 @@ defCmd('sumofyears syd', (n) => {
   const cost = numArg(n.args[0]);
   const salvage = numArg(n.args[1]);
   const life = Math.round(numArg(n.args[2]));
-  if (!(cost > 0) || salvage < 0 || salvage >= cost || life < 1 || life > 100) throw new MathError('check the cost, the salvage value (below the cost) and the life (1\u2013100 years)');
+  if (!(cost > 0) || salvage < 0 || salvage >= cost || life < 1 || life > 100) throw new MathError('check the cost, the salvage value (below the cost) and the life (1–100 years)');
   const sum = (life * (life + 1)) / 2;
   const rows = [];
   let acc = 0;
@@ -18019,7 +18020,7 @@ defCmd('sumofyears syd', (n) => {
     rows.push([y, fmtMoney(d), fmtMoney(acc), fmtMoney(cost - acc)]);
   }
   const out = newOut();
-  depTable(out, rows, 'sum-of-the-years-digits: year k gets (life \u2212 k + 1)/' + sum + ' of the depreciable amount', cost, salvage);
+  depTable(out, rows, 'sum-of-the-years-digits: year k gets (life − k + 1)/' + sum + ' of the depreciable amount', cost, salvage);
   out.value = { num: ((cost - salvage) * life) / sum };
   return out;
 });
@@ -18031,7 +18032,7 @@ defCmd('cagr', (n) => {
   if (!(a > 0) || !(b > 0) || !(t > 0)) throw new MathError('the values and the years must be positive');
   const g = Math.pow(b / a, 1 / t) - 1;
   const out = newOut();
-  out.work.push('CAGR = (end/start)^(1/years) \u2212 1 = (' + fmtNum(b) + '/' + fmtNum(a) + ')^(1/' + fmtNum(t) + ') \u2212 1');
+  out.work.push('CAGR = (end/start)^(1/years) − 1 = (' + fmtNum(b) + '/' + fmtNum(a) + ')^(1/' + fmtNum(t) + ') − 1');
   return numOut(out, g * 100, 'compound annual growth rate (%)');
 });
 defCmd('rule72 ruleof72', (n) => {
@@ -18049,7 +18050,7 @@ defCmd('realrate fisher', (n) => {
   const inf = finRate(n.args[1]);
   const real = (1 + nom) / (1 + inf) - 1;
   const out = newOut();
-  out.work.push('Fisher equation: 1 + real = (1 + nominal)/(1 + inflation);  the approximation nominal \u2212 inflation = ' + fmtNum((nom - inf) * 100) + ' %');
+  out.work.push('Fisher equation: 1 + real = (1 + nominal)/(1 + inflation);  the approximation nominal − inflation = ' + fmtNum((nom - inf) * 100) + ' %');
   return numOut(out, real * 100, 'real rate (%)');
 });
 defCmd('mirr', (n) => {
@@ -18068,7 +18069,7 @@ defCmd('mirr', (n) => {
   if (pvNeg === 0 || fvPos === 0) throw new MathError('the cash flows need at least one outflow (negative) and one inflow (positive)');
   const m = Math.pow(fvPos / -pvNeg, 1 / (N - 1)) - 1;
   const out = newOut();
-  out.work.push('MIRR = (FV of inflows at the reinvestment rate / PV of outflows at the finance rate)^(1/(n\u22121)) \u2212 1 = (' + fmtNum(fvPos) + ' / ' + fmtNum(-pvNeg) + ')^(1/' + (N - 1) + ') \u2212 1');
+  out.work.push('MIRR = (FV of inflows at the reinvestment rate / PV of outflows at the finance rate)^(1/(n−1)) − 1 = (' + fmtNum(fvPos) + ' / ' + fmtNum(-pvNeg) + ')^(1/' + (N - 1) + ') − 1');
   return numOut(out, m * 100, 'modified IRR (%)');
 });
 defCmd('payback paybackperiod', (n) => {
@@ -18115,8 +18116,8 @@ function convertChem2(s) {
   if (!/[A-Za-z]/.test(s)) return s;
   const enc = (name, inner) => name + '(' + chemIndex(inner.trim()) + ')';
   s = replaceCalls(s, ['empirical', 'empiricalformula'], (name, inner) => (/[A-Z]/.test(inner) && /\d/.test(inner) ? enc(name, inner) : null));
-  s = replaceCalls(s, ['limiting', 'limitingreagent', 'stoich', 'stoichiometry'], (name, inner) => (/->|=>|\u2192|\u27f6|\u21cc/.test(inner) ? enc(name, inner) : null));
-  s = replaceCalls(s, ['electronconfig', 'electronconfiguration', 'econfig', 'element', 'elementinfo', 'periodic'], (name, inner) => (/^\s*[A-Za-z]+[A-Za-z0-9^+\-\u2212()\s]*$/.test(inner) || /^\s*\d{1,3}\s*$/.test(inner) ? enc(name, inner) : null));
+  s = replaceCalls(s, ['limiting', 'limitingreagent', 'stoich', 'stoichiometry'], (name, inner) => (/->|=>|→|⟶|⇌/.test(inner) ? enc(name, inner) : null));
+  s = replaceCalls(s, ['electronconfig', 'electronconfiguration', 'econfig', 'element', 'elementinfo', 'periodic'], (name, inner) => (/^\s*[A-Za-z]+[A-Za-z0-9^+\-−()\s]*$/.test(inner) || /^\s*\d{1,3}\s*$/.test(inner) ? enc(name, inner) : null));
   s = replaceCalls(s, ['molecular', 'molecularformula'], (name, inner) => {
     const k = inner.indexOf(',');
     if (k < 0 || !/^\s*[A-Z][A-Za-z0-9()\[\]]*\s*$/.test(inner.slice(0, k))) return null;
@@ -18124,11 +18125,11 @@ function convertChem2(s) {
   });
   s = replaceCalls(s, ['molarity'], (name, inner) => {
     const parts = inner.split(',');
-    if (parts.length !== 3 || !/^\s*[A-Z][A-Za-z0-9()\[\]\u00b7.*]*\s*$/.test(parts[1])) return null;
+    if (parts.length !== 3 || !/^\s*[A-Z][A-Za-z0-9()\[\]·.*]*\s*$/.test(parts[1])) return null;
     return name + '(' + parts[0] + ',' + chemIndex(parts[1].trim()) + ',' + parts[2] + ')';
   });
   // words
-  s = s.replace(/\belectron\s+configuration\s+(?:of|for)\s+([A-Za-z][A-Za-z0-9^+\-\u2212()]*)/gi, (m, el) => 'electronconfig(' + chemIndex(el) + ')');
+  s = s.replace(/\belectron\s+configuration\s+(?:of|for)\s+([A-Za-z][A-Za-z0-9^+\-−()]*)/gi, (m, el) => 'electronconfig(' + chemIndex(el) + ')');
   s = s.replace(/\bempirical\s+formula\s+(?:of|for|from)?\s*:?\s*([A-Za-z0-9.%,;\s]+?)\s*$/i, (m, spec) => (/[A-Z]/.test(spec) && /\d/.test(spec) ? 'empirical(' + chemIndex(spec) + ')' : m));
   return s;
 }
@@ -18159,7 +18160,7 @@ const g3Show = (u) => '(' + u.map((q) => q.toString()).join(', ') + ')';
 const g3Len = (u) => symText(simp(sSqrt(sN(dotQ(u, u)))));
 const g3Rad = (q) => symText(simp(sSqrt(sN(q))));
 const g3Ratio = (num, den2) => symText(simp(sDiv(sN(num), sSqrt(sN(den2)))));
-const g3Deg = (rad) => fmtNum((rad * 180) / Math.PI) + '\u00b0';
+const g3Deg = (rad) => fmtNum((rad * 180) / Math.PI) + '°';
 /** Integer, coprime coefficients with the first non-zero one positive. */
 function g3NormPlane(p) {
   let L = 1n;
@@ -18190,7 +18191,7 @@ const g3Out = (out) => {
 };
 function g3LineLines(out, P, d) {
   const names = ['x', 'y', 'z'];
-  out.work.push('vector form: r = ' + g3Show(P) + ' + t\u00b7' + g3Show(d));
+  out.work.push('vector form: r = ' + g3Show(P) + ' + t·' + g3Show(d));
   const comp = (p, dd) => {
     if (dd.isZero()) return p.toString();
     const tt = (dd.abs().eq(Q1) ? '' : dd.abs().toString()) + 't';
@@ -18212,13 +18213,13 @@ defMat('plane planeinfo', (args, n, out) => {
     const nv = g3Vec(args[1], 'plane (normal vector)');
     if (g3IsZero(nv)) throw new MathError('the normal vector must not be zero');
     p = nv.concat([dotQ(nv, P)]);
-    out.work.push('through ' + g3Show(P) + ' with normal vector ' + g3Show(nv) + ':  n\u00b7(X \u2212 P) = 0');
+    out.work.push('through ' + g3Show(P) + ' with normal vector ' + g3Show(nv) + ':  n·(X − P) = 0');
   } else if (args.length === 3) {
     const [A, B, C] = args.map((a) => g3Vec(a, 'plane (point)'));
     const nv = g3Cross(g3Sub(B, A), g3Sub(C, A));
     if (g3IsZero(nv)) throw new MathError('the three points lie on one line, so they do not determine a plane');
     p = nv.concat([dotQ(nv, A)]);
-    out.work.push('normal vector n = AB \u00d7 AC = ' + g3Show(nv));
+    out.work.push('normal vector n = AB × AC = ' + g3Show(nv));
   } else throw new MathError('plane needs three points, a point and a normal vector, or a plane [a, b, c, d]');
   const q = g3NormPlane(p);
   out.answer.push('plane ' + g3PlaneText(q));
@@ -18253,7 +18254,7 @@ defMat('pointplane planedist', (args, n, out) => {
   const num = dotQ(nv, P).sub(p[3]);
   out.answer.push('distance = ' + g3Ratio(num.sign() < 0 ? num.neg() : num, nn));
   const foot = g3Sub(P, g3Scale(nv, num.div(nn)));
-  out.work.push('d = |a\u00b7x\u2080 + b\u00b7y\u2080 + c\u00b7z\u2080 \u2212 d| / \u221a(a\u00b2 + b\u00b2 + c\u00b2) = |' + num.toString() + '| / ' + g3Rad(nn));
+  out.work.push('d = |a·x₀ + b·y₀ + c·z₀ − d| / √(a² + b² + c²) = |' + num.toString() + '| / ' + g3Rad(nn));
   out.work.push('foot of the perpendicular ' + g3Show(foot) + (num.isZero() ? ' (the point lies on the plane)' : ';  the point is on the ' + (num.sign() > 0 ? 'side the normal vector points to' : 'opposite side')));
   out.check = dotQ(nv, foot).eq(p[3]) ? 'the foot lies in the plane' : null;
   return g3Out(out);
@@ -18268,7 +18269,7 @@ defMat('pointline3d', (args, n, out) => {
   const foot = g3Add(A, g3Scale(d, t));
   const w = g3Sub(P, foot);
   out.answer.push('distance = ' + g3Rad(dotQ(w, w)));
-  out.work.push('foot of the perpendicular ' + g3Show(foot) + ' (t = ' + t.toString() + ');  distance = |(P \u2212 A) \u00d7 d| / |d|');
+  out.work.push('foot of the perpendicular ' + g3Show(foot) + ' (t = ' + t.toString() + ');  distance = |(P − A) × d| / |d|');
   out.check = dotQ(w, d).isZero() ? 'the connecting vector is perpendicular to the line' : null;
   return g3Out(out);
 }, [3, 'a point, a point on the line and the direction: pointline3d([1,2,3], [0,0,0], [1,1,0])']);
@@ -18299,7 +18300,7 @@ defMat('skewlines linedistance', (args, n, out) => {
     out.work.push('parameters s = ' + s.toString() + ' on the first line and t = ' + t.toString() + ' on the second');
   } else {
     out.answer.push('the lines are skew, distance = ' + g3Ratio(tri.sign() < 0 ? tri.neg() : tri, nn));
-    out.work.push('d = |(B \u2212 A)\u00b7(d\u2081 \u00d7 d\u2082)| / |d\u2081 \u00d7 d\u2082|, with d\u2081 \u00d7 d\u2082 = ' + g3Show(nv));
+    out.work.push('d = |(B − A)·(d₁ × d₂)| / |d₁ × d₂|, with d₁ × d₂ = ' + g3Show(nv));
     out.work.push('closest points ' + g3Show(P1) + ' on the first line and ' + g3Show(P2) + ' on the second');
     out.check = dotQ(g3Sub(P2, P1), d1).isZero() && dotQ(g3Sub(P2, P1), d2).isZero() ? 'the segment joining them is perpendicular to both lines' : null;
   }
@@ -18323,8 +18324,8 @@ defMat('lineplane', (args, n, out) => {
   const t = gap.div(nd);
   const X = g3Add(A, g3Scale(d, t));
   out.answer.push('intersection point ' + g3Show(X) + ' (t = ' + t.toString() + ')');
-  out.work.push('substitute the line into the plane: n\u00b7(A + t d) = D  gives  t = (D \u2212 n\u00b7A)/(n\u00b7d) = ' + t.toString());
-  out.work.push('angle between the line and the plane: sin \u03c6 = |n\u00b7d| / (|n||d|),  \u03c6 = ' + g3Deg(ang));
+  out.work.push('substitute the line into the plane: n·(A + t d) = D  gives  t = (D − n·A)/(n·d) = ' + t.toString());
+  out.work.push('angle between the line and the plane: sin φ = |n·d| / (|n||d|),  φ = ' + g3Deg(ang));
   out.check = dotQ(nv, X).eq(p[3]) ? 'the point satisfies the plane equation' : null;
   return g3Out(out);
 }, [3, 'a point and direction of the line and a plane: lineplane([0,0,0],[1,1,1], [1,2,3,6])']);
@@ -18345,7 +18346,7 @@ defMat('planeangle', (args, n, out) => {
   const th = Math.acos(Math.min(1, cos));
   const cosS = simp(sDiv(sN(dp.sign() < 0 ? dp.neg() : dp), sSqrt(sN(dotQ(n1, n1).mul(dotQ(n2, n2))))));
   out.answer.push('angle between the planes = ' + g3Deg(th) + (dp.isZero() ? ' (the planes are perpendicular)' : ''));
-  out.work.push('cos \u03b8 = |n\u2081\u00b7n\u2082| / (|n\u2081||n\u2082|) = ' + fmtS(cosS) + ';  n\u2081 = ' + g3Show(n1) + ', n\u2082 = ' + g3Show(n2));
+  out.work.push('cos θ = |n₁·n₂| / (|n₁||n₂|) = ' + fmtS(cosS) + ';  n₁ = ' + g3Show(n1) + ', n₂ = ' + g3Show(n2));
   return g3Out(out);
 }, [2, 'two planes: planeangle([1,0,0,0], [1,1,0,0])']);
 
@@ -18372,7 +18373,7 @@ defMat('planeintersect', (args, n, out) => {
   const dv = primitiveVector(d);
   out.answer.push('the planes meet in the line through ' + g3Show(P) + ' with direction ' + g3Show(dv));
   g3LineLines(out, P, dv);
-  out.work.push('direction = n\u2081 \u00d7 n\u2082 = ' + g3Show(d));
+  out.work.push('direction = n₁ × n₂ = ' + g3Show(d));
   out.check = dotQ(n1, P).eq(p1[3]) && dotQ(n2, P).eq(p2[3]) ? 'the point lies in both planes' : null;
   return g3Out(out);
 }, [2, 'two planes: planeintersect([1,1,1,3], [1,-1,0,0])']);
@@ -18380,8 +18381,8 @@ defMat('planeintersect', (args, n, out) => {
 defMat('triplescalar tripleproduct parallelepiped', (args, n, out) => {
   const [u, v, w] = args.map((a) => g3Vec(a, 'triplescalar'));
   const t = dotQ(u, g3Cross(v, w));
-  out.answer.push('u\u00b7(v \u00d7 w) = ' + t.toString());
-  out.work.push('volume of the parallelepiped = |u\u00b7(v \u00d7 w)| = ' + (t.sign() < 0 ? t.neg() : t).toString() + ';  volume of the tetrahedron on them = ' + (t.sign() < 0 ? t.neg() : t).div(qInt(6)).toString());
+  out.answer.push('u·(v × w) = ' + t.toString());
+  out.work.push('volume of the parallelepiped = |u·(v × w)| = ' + (t.sign() < 0 ? t.neg() : t).toString() + ';  volume of the tetrahedron on them = ' + (t.sign() < 0 ? t.neg() : t).div(qInt(6)).toString());
   out.work.push(t.isZero() ? 'the three vectors are coplanar (linearly dependent)' : 'the three vectors are independent, ' + (t.sign() > 0 ? 'a right-handed' : 'a left-handed') + ' triple');
   out.value = { q: t };
   return g3Out(out);
@@ -18392,7 +18393,7 @@ defMat('trianglearea3d', (args, n, out) => {
   const c = g3Cross(g3Sub(B, A), g3Sub(C, A));
   const area2 = dotQ(c, c);
   out.answer.push('area = ' + (area2.isZero() ? '0 (the points are collinear)' : symText(simp(sDiv(sSqrt(sN(area2)), sI(2))))));
-  out.work.push('area = |AB \u00d7 AC| / 2 with AB \u00d7 AC = ' + g3Show(c) + ';  sides ' + g3Rad(dotQ(g3Sub(B, A), g3Sub(B, A))) + ', ' + g3Rad(dotQ(g3Sub(C, B), g3Sub(C, B))) + ', ' + g3Rad(dotQ(g3Sub(A, C), g3Sub(A, C))));
+  out.work.push('area = |AB × AC| / 2 with AB × AC = ' + g3Show(c) + ';  sides ' + g3Rad(dotQ(g3Sub(B, A), g3Sub(B, A))) + ', ' + g3Rad(dotQ(g3Sub(C, B), g3Sub(C, B))) + ', ' + g3Rad(dotQ(g3Sub(A, C), g3Sub(A, C))));
   return g3Out(out);
 }, [3, 'three points: trianglearea3d([0,0,0],[1,0,0],[0,2,0])']);
 
@@ -18401,7 +18402,7 @@ defMat('tetrahedron', (args, n, out) => {
   const t = dotQ(g3Sub(B, A), g3Cross(g3Sub(C, A), g3Sub(D, A)));
   const vol = (t.sign() < 0 ? t.neg() : t).div(qInt(6));
   out.answer.push(vol.isZero() ? 'volume = 0 (the four points are coplanar)' : 'volume = ' + qLabel(vol));
-  out.work.push('V = |AB\u00b7(AC \u00d7 AD)| / 6 = |' + t.toString() + '| / 6');
+  out.work.push('V = |AB·(AC × AD)| / 6 = |' + t.toString() + '| / 6');
   out.value = { q: vol };
   return g3Out(out);
 }, [4, 'four points: tetrahedron([0,0,0],[1,0,0],[0,1,0],[0,0,1])']);
@@ -18410,12 +18411,12 @@ defMat('dircos directioncosines', (args, n, out) => {
   const v = g3Vec(args[0], 'dircos');
   if (g3IsZero(v)) throw new MathError('the vector must not be zero');
   const L2 = dotQ(v, v);
-  const names = ['\u03b1', '\u03b2', '\u03b3'];
+  const names = ['α', 'β', 'γ'];
   const len = Math.sqrt(L2.toNumber());
   v.forEach((c, i) => {
     out.answer.push('cos ' + names[i] + ' = ' + symText(simp(sDiv(sN(c), sSqrt(sN(L2))))) + ',  ' + names[i] + ' = ' + g3Deg(Math.acos(c.toNumber() / len)));
   });
-  out.work.push('direction cosines are the components of v divided by |v| = ' + g3Len(v) + ';  cos\u00b2\u03b1 + cos\u00b2\u03b2 + cos\u00b2\u03b3 = 1');
+  out.work.push('direction cosines are the components of v divided by |v| = ' + g3Len(v) + ';  cos²α + cos²β + cos²γ = 1');
   return g3Out(out);
 }, [1, 'a vector: dircos([1,2,2])']);
 
@@ -18445,16 +18446,16 @@ function g3Sphere(args, n, out) {
     const sol = mMul(inv, rhs.map((q) => [q])).map((r) => r[0]);
     C = sol.slice(0, 3).map((q) => q.neg().div(qInt(2)));
     r2 = dotQ(C, C).sub(sol[3]);
-    out.work.push('x\u00b2 + y\u00b2 + z\u00b2 + Dx + Ey + Fz + G = 0 through the four points gives D, E, F, G = ' + sol.map((q) => q.toString()).join(', '));
+    out.work.push('x² + y² + z² + Dx + Ey + Fz + G = 0 through the four points gives D, E, F, G = ' + sol.map((q) => q.toString()).join(', '));
   } else throw new MathError('sphere needs a centre and a radius, the two ends of a diameter, or four points');
   const G = dotQ(C, C).sub(r2);
   const lin = C.map((c) => c.mul(qInt(-2)));
   const names = ['x', 'y', 'z'];
-  const sq = C.map((c, i) => (c.isZero() ? names[i] + '\u00b2' : '(' + names[i] + (c.sign() < 0 ? ' + ' + c.neg().toString() : ' - ' + c.toString()) + ')\u00b2'));
+  const sq = C.map((c, i) => (c.isZero() ? names[i] + '²' : '(' + names[i] + (c.sign() < 0 ? ' + ' + c.neg().toString() : ' - ' + c.toString()) + ')²'));
   out.answer.push(sq.join(' + ') + ' = ' + r2.toString() + '   (centre ' + g3Show(C) + ', radius ' + g3Rad(r2) + ')');
   const term = (c, nm) => (c.isZero() ? '' : (c.sign() < 0 ? ' - ' : ' + ') + (c.abs().eq(Q1) ? '' : c.abs().toString()) + nm);
-  out.work.push('expanded: x\u00b2 + y\u00b2 + z\u00b2' + term(lin[0], 'x') + term(lin[1], 'y') + term(lin[2], 'z') + (G.isZero() ? '' : (G.sign() < 0 ? ' - ' : ' + ') + G.abs().toString()) + ' = 0');
-  out.work.push('volume = (4/3)\u03c0 r\u00b3 = ' + fmtNum((4 / 3) * Math.PI * Math.pow(r2.toNumber(), 1.5)) + ',  surface area = 4\u03c0 r\u00b2 = ' + fmtNum(4 * Math.PI * r2.toNumber()));
+  out.work.push('expanded: x² + y² + z²' + term(lin[0], 'x') + term(lin[1], 'y') + term(lin[2], 'z') + (G.isZero() ? '' : (G.sign() < 0 ? ' - ' : ' + ') + G.abs().toString()) + ' = 0');
+  out.work.push('volume = (4/3)π r³ = ' + fmtNum((4 / 3) * Math.PI * Math.pow(r2.toNumber(), 1.5)) + ',  surface area = 4π r² = ' + fmtNum(4 * Math.PI * r2.toNumber()));
   return g3Out(out);
 }
 // sphere(r) is the volume / surface area command of the geometry module; with a point it is the equation of a sphere
@@ -18553,12 +18554,12 @@ function classifyQuadric(A, b, c) {
       const nm = ['x', 'y', 'z'];
       const shifted = nm.map((v, i) => (v0[i].isZero() ? v : '(' + v + (v0[i].sign() < 0 ? ' + ' + v0[i].neg().toString() : ' - ' + v0[i].toString()) + ')'));
       if (k.isZero()) {
-        res.std = A.map((row, i) => row[i]).map((lam, i) => (lam.sign() < 0 ? '- ' : '+ ') + (lam.abs().eq(Q1) ? '' : lam.abs().toString()) + shifted[i] + '\u00b2').join(' ').replace(/^\+ /, '') + ' = 0';
+        res.std = A.map((row, i) => row[i]).map((lam, i) => (lam.sign() < 0 ? '- ' : '+ ') + (lam.abs().eq(Q1) ? '' : lam.abs().toString()) + shifted[i] + '²').join(' ').replace(/^\+ /, '') + ' = 0';
       } else {
         res.std = A.map((row, i) => {
           const w = row[i].div(s);
           const den = w.abs().inv();
-          return (w.sign() < 0 ? '- ' : '+ ') + shifted[i] + '\u00b2' + (den.eq(Q1) ? '' : '/' + den.toString());
+          return (w.sign() < 0 ? '- ' : '+ ') + shifted[i] + '²' + (den.eq(Q1) ? '' : '/' + den.toString());
         }).join(' ').replace(/^\+ /, '') + ' = 1';
       }
     }
@@ -18607,7 +18608,7 @@ defMat('quadric surface sphereinfo', (args, n, out) => {
   const A = needMat(args[0], 'quadric');
   const b = flat(args[1]);
   const c = args[2].t === 'num' ? args[2].q : (() => { throw new MathError('the constant term must be a number'); })();
-  if (A.length !== 3 || A[0].length !== 3 || b.length !== 3) throw new MathError('quadric needs a 3\u00d73 symmetric matrix, a vector of three linear coefficients and a constant: quadric([[1,0,0],[0,1,0],[0,0,1]], [-2,4,-6], -11)');
+  if (A.length !== 3 || A[0].length !== 3 || b.length !== 3) throw new MathError('quadric needs a 3×3 symmetric matrix, a vector of three linear coefficients and a constant: quadric([[1,0,0],[0,1,0],[0,0,1]], [-2,4,-6], -11)');
   if (!la2IsSymmetric(A)) throw new MathError('the matrix of the quadratic terms must be symmetric');
   const res = classifyQuadric(A, b, c);
   out.answer.push('surface: ' + res.name);
@@ -18618,7 +18619,7 @@ defMat('quadric surface sphereinfo', (args, n, out) => {
   }
   if (res.std) out.work.push('standard form: ' + res.std);
   const e = polyRoots(charPoly(A));
-  out.work.push('quadratic part: ' + res.pos + ' positive, ' + res.neg + ' negative and ' + (3 - res.rank) + ' zero eigenvalues' + (e.complex.length === 0 ? ' (\u03bb = ' + e.real.map((r) => r.text + (r.mult > 1 ? '\u00d7' + r.mult : '')).join(', ') + ')' : ''));
+  out.work.push('quadratic part: ' + res.pos + ' positive, ' + res.neg + ' negative and ' + (3 - res.rank) + ' zero eigenvalues' + (e.complex.length === 0 ? ' (λ = ' + e.real.map((r) => r.text + (r.mult > 1 ? '×' + r.mult : '')).join(', ') + ')' : ''));
   return g3Out(out);
 }, [3, 'the matrix of the quadratic terms, the linear coefficients and the constant']);
 /** Hook for solveProblem: a single equation in exactly x, y, z (a plane or a quadric surface). */
@@ -18894,7 +18895,7 @@ defCmd('slopefield directionfield', (n) => {
     const atR = endR[endR.length - 1];
     const atL = endL[endL.length - 1];
     out.work.push('slope at (' + fmtNum(x0) + ', ' + fmtNum(y0) + ') = ' + fmtNum(f(x0, y0)));
-    out.work.push('solution through (' + fmtNum(x0) + ', ' + fmtNum(y0) + '): ' + (Math.abs(atR.x - xr[1]) < 1e-9 ? 'y(' + fmtNum(xr[1]) + ') \u2248 ' + fmtNum(atR.y) : 'it leaves the window near x = ' + fmtNum(atR.x)) + ';  ' + (Math.abs(atL.x - xr[0]) < 1e-9 ? 'y(' + fmtNum(xr[0]) + ') \u2248 ' + fmtNum(atL.y) : 'to the left it leaves the window near x = ' + fmtNum(atL.x)));
+    out.work.push('solution through (' + fmtNum(x0) + ', ' + fmtNum(y0) + '): ' + (Math.abs(atR.x - xr[1]) < 1e-9 ? 'y(' + fmtNum(xr[1]) + ') ≈ ' + fmtNum(atR.y) : 'it leaves the window near x = ' + fmtNum(atR.x)) + ';  ' + (Math.abs(atL.x - xr[0]) < 1e-9 ? 'y(' + fmtNum(xr[0]) + ') ≈ ' + fmtNum(atL.y) : 'to the left it leaves the window near x = ' + fmtNum(atL.x)));
   }
   // equilibrium solutions of an autonomous equation y' = f(y)
   const autonomous = !collectVars(args[0], new Set()).has(win.vx);
@@ -18971,7 +18972,7 @@ defCmd('scatter scatterplot', (n) => {
     out.work.push('coefficients (constant term first): ' + c.map((q, i) => 'c' + i + ' = ' + fmtNum(q.toNumber())).join(', '));
     if (!sst.isZero()) {
       const r2 = Q1.sub(sse.div(sst));
-      out.work.push('R\u00b2 = ' + fmtNum(r2.toNumber()) + (deg === 1 ? ';  correlation r = ' + (c[1].sign() < 0 ? '-' : '') + fmtNum(Math.sqrt(Math.max(0, r2.toNumber()))) : ''));
+      out.work.push('R² = ' + fmtNum(r2.toNumber()) + (deg === 1 ? ';  correlation r = ' + (c[1].sign() < 0 ? '-' : '') + fmtNum(Math.sqrt(Math.max(0, r2.toNumber()))) : ''));
     }
     const span = xmax - xmin || 1;
     const lo = xmin - span * 0.08;
@@ -19017,7 +19018,7 @@ function pl2Histogram(n, mode) {
       k = 1;
     }
     lastClosed = true;
-    how = mode === 'bins' ? k + ' equal bins from the smallest to the largest value; the last bin includes its upper end' : k + ' equal bins from the smallest to the largest value (Sturges\' rule \u2308log\u2082 n\u2309 + 1); the last bin includes its upper end';
+    how = mode === 'bins' ? k + ' equal bins from the smallest to the largest value; the last bin includes its upper end' : k + ' equal bins from the smallest to the largest value (Sturges\' rule ⌈log₂ n⌉ + 1); the last bin includes its upper end';
   }
   if (k < 1 || k > 60) throw new MathError('the number of classes must be between 1 and 60');
   const counts = new Array(k).fill(0);
@@ -19030,7 +19031,7 @@ function pl2Histogram(n, mode) {
   for (let i = 0; i <= k; i++) edges.push(lo.add(w.mul(qInt(i))));
   const out = newOut();
   out.answer.push('Histogram of ' + N + ' values in ' + k + ' classes of width ' + fmtNum(w.toNumber()) + ': counts ' + counts.join(', ') + ' (the picture is shown in the chat)');
-  counts.forEach((c, i) => out.work.push('class ' + (i + 1) + ': [' + fmtNum(edges[i].toNumber()) + ', ' + fmtNum(edges[i + 1].toNumber()) + (lastClosed && i === k - 1 ? ']' : ')') + ' \u2192 ' + c + '  (' + fmtNum((c / N) * 100) + ' %)'));
+  counts.forEach((c, i) => out.work.push('class ' + (i + 1) + ': [' + fmtNum(edges[i].toNumber()) + ', ' + fmtNum(edges[i + 1].toNumber()) + (lastClosed && i === k - 1 ? ']' : ')') + ' → ' + c + '  (' + fmtNum((c / N) * 100) + ' %)'));
   const best = Math.max(...counts);
   out.work.push('tallest class' + (counts.filter((c) => c === best).length > 1 ? 'es' : '') + ': ' + counts.map((c, i) => (c === best ? i + 1 : 0)).filter(Boolean).join(', ') + ' (' + best + ' values);  ' + how);
   const e = edges.map((q) => q.toNumber());
@@ -19141,7 +19142,7 @@ defCmd('normalshade shadenormal', (n) => {
   const r = shadeDistribution(n, 'normal', (x) => normPdf((x - mu) / sd) / sd, (x) => normCdf((x - mu) / sd), null, 'Normal(' + fmtNum(mu) + ', ' + fmtNum(sd) + ')', mu - 4.2 * sd, mu + 4.2 * sd);
   const a = numArg(n.args[2]);
   const b = numArg(n.args[3]);
-  r.out.work.push('z-scores: ' + (isFinite(a) ? 'z(' + fmtNum(a) + ') = ' + fmtNum((a - mu) / sd) : '\u2212\u221e') + ' and ' + (isFinite(b) ? 'z(' + fmtNum(b) + ') = ' + fmtNum((b - mu) / sd) : '+\u221e') + ';  area = \u03a6(z\u2082) \u2212 \u03a6(z\u2081)');
+  r.out.work.push('z-scores: ' + (isFinite(a) ? 'z(' + fmtNum(a) + ') = ' + fmtNum((a - mu) / sd) : '−∞') + ' and ' + (isFinite(b) ? 'z(' + fmtNum(b) + ') = ' + fmtNum((b - mu) / sd) : '+∞') + ';  area = Φ(z₂) − Φ(z₁)');
   return pl2Draw(r.out, { curves: [r.curve], xr: [mu - 4.2 * sd, mu + 4.2 * sd], yr: [0, r.top], labels: r.labels, under: r.under });
 });
 defCmd('tshade shadet', (n) => {
@@ -19157,8 +19158,8 @@ defCmd('chisqshade shadechisq', (n) => {
   const df = numArg(n.args[0]);
   if (!(df > 0)) throw new MathError('the degrees of freedom must be positive');
   const hi = df + 5 * Math.sqrt(2 * df) + 5;
-  const r = shadeDistribution(n, 'chisq', (x) => chi2Pdf(x, df), (x) => (x <= 0 ? 0 : x === Infinity ? 1 : chi2Cdf(x, df)), null, '\u03c7\u00b2(' + fmtNum(df) + ')', 0, hi);
-  r.out.work.push('chi-square distribution with ' + fmtNum(df) + ' degrees of freedom (only x \u2265 0 has density)');
+  const r = shadeDistribution(n, 'chisq', (x) => chi2Pdf(x, df), (x) => (x <= 0 ? 0 : x === Infinity ? 1 : chi2Cdf(x, df)), null, 'χ²(' + fmtNum(df) + ')', 0, hi);
+  r.out.work.push('chi-square distribution with ' + fmtNum(df) + ' degrees of freedom (only x ≥ 0 has density)');
   return pl2Draw(r.out, { curves: [r.curve], xr: [0, hi], yr: [0, r.top], labels: r.labels, under: r.under });
 });
 
@@ -19175,7 +19176,7 @@ defCmd('plotimplicit implicitplot', (n) => {
   const xi = pl2Roots((x) => F(x, 0), xr[0], xr[1], 1200).filter((r) => yr[0] <= 0 && yr[1] >= 0);
   const yi = pl2Roots((y) => F(0, y), yr[0], yr[1], 1200).filter((r) => xr[0] <= 0 && xr[1] >= 0);
   const clean = (v) => fmtNum(Math.abs(v) < 1e-9 ? 0 : v);
-  const interceptLine = (list, v, other) => (list.length > 200 ? 'the whole ' + v + '-axis is part of the curve (' + other + ' = 0 satisfies the equation for every ' + v + ')' : list.length ? v + '-intercepts: ' + v + ' \u2248 ' + list.map(clean).join(', ') : 'no ' + v + '-intercepts in the window');
+  const interceptLine = (list, v, other) => (list.length > 200 ? 'the whole ' + v + '-axis is part of the curve (' + other + ' = 0 satisfies the equation for every ' + v + ')' : list.length ? v + '-intercepts: ' + v + ' ≈ ' + list.map(clean).join(', ') : 'no ' + v + '-intercepts in the window');
   out.work.push(interceptLine(xi, win.vx, win.vy));
   out.work.push(interceptLine(yi, win.vy, win.vx));
   const under = (g, px, py) => pl2DrawSegs(g, px, py, segs, PLOT_COLORS[0], 2.6);
@@ -19200,7 +19201,7 @@ defCmd('contour contourplot levelcurves', (n) => {
   for (let v = Math.ceil(mn / step) * step; v <= mx + step * 1e-9; v += step) if (v > mn + step * 1e-9 && v < mx - step * 1e-9) levels.push(Math.abs(v) < step * 1e-9 ? 0 : v);
   const out = newOut();
   out.answer.push('Contour map of ' + showRaw(n.args[0]) + ': ' + levels.length + ' level curves (the picture is shown in the chat)');
-  out.work.push('on this window the function ranges from ' + fmtNum(mn) + ' to ' + fmtNum(mx) + ' (sampled on a ' + nx + '\u00d7' + ny + ' grid)');
+  out.work.push('on this window the function ranges from ' + fmtNum(mn) + ' to ' + fmtNum(mx) + ' (sampled on a ' + nx + '×' + ny + ' grid)');
   out.work.push('level curves at ' + levels.map((v) => fmtNum(Number(v.toPrecision(10)))).join(', '));
   const all = levels.map((lv) => ({ lv, segs: pl2Segments(V, xr, yr, nx, ny, lv) }));
   const under = (g, px, py) => {
@@ -19250,7 +19251,7 @@ function pl2Region(rels, win) {
     return isFinite(v) && PL2_OPS[r.op](v);
   });
   const out = newOut();
-  const shown = rels.map((r) => showRaw(r.lhs) + ' ' + (r.op === '<=' ? '\u2264' : r.op === '>=' ? '\u2265' : r.op === '!=' ? '\u2260' : r.op) + ' ' + showRaw(r.rhs));
+  const shown = rels.map((r) => showRaw(r.lhs) + ' ' + (r.op === '<=' ? '≤' : r.op === '>=' ? '≥' : r.op === '!=' ? '≠' : r.op) + ' ' + showRaw(r.rhs));
   out.answer.push('Region ' + shown.join(' and ') + ' (the picture is shown in the chat)');
   // exact corners when every condition is linear
   const forms = rels.map((r) => affineForm({ lhs: r.lhs, rhs: r.rhs }, [vx, vy]));
@@ -19348,16 +19349,16 @@ defCmd('plotregion region shaderegion feasibleregion', (n) => {
 const pl2RegionShow = (n) => {
   const hasWin = n.args.length >= 7 && n.args[n.args.length - 6].t === 'var' && n.args[n.args.length - 3].t === 'var';
   const rels = (hasWin ? n.args.slice(0, -6) : n.args).map((a) => PL2_REL[Number(intArg(a))]);
-  return 'region ' + rels.join(' and ').replace(/<=/g, '\u2264').replace(/>=/g, '\u2265') + (hasWin ? '  (window ' + n.args.slice(-6).map(showRaw).join(', ') + ')' : '');
+  return 'region ' + rels.join(' and ').replace(/<=/g, '≤').replace(/>=/g, '≥') + (hasWin ? '  (window ' + n.args.slice(-6).map(showRaw).join(', ') + ')' : '');
 };
 ['plotregion', 'region', 'shaderegion', 'feasibleregion'].forEach((nm) => { COMMANDS[nm].show = pl2RegionShow; });
 // ---- text pre-pass: equations as implicit curves, inequalities as regions ------------------------------------------------------------
 function convertPlot2(s) {
   // "graph the inequality y > 2x + 1", "shade the region x >= 0, y >= 0, x + y <= 4"
-  const w = /^\s*(?:please\s+)?(?:graph|plot|sketch|shade|draw)\s+(?:the\s+)?(?:inequalit(?:y|ies)|region|solution\s+set|system\s+of\s+inequalities)?\s*:?\s*([^()]*?(?:<=|>=|\u2264|\u2265|<|>)[^()]*?)\s*$/i.exec(s);
+  const w = /^\s*(?:please\s+)?(?:graph|plot|sketch|shade|draw)\s+(?:the\s+)?(?:inequalit(?:y|ies)|region|solution\s+set|system\s+of\s+inequalities)?\s*:?\s*([^()]*?(?:<=|>=|≤|≥|<|>)[^()]*?)\s*$/i.exec(s);
   if (w && !/[A-Za-z]{3,}\s*\(/.test(w[1])) {
     const rels = w[1].split(/\s*(?:,|;|\band\b)\s*/).filter(Boolean);
-    if (rels.length && rels.every((r) => /(?:<=|>=|\u2264|\u2265|<|>)/.test(r))) {
+    if (rels.length && rels.every((r) => /(?:<=|>=|≤|≥|<|>)/.test(r))) {
       s = 'plotregion(' + rels.join(', ') + ')';
     }
   }
@@ -19373,8 +19374,8 @@ function convertPlot2(s) {
     const parts = g3SplitArgs(inner);
     let changed = false;
     const conv = parts.map((p) => {
-      if (!/(<=|>=|\u2264|\u2265|!=|\u2260|<|>|=)/.test(p) || /^\s*[A-Za-z]\s*$/.test(p)) return p;
-      const text = p.trim().replace(/\u2264/g, '<=').replace(/\u2265/g, '>=').replace(/\u2260/g, '!=');
+      if (!/(<=|>=|≤|≥|!=|≠|<|>|=)/.test(p) || /^\s*[A-Za-z]\s*$/.test(p)) return p;
+      const text = p.trim().replace(/≤/g, '<=').replace(/≥/g, '>=').replace(/≠/g, '!=');
       PL2_REL.push(text);
       changed = true;
       return String(PL2_REL.length - 1);
@@ -19494,7 +19495,7 @@ function serFraction(x, maxDen, tol) {
   }
   return null;
 }
-/** Text for a limit value: exact when it is a simple rational or a rational multiple of e, \u03c0, ... (from the decimal expansion). */
+/** Text for a limit value: exact when it is a simple rational or a rational multiple of e, π, ... (from the decimal expansion). */
 function serNice(v) {
   if (Math.abs(v - Math.round(v)) < 2e-4 * Math.max(1, Math.abs(v))) return String(Math.round(v));
   const tryRec = (x, wrap) => {
@@ -19502,16 +19503,16 @@ function serNice(v) {
     return r && r.text && Math.abs(r.value === undefined ? x : x - (r.value || x)) < 1 ? wrap(r.text) : null;
   };
   void tryRec;
-  const cands = [[v, (s) => s], [v * Math.E, (s) => (s === '1' ? '1/e' : s + '/e')], [v / Math.E, (s) => (s === '1' ? 'e' : s + 'e')], [v * Math.E * Math.E, (s) => (s === '1' ? '1/e\u00b2' : s + '/e\u00b2')], [v * Math.PI, (s) => (s === '1' ? '1/\u03c0' : s + '/\u03c0')], [v / Math.PI, (s) => (s === '1' ? '\u03c0' : s + '\u03c0')]];
+  const cands = [[v, (s) => s], [v * Math.E, (s) => (s === '1' ? '1/e' : s + '/e')], [v / Math.E, (s) => (s === '1' ? 'e' : s + 'e')], [v * Math.E * Math.E, (s) => (s === '1' ? '1/e²' : s + '/e²')], [v * Math.PI, (s) => (s === '1' ? '1/π' : s + '/π')], [v / Math.PI, (s) => (s === '1' ? 'π' : s + 'π')]];
   for (const [x, wrap] of cands) {
     const fr = serFraction(x, 40, 5e-5);
     if (fr && fr.p !== 0) {
       const frText = fr.q === 1 ? String(fr.p) : fr.p + '/' + fr.q;
-      return wrap(frText) + (wrap(frText) === frText ? '' : ' (\u2248 ' + serFmt(v) + ')');
+      return wrap(frText) + (wrap(frText) === frText ? '' : ' (≈ ' + serFmt(v) + ')');
     }
   }
   const r = recognizeLoose(v);
-  if (r && r.text) return r.text + ' (\u2248 ' + serFmt(v) + ')';
+  if (r && r.text) return r.text + ' (≈ ' + serFmt(v) + ')';
   return serFmt(v);
 }
 /** lim |a(n+1)/a(n)|: { kind: 'value' | 'zero' | 'inf' | 'unstable', rho }; windows of consecutive indices reject oscillating terms. */
@@ -19585,16 +19586,16 @@ function serAbsTests(S, k, a, depth) {
   const m5 = top(100000);
   const m6 = top(1000000);
   if (isFinite(m5) && isFinite(m6) && m6 > Math.log(1e-3) && m6 - m5 > -0.015) {
-    lines.push('Term test: |a(n)| does not tend to 0 (|a(n)| reaches \u2248 ' + serFmt(Math.exp(m6)) + ' for n near 10\u2076)');
+    lines.push('Term test: |a(n)| does not tend to 0 (|a(n)| reaches ≈ ' + serFmt(Math.exp(m6)) + ' for n near 10⁶)');
     return { v: 'div', lines, test: 'term test' };
   }
-  lines.push('Term test: a(n) \u2192 0 (passes, but this alone proves nothing)');
+  lines.push('Term test: a(n) → 0 (passes, but this alone proves nothing)');
   // 2. geometric: constant ratio
   try {
     const ratio = simp(sDiv(subsS(S, k, sAdd([sV(k), S1])), S));
     if (!varsOfS(ratio).has(k)) {
       const rv = Math.abs(numS(ratio, {}));
-      lines.push('Geometric series with ratio r = ' + fmtS(ratio) + ': ' + (rv < 1 ? '|r| < 1, converges' : '|r| \u2265 1, diverges'));
+      lines.push('Geometric series with ratio r = ' + fmtS(ratio) + ': ' + (rv < 1 ? '|r| < 1, converges' : '|r| ≥ 1, diverges'));
       return { v: rv < 1 ? 'conv' : 'div', lines, test: 'geometric series', ratio };
     }
   } catch (e) {
@@ -19616,7 +19617,7 @@ function serAbsTests(S, k, a, depth) {
     lines.push('Ratio test: |a(n+1)/a(n)| grows without bound (> 1), so the series diverges');
     return { v: 'div', lines, test: 'ratio test' };
   } else if (rr.kind === 'zero') {
-    lines.push('Ratio test: |a(n+1)/a(n)| \u2192 0 < 1, so the series converges absolutely');
+    lines.push('Ratio test: |a(n+1)/a(n)| → 0 < 1, so the series converges absolutely');
     return { v: 'conv', lines, test: 'ratio test' };
   } else lines.push('Ratio test: the ratios do not settle down (inconclusive)');
   // 4. root test
@@ -19628,7 +19629,7 @@ function serAbsTests(S, k, a, depth) {
     }
     lines.push('Root test: lim |a(n)|^(1/n) = 1 (inconclusive)');
   } else if (rt.kind === 'zero') {
-    lines.push('Root test: |a(n)|^(1/n) \u2192 0 < 1, so the series converges absolutely');
+    lines.push('Root test: |a(n)|^(1/n) → 0 < 1, so the series converges absolutely');
     return { v: 'conv', lines, test: 'root test' };
   } else if (rt.kind === 'inf') {
     lines.push('Root test: |a(n)|^(1/n) grows without bound (> 1), so the series diverges');
@@ -19647,7 +19648,7 @@ function serAbsTests(S, k, a, depth) {
       const cOld = Math.exp(L(100000) + near * Math.log(100000));
       if (Math.abs(c - cOld) <= 5e-3 * c) {
         const pText = Number.isInteger(near) ? String(near) : serNice(near);
-        lines.push('Limit comparison with the p-series \u03a3 1/n^p, p = ' + pText + ': |a(n)|\u00b7n^p \u2192 ' + serNice(c) + ' (a positive finite number), and ' + (near > 1 ? 'p > 1, so the series converges absolutely' : 'p \u2264 1, so the series diverges'));
+        lines.push('Limit comparison with the p-series Σ 1/n^p, p = ' + pText + ': |a(n)|·n^p → ' + serNice(c) + ' (a positive finite number), and ' + (near > 1 ? 'p > 1, so the series converges absolutely' : 'p ≤ 1, so the series diverges'));
         return { v: near > 1 ? 'conv' : 'div', lines, test: 'comparison with a p-series', p: near };
       }
     }
@@ -19659,10 +19660,10 @@ function serAbsTests(S, k, a, depth) {
     if (keep.length && keep.length < S.a.length) {
       const sub = serAbsTests(simp(sMul(keep)), k, a, depth + 1);
       if (sub.v === 'conv') {
-        lines.push('The factor ' + fmtS(sMul(S.a.filter(bounded))) + ' is bounded, and \u03a3 ' + fmtS(simp(sMul(keep))) + ' converges absolutely (' + sub.test + '), so by direct comparison this series converges absolutely');
+        lines.push('The factor ' + fmtS(sMul(S.a.filter(bounded))) + ' is bounded, and Σ ' + fmtS(simp(sMul(keep))) + ' converges absolutely (' + sub.test + '), so by direct comparison this series converges absolutely');
         return { v: 'conv', lines, test: 'direct comparison', };
       }
-      lines.push('The factor ' + fmtS(sMul(S.a.filter(bounded))) + ' is bounded, but the comparison series \u03a3 ' + fmtS(simp(sMul(keep))) + ' does not converge, so this gives no conclusion');
+      lines.push('The factor ' + fmtS(sMul(S.a.filter(bounded))) + ' is bounded, but the comparison series Σ ' + fmtS(simp(sMul(keep))) + ' does not converge, so this gives no conclusion');
     }
   }
   // 7. integral test (positive, eventually decreasing terms)
@@ -19675,7 +19676,7 @@ function serAbsTests(S, k, a, depth) {
     try {
       const res = ser2Integral(S, k, Math.max(a, 2));
       if (res) {
-        lines.push('Integral test: \u222b from ' + Math.max(a, 2) + ' to \u221e of ' + fmtS(S).replace(new RegExp('\\b' + k + '\\b', 'g'), 'x') + ' dx ' + (res.conv ? 'converges' : 'diverges') + ', so the series ' + (res.conv ? 'converges absolutely' : 'diverges'));
+        lines.push('Integral test: ∫ from ' + Math.max(a, 2) + ' to ∞ of ' + fmtS(S).replace(new RegExp('\\b' + k + '\\b', 'g'), 'x') + ' dx ' + (res.conv ? 'converges' : 'diverges') + ', so the series ' + (res.conv ? 'converges absolutely' : 'diverges'));
         return { v: res.conv ? 'conv' : 'div', lines, test: 'integral test' };
       }
     } catch (e) {
@@ -19683,7 +19684,7 @@ function serAbsTests(S, k, a, depth) {
     }
     // a(n) >= c/n with c > 0: compare with the harmonic series
     if ([1000, 10000, 100000, 1000000].every((n) => isFinite(L(n)) && L(n) + Math.log(n) >= -0.01) && L(1000000) + Math.log(1000000) >= L(1000) + Math.log(1000) - 0.01) {
-      lines.push('n\u00b7a(n) stays above 1 (a(n) \u2265 1/n), so by comparison with the harmonic series \u03a3 1/n the series diverges');
+      lines.push('n·a(n) stays above 1 (a(n) ≥ 1/n), so by comparison with the harmonic series Σ 1/n the series diverges');
       return { v: 'div', lines, test: 'comparison with the harmonic series' };
     }
   }
@@ -19719,14 +19720,14 @@ function serAnalyze(S, k, a) {
     let dec = true;
     for (const n0 of [50, 500, 5000]) for (let n = n0; n < n0 + 50; n++) if (!(f(n + 1).l < f(n).l)) dec = false;
     if (dec) {
-      lines.push('Alternating series test: the terms alternate in sign, |a(n)| decreases and tends to 0, so the series converges' + (absRes.v === 'div' ? ', but \u03a3|a(n)| diverges, so only conditionally' : ''));
+      lines.push('Alternating series test: the terms alternate in sign, |a(n)| decreases and tends to 0, so the series converges' + (absRes.v === 'div' ? ', but Σ|a(n)| diverges, so only conditionally' : ''));
       return { verdict: 'converges', absolute: false, lines, test: 'alternating series test' };
     }
     lines.push('Alternating series test: |a(n)| is not decreasing, so the test does not apply');
   }
   if (absRes.v === 'div') {
     if (sg.kind === 'pos' || sg.kind === 'neg') return { verdict: 'diverges', absolute: null, lines, test: absRes.test };
-    lines.push('(the terms change sign, so \u03a3|a(n)| diverging does not prove that the series diverges)');
+    lines.push('(the terms change sign, so Σ|a(n)| diverging does not prove that the series diverges)');
     return { verdict: 'unknown', absolute: null, lines, test: null };
   }
   return { verdict: 'unknown', absolute: null, lines, test: null };
@@ -19747,7 +19748,7 @@ defCmd('convergence converge seriestest', (n) => {
   if (extra.length) throw new MathError('the term contains other letters (' + extra.join(', ') + '); for a power series use radius(term, n, x)');
   const res = serAnalyze(S, k, a);
   const out = newOut();
-  out.work.push('Series \u03a3 ' + fmtS(S) + ' for ' + k + ' \u2265 ' + a);
+  out.work.push('Series Σ ' + fmtS(S) + ' for ' + k + ' ≥ ' + a);
   res.lines.forEach((l) => out.work.push(l));
   if (res.verdict === 'converges') out.answer.push(res.absolute ? 'converges absolutely' : 'converges conditionally (the series of absolute values diverges)');
   else if (res.verdict === 'diverges') out.answer.push('diverges');
@@ -19764,7 +19765,7 @@ defCmd('convergence converge seriestest', (n) => {
   out.value = { text: out.answer[0] };
   return out;
 });
-COMMANDS.convergence.show = (n) => 'does \u03a3 ' + showRaw(n.args[0]) + ' converge?';
+COMMANDS.convergence.show = (n) => 'does Σ ' + showRaw(n.args[0]) + ' converge?';
 
 // ---- power series: radius and interval of convergence -----------------------------------------------------------------------------------
 /** Factors of the term that are powers with a base containing x and an exponent that is linear in k: [{ base, m }] and the rest. */
@@ -19787,14 +19788,14 @@ defCmd('radius radiusofconvergence intervalofconvergence', (n) => {
   const x = varOfArg(n.args[2]);
   const a = n.args[3] ? Number(intArg(n.args[3])) : 0;
   const parts = serSplitPower(S, k, x);
-  if (!parts || !parts.pw.length) throw new MathError('write the term as (coefficient) \u00d7 (linear in ' + x + ')^' + k + ', e.g. (x-2)^n/(n*3^n) or n!*x^n');
+  if (!parts || !parts.pw.length) throw new MathError('write the term as (coefficient) × (linear in ' + x + ')^' + k + ', e.g. (x-2)^n/(n*3^n) or n!*x^n');
   // all the x-dependent factors must have the same base up to the exponent: base^(m k + s)
   const base = parts.pw[0].b;
   let m = 0;
   for (const t of parts.pw) {
     if (!sameFunction(t.b, base, [x], 3)) {
       // the same base up to a power: treat each as base_i ^ (m_i k) with the first base as reference through the ratio of logs
-      throw new MathError('the power series has several different bases in ' + x + '; only one base (x \u2212 c) or (a\u00b7x + b) is supported');
+      throw new MathError('the power series has several different bases in ' + x + '; only one base (x − c) or (a·x + b) is supported');
     }
     const slope = simp(sSub(subsS(t.e, k, sI(1)), subsS(t.e, k, sI(0))));
     if (slope.k !== 'n') throw new MathError('the exponent of the power of ' + x + ' must be linear in ' + k);
@@ -19813,7 +19814,7 @@ defCmd('radius radiusofconvergence intervalofconvergence', (n) => {
   // coefficient part: everything without x, with the base powers removed
   const c = simp(sMul(parts.rest));
   const out = newOut();
-  out.work.push('Power series \u03a3 ' + fmtS(S) + ' (n \u2265 ' + a + '):  ratio test on the coefficients ' + fmtS(c) + ' and the factor |' + fmtS(base) + '|' + (Math.abs(m) === 1 ? '' : '^' + fmtNum(Math.abs(m))));
+  out.work.push('Power series Σ ' + fmtS(S) + ' (n ≥ ' + a + '):  ratio test on the coefficients ' + fmtS(c) + ' and the factor |' + fmtS(base) + '|' + (Math.abs(m) === 1 ? '' : '^' + fmtNum(Math.abs(m))));
   // rho0 = lim |c(n+1)/c(n)|; fall back to the root test
   let rho;
   const rr = serRatio(c, k);
@@ -19828,7 +19829,7 @@ defCmd('radius radiusofconvergence intervalofconvergence', (n) => {
     else throw new MathError('I could not determine the limit of the coefficient ratios for this power series');
   }
   if (rho === 0) {
-    out.answer.push('radius of convergence R = \u221e: converges for every ' + x);
+    out.answer.push('radius of convergence R = ∞: converges for every ' + x);
     out.work.push('the ratio |c(n+1)/c(n)| tends to 0');
     out.value = { text: 'R = infinity' };
     return out;
@@ -19849,7 +19850,7 @@ defCmd('radius radiusofconvergence intervalofconvergence', (n) => {
   let Rtext;
   if (frho && frho.p > 0 && Number.isInteger(m)) {
     Rs = simp(sDiv(sPow(sN(new Q(BigInt(frho.q), BigInt(frho.p))), sN(new Q(1n, BigInt(Math.abs(m))))), sN(alpha.abs())));
-    Rtext = fmtS(Rs) + (/^-?\d+(\/\d+)?$/.test(fmtS(Rs)) ? '' : ' (\u2248 ' + serFmt(R) + ')');
+    Rtext = fmtS(Rs) + (/^-?\d+(\/\d+)?$/.test(fmtS(Rs)) ? '' : ' (≈ ' + serFmt(R) + ')');
   } else Rtext = serFmt(R);
   out.answer.push('radius of convergence R = ' + Rtext + ', centre ' + x + ' = ' + centre.toString());
   const ends = [centre.toNumber() - R, centre.toNumber() + R];
@@ -19902,11 +19903,11 @@ function convertConvergenceWords(s) {
   if (letters.length) return s;
   return 'convergence(' + parts[0] + ', ' + parts[1] + ', ' + parts[2] + ')';
 }
-/** "does the series 1/n^2 converge?", "\u03a3_(n=1)^\u221e n/(n^2+1) converges or diverges", "interval of convergence of \u03a3 ...": sentences about series. */
+/** "does the series 1/n^2 converge?", "Σ_(n=1)^∞ n/(n^2+1) converges or diverges", "interval of convergence of Σ ...": sentences about series. */
 function convertSeriesSentence(s) {
   if (!/converg|diverg|for\s+(?:what|which)\s+(?:values\s+of\s+)?x\b/i.test(s)) return s;
   const kind = /(?:radius|interval)\s+of\s+converg|for\s+what\s+values|for\s+which\s+x|values\s+of\s+x/i.test(s) ? 'radius' : 'conv';
-  if (/[\u2211\u03a3]|\\sum|\bsum\s*\(/.test(s)) {
+  if (/[∑Σ]|\\sum|\bsum\s*\(/.test(s)) {
     // keep the sum itself, drop the words around it; the sum is turned into convergence(...) / radius(...) at the end of normalizeText
     const stripped = s.replace(SERIES_TAIL, '').replace(SERIES_LEAD, '').trim();
     if (!stripped) return s;
@@ -19946,7 +19947,7 @@ function l2Shift(arg, t, what) {
   if (!lin || lin.a1.k !== 'n' || lin.a1.q.isZero()) throw new MathError('the argument of ' + what + ' must be linear in ' + t + ', like ' + t + ' - 2');
   return { a: simp(sDiv(sNeg(lin.a0), lin.a1)), w: lin.a1.q };
 }
-/** One product term that contains u(t - a) or delta(t - a): c \u00b7 e^(-a s) ... */
+/** One product term that contains u(t - a) or delta(t - a): c · e^(-a s) ... */
 function laplaceImpulseTerm(term, t, s) {
   const fs = term.k === '*' ? term.a : [term];
   const steps = fs.filter((f) => l2IsStep(f) && !freeOf(f, t));
@@ -19988,7 +19989,7 @@ function inverseLaplaceFull(F, s, t) {
     let delta = S0;
     ap.poly.forEach((c, i) => {
       if (c.isZero()) return;
-      if (i > 0) throw new MathError('a polynomial in s of degree \u2265 1 would give derivatives of the delta function; this is not supported');
+      if (i > 0) throw new MathError('a polynomial in s of degree ≥ 1 would give derivatives of the delta function; this is not supported');
       delta = sN(c);
     });
     return { f, delta };
@@ -20008,7 +20009,7 @@ function inverseLaplaceFull(F, s, t) {
     }
     const a = simp(delay);
     const av = varsOfS(a).size ? NaN : numS(a, {});
-    if (isNaN(av) || av < 0) throw new MathError('only delays e^(-a s) with a \u2265 0 (a number such as 2 or \u03c0) can be inverted');
+    if (isNaN(av) || av < 0) throw new MathError('only delays e^(-a s) with a ≥ 0 (a number such as 2 or π) can be inverted');
     const c = cst.length ? sMul(cst) : S1;
     const zeroDelay = Math.abs(av) < 1e-14;
     if (!rat.length) {
@@ -20057,12 +20058,12 @@ function odeViaLaplace(cs, rhs, x, consts) {
 }
 
 // ---- text pre-pass: u(t - 2), H(t - 2), step(t - 2), delta(t - 2) ------------------------------------------------------------------
-/** In a Laplace / differential-equation problem u(...), H(...), \u03b8(...) and step(...) are unit steps and \u03b4(...) / delta(...) are impulses. */
+/** In a Laplace / differential-equation problem u(...), H(...), θ(...) and step(...) are unit steps and δ(...) / delta(...) are impulses. */
 function convertStepNotation(s) {
-  if (!/[uH\u03b8]\s*\(|step\s*\(|delta\s*\(|\u03b4\s*\(|heaviside|dirac|unitstep/i.test(s)) return s;
-  const context = /laplace|['\u2032]|\bd[a-z]\s*\/\s*d[a-z]|\bode\b|differential/i.test(s);
-  s = s.replace(/\u03b4\s*\(/g, 'dirac(').replace(/\bdelta\s*\(/gi, context ? 'dirac(' : 'delta(');
-  if (context) s = s.replace(/(^|[^A-Za-z])[uH\u03b8]\s*\(/g, '$1heaviside(').replace(/\b(?:step|unitstep)\s*\(/gi, 'heaviside(');
+  if (!/[uHθ]\s*\(|step\s*\(|delta\s*\(|δ\s*\(|heaviside|dirac|unitstep/i.test(s)) return s;
+  const context = /laplace|['′]|\bd[a-z]\s*\/\s*d[a-z]|\bode\b|differential/i.test(s);
+  s = s.replace(/δ\s*\(/g, 'dirac(').replace(/\bdelta\s*\(/gi, context ? 'dirac(' : 'delta(');
+  if (context) s = s.replace(/(^|[^A-Za-z])[uHθ]\s*\(/g, '$1heaviside(').replace(/\b(?:step|unitstep)\s*\(/gi, 'heaviside(');
   return s;
 }
 
@@ -20093,13 +20094,13 @@ function expandPhase(e, t) {
 const WORDS_ASK = { v: null }; // labels of the quantity that was asked for (the answer line starting with one is shown first)
 
 // ---- small building blocks --------------------------------------------------------------------------------------------------------
-const W_NUM = '[-\u2212]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:\\s*/\\s*\\d+)?';
-const W_ATOM = '(?:\\d+(?:\\.\\d+)?|\\.\\d+|\u03c0|pi\\b|e\\b|\u221e|infinity\\b|inf\\b|oo\\b|sqrt\\s*\\([^()]*\\)|\u221a\\s*\\d+|\\([^()]*\\))';
-const W_BOUND = '[-\u2212+]?' + W_ATOM + '(?:\\s*[*/^\u00d7\u00b7]\\s*[-\u2212+]?' + W_ATOM + '|\\s*(?:\u03c0|pi\\b|sqrt\\s*\\([^()]*\\)))*';
+const W_NUM = '[-−]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:\\s*/\\s*\\d+)?';
+const W_ATOM = '(?:\\d+(?:\\.\\d+)?|\\.\\d+|π|pi\\b|e\\b|∞|infinity\\b|inf\\b|oo\\b|sqrt\\s*\\([^()]*\\)|√\\s*\\d+|\\([^()]*\\))';
+const W_BOUND = '[-−+]?' + W_ATOM + '(?:\\s*[*/^×·]\\s*[-−+]?' + W_ATOM + '|\\s*(?:π|pi\\b|sqrt\\s*\\([^()]*\\)))*';
 const W_TERM = '(?:[\\w.]+(?:\\s*\\^\\s*(?:[\\w.]+|\\([^()]*\\)))?|\\([^()]*\\))';
 const W_UNIT = '(?:\\s*(?:cm|mm|km|m|in|inch|inches|ft|feet|foot|yd|yards?|mi|miles?|units?|meters?|metres?|centimet(?:er|re)s?|kg|g)\\b)?';
 const W_PT = '[\\(\\[<]\\s*(' + W_NUM + ')\\s*,\\s*(' + W_NUM + ')\\s*(?:,\\s*(' + W_NUM + ')\\s*)?[\\)\\]>]';
-const wClean = (t) => t.replace(/\u2212/g, '-').replace(/\s+/g, '');
+const wClean = (t) => t.replace(/−/g, '-').replace(/\s+/g, '');
 const wNumTxt = (t) => wClean(t);
 
 /** The text of an expression: the leading "f(x) =" / "y =" and a trailing "dx" are dropped. */
@@ -20175,14 +20176,14 @@ function wPeel(s) {
   o.rest = o.rest.trim();
   return o;
 }
-const wBound = (b) => wOps(b.replace(/\u2212/g, '-').replace(/\binfinity\b|\binf\b/gi, 'oo').replace(/\u221e/g, 'oo'));
+const wBound = (b) => wOps(b.replace(/−/g, '-').replace(/\binfinity\b|\binf\b/gi, 'oo').replace(/∞/g, 'oo'));
 
 /** Numbers in "2, 4, 6 and 8" (null when other words are left over). */
 function wNums(str) {
   const t = str.replace(/\b(?:the|these|those|following|numbers?|values?|data(?:\s*set)?|set|list|observations?|scores?|items?|sample|population|of|and|are|is|for|given|with)\b|[:;]/gi, ' ').replace(/[\[\]{}()<>]/g, ' ');
   if (/[A-Za-z]/.test(t)) return null;
-  const nums = t.match(/[-\u2212]?\d+(?:\.\d+)?(?:e[+-]?\d+)?(?:\s*\/\s*\d+)?/gi);
-  if (!nums || t.replace(/[-\u2212]?\d+(?:\.\d+)?(?:e[+-]?\d+)?(?:\s*\/\s*\d+)?/gi, '').replace(/[\s,]+/g, '') !== '') return null;
+  const nums = t.match(/[-−]?\d+(?:\.\d+)?(?:e[+-]?\d+)?(?:\s*\/\s*\d+)?/gi);
+  if (!nums || t.replace(/[-−]?\d+(?:\.\d+)?(?:e[+-]?\d+)?(?:\s*\/\s*\d+)?/gi, '').replace(/[\s,]+/g, '') !== '') return null;
   return nums.map(wNumTxt);
 }
 /** [x, y] / [x, y, z] vectors or points written as (x, y), <x, y>, [x, y] in a text. */
@@ -20213,7 +20214,7 @@ function wBrackets(str) {
 }
 /** x, y coefficients of a line a x + b y + c = d written in text: [a, b, c-d] or null */
 function wLine2(str) {
-  const t = str.replace(/\u2212/g, '-').replace(/\s+/g, '');
+  const t = str.replace(/−/g, '-').replace(/\s+/g, '');
   const parts = t.split('=');
   if (parts.length !== 2) return null;
   const co = { x: 0, y: 0, k: 0 };
@@ -20256,7 +20257,7 @@ defCmd('diffat', (n) => {
   const at = fromAst(n.args[2]);
   const val = simp(subsS(d, v, at));
   const out = newOut();
-  const prime = order <= 3 ? "\u2032".repeat(order) : '^(' + order + ')';
+  const prime = order <= 3 ? "′".repeat(order) : '^(' + order + ')';
   out.answer.push('f' + prime + '(' + fmtS(at) + ') = ' + symText(val));
   out.work.push('f(' + v + ') = ' + fmtS(S));
   out.work.push('f' + prime + '(' + v + ') = ' + fmtS(d));
@@ -20269,12 +20270,12 @@ COMMANDS.diffat.show = (n) => 'd' + (n.args[3] ? '^' + showRaw(n.args[3]) : '') 
 const W_PARAM_WORDS = [
   ['r', 'radius|radii|r'], ['d', 'diameter|d'], ['C', 'circumference'], ['A', 'area'], ['V', 'volume'], ['h', 'height|altitude|tall|high|h'],
   ['w', 'width|wide|breadth|w'], ['l', 'length|long|l'], ['b', 'base|b'], ['s', 'sides?(?:\\s+length)?|edges?(?:\\s+length)?|s'],
-  ['p', 'diagonal\\s*1|d1|p'], ['q', 'diagonal\\s*2|d2|q'], ['theta', 'angle|central\\s+angle|\u03b8'],
+  ['p', 'diagonal\\s*1|d1|p'], ['q', 'diagonal\\s*2|d2|q'], ['theta', 'angle|central\\s+angle|θ'],
 ];
 /** "radius 3", "radius of 3 cm", "r = 3", "3 cm radius", "height 4" -> {r: '3', h: '4'}; "sides 3, 4 and 5" -> {sides: [...]} */
 function wParams(str) {
   const o = {};
-  const t = ' ' + str.replace(/\u2212/g, '-') + ' ';
+  const t = ' ' + str.replace(/−/g, '-') + ' ';
   const num = '(' + W_NUM + ')' + W_UNIT;
   const sidesRx = new RegExp('\\b(?:(?:the|a|an)\\s+)?(sides|legs|bases|diagonals|semi-?(?:axes|axis)|axes|dimensions)\\s*(?:of\\s+|are\\s+|=\\s*|:\\s*|lengths?\\s+)?((?:' + W_NUM + W_UNIT + '\\s*(?:,|and|&)?\\s*){2,4})', 'i');
   let m = sidesRx.exec(t);
@@ -20282,7 +20283,7 @@ function wParams(str) {
     const nums = m[2].match(new RegExp(W_NUM, 'g'));
     if (nums && nums.length >= 2) o[m[1].toLowerCase().replace(/^semi-?/, 'semi')] = nums.map(wNumTxt);
   }
-  const byRx = new RegExp('(' + W_NUM + ')' + W_UNIT + '\\s*(?:by|x|\u00d7)\\s*(' + W_NUM + ')' + W_UNIT + '(?:\\s*(?:by|x|\u00d7)\\s*(' + W_NUM + ')' + W_UNIT + ')?', 'i');
+  const byRx = new RegExp('(' + W_NUM + ')' + W_UNIT + '\\s*(?:by|x|×)\\s*(' + W_NUM + ')' + W_UNIT + '(?:\\s*(?:by|x|×)\\s*(' + W_NUM + ')' + W_UNIT + ')?', 'i');
   m = byRx.exec(t);
   if (m) o.by = [m[1], m[2], m[3]].filter((v) => v != null).map(wNumTxt);
   for (const [key, words] of W_PARAM_WORDS) {
@@ -20292,7 +20293,7 @@ function wParams(str) {
     const mm = after.exec(t) || before.exec(t);
     if (mm) o[key] = wNumTxt(mm[1]);
   }
-  if (/degrees?|\u00b0/i.test(str) && o.theta != null) o.thetaDeg = true;
+  if (/degrees?|°/i.test(str) && o.theta != null) o.thetaDeg = true;
   return o;
 }
 const W_REG_POLY = { triangle: 3, pentagon: 5, hexagon: 6, heptagon: 7, octagon: 8, nonagon: 9, decagon: 10, dodecagon: 12 };
@@ -20427,14 +20428,14 @@ function wEvent(e) {
   let t = e.trim().replace(/\s+/g, ' ');
   let m;
   if ((m = /^(.+?)\s*(?:\||given\s+(?:that\s+)?)\s*(.+)$/i.exec(t))) { const a = wEvent(m[1]); const b = wEvent(m[2]); return a && b ? { k: a.k + '|' + b.k, kind: 'cond', a, b } : null; }
-  if ((m = /^(.+?)\s*(?:\u222a|\bor\b)\s*(.+)$/i.exec(t))) { const a = wEvent(m[1]); const b = wEvent(m[2]); return a && b ? { k: [a.k, b.k].sort().join('u'), kind: 'u', a, b } : null; }
-  if ((m = /^(.+?)\s*(?:\u2229|\band\b|,)\s*(.+)$/i.exec(t))) { const a = wEvent(m[1]); const b = wEvent(m[2]); return a && b ? { k: [a.k, b.k].sort().join('&'), kind: 'n', a, b } : null; }
-  if ((m = /^(?:not\s+|\u00ac|!|~)\s*([A-Za-z]\w*)$/i.exec(t)) || (m = /^([A-Za-z]\w*)\s*(?:'|\u2032|\^c|\u1d9c|\s+complement|\s+c)$/i.exec(t))) return { k: '!' + m[1], kind: 'c', a: { k: m[1], kind: 'a' } };
+  if ((m = /^(.+?)\s*(?:∪|\bor\b)\s*(.+)$/i.exec(t))) { const a = wEvent(m[1]); const b = wEvent(m[2]); return a && b ? { k: [a.k, b.k].sort().join('u'), kind: 'u', a, b } : null; }
+  if ((m = /^(.+?)\s*(?:∩|\band\b|,)\s*(.+)$/i.exec(t))) { const a = wEvent(m[1]); const b = wEvent(m[2]); return a && b ? { k: [a.k, b.k].sort().join('&'), kind: 'n', a, b } : null; }
+  if ((m = /^(?:not\s+|¬|!|~)\s*([A-Za-z]\w*)$/i.exec(t)) || (m = /^([A-Za-z]\w*)\s*(?:'|′|\^c|ᶜ|\s+complement|\s+c)$/i.exec(t))) return { k: '!' + m[1], kind: 'c', a: { k: m[1], kind: 'a' } };
   if (/^[A-Za-z]\w*$/.test(t)) return { k: t, kind: 'a' };
   return null;
 }
 function wProbSentence(s) {
-  if (!/\bP\s*\(/.test(s) || /[<>\u2264\u2265]|\bnormal|distributed|binomial|poisson|\bz\b/i.test(s)) return null;
+  if (!/\bP\s*\(/.test(s) || /[<>≤≥]|\bnormal|distributed|binomial|poisson|\bz\b/i.test(s)) return null;
   const VAL = '(\\d*\\.?\\d+(?:\\s*\\/\\s*\\d+)?\\s*%?)';
   const known = new Map();
   const assignRx = new RegExp('P\\s*\\(([^()]*)\\)\\s*(?:=|is|equals)\\s*' + VAL, 'gi');
@@ -20507,9 +20508,9 @@ function wProbSentence(s) {
   return r ? r : null;
 }
 
-// ---- set sentences: "A = {1,2,3}, B = {2,3,4}, find A union B", "{1,2} \u222a {2,3}", "number of subsets of {1,2,3,4}"
+// ---- set sentences: "A = {1,2,3}, B = {2,3,4}, find A union B", "{1,2} ∪ {2,3}", "number of subsets of {1,2,3,4}"
 function wSetSentence(s) {
-  if (!/[{}\u222a\u2229\u2208\u2282\u2286\u00d7\u0394]|\b(?:union|intersect(?:ion)?|subsets?|power\s+set|complement|cartesian|cardinality|elements)\b/i.test(s)) return null;
+  if (!/[{}∪∩∈⊂⊆×Δ]|\b(?:union|intersect(?:ion)?|subsets?|power\s+set|complement|cartesian|cardinality|elements)\b/i.test(s)) return null;
   const defs = new Map();
   let rest = s.replace(/\b([A-Z])\s*=\s*\{([^{}]*)\}/g, (m, name, body) => {
     defs.set(name, '[' + body + ']');
@@ -20532,17 +20533,17 @@ function wSetSentence(s) {
     if ((m = new RegExp('(?:subsets|power\\s+set)\\s+of\\s+(?:the\\s+set\\s+)?' + OPERAND, 'i').exec(clean))) return wCall('powerset', sub(m[1]));
     if ((m = new RegExp('(?:cardinality|number\\s+of\\s+elements(?:\\s+in)?|size)\\s+(?:of\\s+)?(?:the\\s+set\\s+)?' + OPERAND, 'i').exec(clean)) || (m = new RegExp('(?:\\||n\\s*\\()\\s*' + OPERAND + '\\s*[|)]', 'i').exec(clean))) return wCall('cardinality', sub(m[1]));
     // is A a subset of B
-    if ((m = new RegExp('(?:is|are)\\s+' + OPERAND + '\\s+(?:a\\s+)?(?:proper\\s+)?subset\\s+of\\s+' + OPERAND, 'i').exec(clean)) || (m = new RegExp(OPERAND + '\\s*(?:\u2282|\u2286)\\s*' + OPERAND).exec(clean))) return wCall('issubset', sub(m[1]), sub(m[2]));
+    if ((m = new RegExp('(?:is|are)\\s+' + OPERAND + '\\s+(?:a\\s+)?(?:proper\\s+)?subset\\s+of\\s+' + OPERAND, 'i').exec(clean)) || (m = new RegExp(OPERAND + '\\s*(?:⊂|⊆)\\s*' + OPERAND).exec(clean))) return wCall('issubset', sub(m[1]), sub(m[2]));
     // complement
-    if ((m = new RegExp('complement\\s+of\\s+' + OPERAND + '(?:.*?\\b(?:in|within|relative\\s+to|with\\s+respect\\s+to)\\s+(?:the\\s+)?(?:universal\\s+set\\s+|universe\\s+)?' + OPERAND + ')?', 'i').exec(clean)) || (m = /\b([A-Z])(?:'|\u2032|\^c|\u1d9c)(?![A-Za-z])/.exec(clean))) {
+    if ((m = new RegExp('complement\\s+of\\s+' + OPERAND + '(?:.*?\\b(?:in|within|relative\\s+to|with\\s+respect\\s+to)\\s+(?:the\\s+)?(?:universal\\s+set\\s+|universe\\s+)?' + OPERAND + ')?', 'i').exec(clean)) || (m = /\b([A-Z])(?:'|′|\^c|ᶜ)(?![A-Za-z])/.exec(clean))) {
       const U = m[2] ? sub(m[2]) : defs.get('U');
       if (U) return wCall('setcomplement', sub(m[1]), U);
     }
-    // binary operations, also chained: A \u222a B \u222a C, union of A and B, A \u2229 B
+    // binary operations, also chained: A ∪ B ∪ C, union of A and B, A ∩ B
     const OPS = [
-      ['union', '(?:\u222a|\\bunion\\b|\\bcup\\b)'], ['intersection', '(?:\u2229|\\bintersect(?:ion)?\\b|\\bcap\\b)'], ['symdiff', '(?:\u0394|\u25b3|\\bsymmetric\\s+difference\\b)'], ['setdiff', '(?:\\\\|\\bminus\\b|\\bwithout\\b|\u2216)'], ['cartesian', '(?:\u00d7|\\bcross\\b|\\bcartesian\\s+product\\b)'],
+      ['union', '(?:∪|\\bunion\\b|\\bcup\\b)'], ['intersection', '(?:∩|\\bintersect(?:ion)?\\b|\\bcap\\b)'], ['symdiff', '(?:Δ|△|\\bsymmetric\\s+difference\\b)'], ['setdiff', '(?:\\\\|\\bminus\\b|\\bwithout\\b|∖)'], ['cartesian', '(?:×|\\bcross\\b|\\bcartesian\\s+product\\b)'],
     ];
-    const dm = /\b([A-Z])\s*[-\u2212]\s*([A-Z])\b(?!\s*=)/.exec(clean);
+    const dm = /\b([A-Z])\s*[-−]\s*([A-Z])\b(?!\s*=)/.exec(clean);
     if (dm && defs.has(dm[1]) && defs.has(dm[2])) return wCall('setdiff', sub(dm[1]), sub(dm[2]));
     for (const [cmd, op] of OPS) {
       const word = new RegExp('(?:the\\s+)?' + (cmd === 'setdiff' ? '(?<!symmetric\\s)difference' : cmd === 'cartesian' ? 'cartesian\\s+product' : cmd === 'symdiff' ? 'symmetric\\s+difference' : cmd) + '\\s+of\\s+(?:the\\s+sets?\\s+)?' + OPERAND + '(?:\\s*,\\s*|\\s+and\\s+|\\s*,\\s*and\\s+)' + OPERAND + '(?:(?:\\s*,\\s*|\\s+and\\s+)' + OPERAND + ')?', 'i').exec(clean);
@@ -20568,7 +20569,7 @@ function wRepeating(t) {
   let rep;
   if ((m = /^(\d*)\.(\d*)\((\d+)\)$/.exec(t))) [, ip, pre, rep] = m;
   else if ((m = /^(\d*)\.(\d*)\\?overline\{?(\d+)\}?$/.exec(t))) [, ip, pre, rep] = m;
-  else if ((m = /^(\d*)\.(\d+)(?:\.\.\.|\u2026)$/.exec(t))) {
+  else if ((m = /^(\d*)\.(\d+)(?:\.\.\.|…)$/.exec(t))) {
     const D = m[2];
     ip = m[1];
     for (let p = 1; p <= Math.floor(D.length / 2) && p <= 6; p++) {
@@ -20612,7 +20613,7 @@ function wSubstitution(s) {
 
 /** "P(X = 3) for a binomial with n = 10 and p = 0.3", "Poisson with mean 4, P(X <= 2)", "X is normal with mean 100 and sd 15, find P(85 < X < 115)" */
 function wDistProb(s) {
-  const q = /\bP\s*\(\s*(?:(-?[\d.]+)\s*(<|\u2264|<=)\s*)?X\s*(?:(=|==|<|>|\u2264|\u2265|<=|>=)\s*(-?[\d.]+)|(<|\u2264|<=)\s*(-?[\d.]+))\s*\)/i.exec(s);
+  const q = /\bP\s*\(\s*(?:(-?[\d.]+)\s*(<|≤|<=)\s*)?X\s*(?:(=|==|<|>|≤|≥|<=|>=)\s*(-?[\d.]+)|(<|≤|<=)\s*(-?[\d.]+))\s*\)/i.exec(s);
   if (!q) return null;
   const NUM = '(-?\\d+(?:\\.\\d+)?(?:\\s*/\\s*\\d+)?)';
   const find = (rx) => { const m = rx.exec(s); return m ? m[1].replace(/\s+/g, '') : null; };
@@ -20629,12 +20630,12 @@ function wDistProb(s) {
   const binom = /\bbinomial\b|\bbin(?:omial)?\s*\(/i.test(s) && !pois && !norm;
   const eq = (v) => (v === '=' || v === '==');
   if (norm) {
-    const mean = find(new RegExp('(?:mean|\u03bc|mu)\\s*(?:of|=|is)?\\s*' + NUM, 'i')) ?? (/N\s*\(\s*(-?[\d.]+)\s*,/.exec(s) || [])[1];
-    const sd = find(new RegExp('(?:standard\\s+deviation|std|sd|\u03c3|sigma)\\s*(?:of|=|is)?\\s*' + NUM, 'i')) ?? (/N\s*\(\s*-?[\d.]+\s*,\s*(-?[\d.]+)/.exec(s) || [])[1];
+    const mean = find(new RegExp('(?:mean|μ|mu)\\s*(?:of|=|is)?\\s*' + NUM, 'i')) ?? (/N\s*\(\s*(-?[\d.]+)\s*,/.exec(s) || [])[1];
+    const sd = find(new RegExp('(?:standard\\s+deviation|std|sd|σ|sigma)\\s*(?:of|=|is)?\\s*' + NUM, 'i')) ?? (/N\s*\(\s*-?[\d.]+\s*,\s*(-?[\d.]+)/.exec(s) || [])[1];
     if (mean == null || sd == null) return null;
     if (lo != null) return wCall('normalcdf', lo, hi, mean, sd);
-    if (/[<\u2264]/.test(op)) return wCall('normalcdf', '-oo', k, mean, sd);
-    if (/[>\u2265]/.test(op)) return wCall('normalcdf', k, 'oo', mean, sd);
+    if (/[<≤]/.test(op)) return wCall('normalcdf', '-oo', k, mean, sd);
+    if (/[>≥]/.test(op)) return wCall('normalcdf', k, 'oo', mean, sd);
     return null;
   }
   const kind = pois ? 'poisson' : geom ? 'geomet' : binom ? 'binom' : null;
@@ -20646,7 +20647,7 @@ function wDistProb(s) {
     if (!n || !p) return null;
     params = [n, p];
   } else if (kind === 'poisson') {
-    const l = find(new RegExp('(?:mean|rate|\u03bb|lambda|average)\\s*(?:of|=|is)?\\s*' + NUM, 'i')) || (/[Pp]oisson\s*\(\s*([\d.]+)\s*\)/.exec(s) || [])[1];
+    const l = find(new RegExp('(?:mean|rate|λ|lambda|average)\\s*(?:of|=|is)?\\s*' + NUM, 'i')) || (/[Pp]oisson\s*\(\s*([\d.]+)\s*\)/.exec(s) || [])[1];
     if (!l) return null;
     params = [l];
   } else {
@@ -20668,9 +20669,9 @@ function wDistProb(s) {
     return cdf(b) + ' - ' + cdf(dec(a));
   }
   if (eq(op)) return pdf(k);
-  if (op === '<=' || op === '\u2264') return cdf(k);
+  if (op === '<=' || op === '≤') return cdf(k);
   if (op === '<') return cdf(dec(k));
-  if (op === '>=' || op === '\u2265') return '1 - ' + cdf(dec(k));
+  if (op === '>=' || op === '≥') return '1 - ' + cdf(dec(k));
   if (op === '>') return '1 - ' + cdf(k);
   return null;
 }
@@ -20720,15 +20721,15 @@ function wRules(s) {
     if (pe2.lo != null) return wCall('ivt', wE(m[1].replace(/^[a-z]\s*(?:\([a-z]\))?\s*=\s*/i, '').replace(/\s*=\s*0$/, '')), 'x', wBound(pe2.lo), wBound(pe2.hi));
   }
   // ---- sums of patterned series: "1 + 2 + 3 + ... + 100", "sum of the geometric series 1 + 1/2 + 1/4 + ..."
-  if (/(?:\.{3}|\u2026)/.test(s) && /\d/.test(s)) {
+  if (/(?:\.{3}|…)/.test(s) && /\d/.test(s)) {
     const body = s.replace(/^(?:(?:find|calculate|compute|evaluate)\s+)?(?:(?:the|a)\s+)?(?:sum|total)\s+(?:of\s+)?(?:(?:the|a)\s+)?(?:(?:infinite|finite)\s+)?(?:(?:arithmetic|geometric)\s+)?(?:series|sequence)?\s*:?\s*/i, '');
-    const parts = body.split(/\s*(?:\.{3}|\u2026)\s*/);
+    const parts = body.split(/\s*(?:\.{3}|…)\s*/);
     if (parts.length === 2) {
       const head = parts[0].replace(/[+,\s]+$/, '').replace(/\s-\s/g, ' + -');
       const tail = parts[1].replace(/^[+,\s]+/, '').replace(/[.?\s]+$/, '');
       const terms = head.split(/\s*[+,]\s*/).filter(Boolean);
-      if (terms.length >= 2 && terms.length <= 6 && terms.every((t) => /^[-\u2212]?\s*\(?\d[\d./^()*\s]*\)?$/.test(t.trim()) || /^[-\u2212]?[\d.]+(?:\s*\/\s*[\d.]+)?$/.test(t.trim())) && (/\bsum\b|\bseries\b/i.test(s) || /\+/.test(head))) {
-        return wCall('seriessum', '[' + terms.map((t) => wE(t.replace(/\u2212/g, '-'))).join(', ') + ']', tail ? wE(tail.replace(/^\+\s*/, '')) : 'oo');
+      if (terms.length >= 2 && terms.length <= 6 && terms.every((t) => /^[-−]?\s*\(?\d[\d./^()*\s]*\)?$/.test(t.trim()) || /^[-−]?[\d.]+(?:\s*\/\s*[\d.]+)?$/.test(t.trim())) && (/\bsum\b|\bseries\b/i.test(s) || /\+/.test(head))) {
+        return wCall('seriessum', '[' + terms.map((t) => wE(t.replace(/−/g, '-'))).join(', ') + ']', tail ? wE(tail.replace(/^\+\s*/, '')) : 'oo');
       }
     }
   }
@@ -20741,7 +20742,7 @@ function wRules(s) {
       return wCall('diestats', f ? f[1] : null);
     }
     if (/\bbinomial\b/i.test(d) && (q = [/\bn\s*=\s*(\d+)/i.exec(d) || /(\d+)\s+trials/i.exec(d), /\bp\s*=\s*([\d.]+(?:\s*\/\s*\d+)?)/i.exec(d) || /probability\s+(?:of\s+success\s+)?(?:of\s+)?([\d.]+)/i.exec(d)]) && q[0] && q[1]) return wCall('binomstats', q[0][1], q[1][1].replace(/\s+/g, ''));
-    if (/\bpoisson\b/i.test(d) && (q = /(?:\u03bb|lambda|rate|mean|average)\s*(?:=|of|is)?\s*([\d.]+)/i.exec(d))) return wCall('poissonstats', q[1]);
+    if (/\bpoisson\b/i.test(d) && (q = /(?:λ|lambda|rate|mean|average)\s*(?:=|of|is)?\s*([\d.]+)/i.exec(d))) return wCall('poissonstats', q[1]);
     if (/\bgeometric\b/i.test(d) && (q = /\bp\s*=\s*([\d.]+(?:\s*\/\s*\d+)?)|probability\s+(?:of\s+success\s+)?(?:of\s+)?([\d.]+)/i.exec(d))) return wCall('geomstats', (q[1] || q[2]).replace(/\s+/g, ''));
   }
   // ---- how many ways: arranging and choosing
@@ -20765,7 +20766,7 @@ function wRules(s) {
   if ((m = /^(?:complete|completing)\s+the\s+square\s*(?:for|of|in|on|:)?\s*(?:the\s+)?(?:quadratic\s+|expression\s+|equation\s+)?(.+)$/i.exec(s))) return wCall('completesquare', wE(m[1].replace(/\s*=\s*0$/, '').replace(/^[a-z]\s*(?:\([a-z]\))?\s*=\s*/i, '')));
   if ((m = /^(?:the\s+)?(?:vertex|turning\s+point|axis\s+of\s+symmetry|minimum\s+value|maximum\s+value|min(?:imum)?\s+or\s+max(?:imum)?)(?:\s*(?:,|and)\s*(?:the\s+)?(?:axis\s+of\s+symmetry|vertex|y-?intercept|minimum|maximum))*\s+of\s+(?:the\s+)?(?:parabola\s+|quadratic\s+(?:function\s+)?|function\s+)?(.+)$/i.exec(s))) {
     const e = m[1].replace(/^[a-z]\s*(?:\([a-z]\))?\s*=\s*/i, '');
-    if (/^[^=]*x\^?2|x\u00b2|x\s*\*\*\s*2/.test(e) && !/[y]/.test(e) && !/=/.test(e)) return wCall('vertex', wE(e));
+    if (/^[^=]*x\^?2|x²|x\s*\*\*\s*2/.test(e) && !/[y]/.test(e) && !/=/.test(e)) return wCall('vertex', wE(e));
     if (/=/.test(m[1])) return wOps(wExpr(m[1]));
   }
   if ((m = /^(?:the\s+)?(?:foci|focus|vertices|vertex|center|centre|directrix|asymptotes?|eccentricity|axes|axis(?:\s+of\s+symmetry)?|latus\s+rectum|semi-?axes)(?:\s*(?:,|and)\s*(?:the\s+)?(?:foci|focus|vertices|vertex|center|centre|directrix|asymptotes?|eccentricity|axes|axis(?:\s+of\s+symmetry)?|latus\s+rectum))*\s+of\s+(?:the\s+)?(?:(?:ellipse|parabola|hyperbola|circle|conic(?:\s+section)?)\s*:?\s*)?(.+=.+)$/i.exec(s))) return wOps(wExpr(m[1]));
@@ -20790,8 +20791,8 @@ function wRules(s) {
   }
   // ---- ratios and scientific notation
   if ((m = /^(?:simplify\s+|reduce\s+)?(?:the\s+)?ratio\s+(?:of\s+)?(\d+(?:\.\d+)?(?:\/\d+)?)\s*(?:to|:)\s*(\d+(?:\.\d+)?(?:\/\d+)?)(?:\s*(?:to|:)\s*(\d+(?:\.\d+)?(?:\/\d+)?))?$/i.exec(s))) return wCall('ratio', m[1], m[2], m[3]);
-  if ((m = /^(?:write|express|convert|put|give|change)?\s*(.+?)\s+(?:in|as|into|to|using)\s+scientific\s+notation$/i.exec(s)) || (m = /^scientific\s+notation\s+(?:of|for)\s+(.+)$/i.exec(s))) return wCall('sci', wE(m[1].replace(/(\d)\s*[x\u00d7]\s*10\s*\^/g, '$1*10^')));
-  if ((m = /^(?:write|express|convert|put|give|change)?\s*(.+?)\s+(?:in|as|into|to)\s+(?:standard|decimal|ordinary|expanded|normal)\s+(?:form|notation)$/i.exec(s)) && /\d/.test(m[1])) return wOps(m[1].replace(/(\d)\s*[x\u00d7]\s*10\s*\^/g, '$1*10^'));
+  if ((m = /^(?:write|express|convert|put|give|change)?\s*(.+?)\s+(?:in|as|into|to|using)\s+scientific\s+notation$/i.exec(s)) || (m = /^scientific\s+notation\s+(?:of|for)\s+(.+)$/i.exec(s))) return wCall('sci', wE(m[1].replace(/(\d)\s*[x×]\s*10\s*\^/g, '$1*10^')));
+  if ((m = /^(?:write|express|convert|put|give|change)?\s*(.+?)\s+(?:in|as|into|to)\s+(?:standard|decimal|ordinary|expanded|normal)\s+(?:form|notation)$/i.exec(s)) && /\d/.test(m[1])) return wOps(m[1].replace(/(\d)\s*[x×]\s*10\s*\^/g, '$1*10^'));
   // ---- confidence intervals for a mean or a proportion from summary numbers
   if (/confidence\s+interval/i.test(s) && !/\bslope\b|\bregression\b/i.test(s)) {
     const lvl = /(\d+(?:\.\d+)?)\s*%/.exec(s);
@@ -20801,8 +20802,8 @@ function wRules(s) {
     const nn = nM && (nM[1] || nM[2] || nM[3] || nM[4]);
     const pr = /(?:proportion|percentage|fraction)/i.test(s) && new RegExp('(\\d+)\\s+(?:successes?|out\\s+of|of|favou?rable|yes|positive)', 'i').exec(s);
     if (level && nn && pr) return wCall('propinterval', pr[1], nn, level);
-    const mean = new RegExp('(?:sample\\s+)?mean\\s*(?:of|is|=|:)?\\s*' + num, 'i').exec(s) || new RegExp('x[\u0304bar]*\\s*=\\s*' + num, 'i').exec(s);
-    const sigma = new RegExp('(?:population\\s+standard\\s+deviation|known\\s+standard\\s+deviation|\u03c3|sigma)\\s*(?:of|is|=|:)?\\s*' + num, 'i').exec(s);
+    const mean = new RegExp('(?:sample\\s+)?mean\\s*(?:of|is|=|:)?\\s*' + num, 'i').exec(s) || new RegExp('x[̄bar]*\\s*=\\s*' + num, 'i').exec(s);
+    const sigma = new RegExp('(?:population\\s+standard\\s+deviation|known\\s+standard\\s+deviation|σ|sigma)\\s*(?:of|is|=|:)?\\s*' + num, 'i').exec(s);
     const sd = new RegExp('(?:sample\\s+)?(?:standard\\s+deviation|std\\.?\\s*dev\\.?|sd|\\bs)\\s*(?:of|is|=|:)?\\s*' + num, 'i').exec(s);
     if (level && nn && mean && (sigma || sd)) return sigma ? wCall('zinterval', mean[1], sigma[1], nn, level) : wCall('tinterval', mean[1], sd[1], nn, level);
   }
@@ -20812,7 +20813,7 @@ function wRules(s) {
   if ((m = /^(?:is|are)\s+(-?\d+)\s+(?:a\s+)?perfect\s+cube$/i.exec(s))) return wCall('perfectcb', m[1]);
   if ((m = /^how\s+many\s+(?:positive\s+)?(?:divisors|factors)\s+(?:does|do|has|have)\s+(\d+)(?:\s+have)?$/i.exec(s)) || (m = /^(?:the\s+)?(?:number|count)\s+of\s+(?:positive\s+)?(?:divisors|factors)\s+(?:of|in)\s+(\d+)$/i.exec(s))) return wCall('numdivisors', m[1]);
   if ((m = /^(?:the\s+)?sum\s+of\s+(?:the\s+)?(?:positive\s+)?(?:divisors|factors)\s+(?:of|in)\s+(\d+)$/i.exec(s))) return wCall('sigma', m[1]);
-  if ((m = /^(?:the\s+)?remainder\s+(?:when|of|if)\s+(.+?)\s+(?:is\s+)?(?:divided\s+by|\u00f7|\/)\s+(.+)$/i.exec(s)) && !/[a-z]/i.test(m[1].replace(/\b(?:pi)\b/gi, '') + m[2])) return wCall('mod', wE(m[1]), wE(m[2]));
+  if ((m = /^(?:the\s+)?remainder\s+(?:when|of|if)\s+(.+?)\s+(?:is\s+)?(?:divided\s+by|÷|\/)\s+(.+)$/i.exec(s)) && !/[a-z]/i.test(m[1].replace(/\b(?:pi)\b/gi, '') + m[2])) return wCall('mod', wE(m[1]), wE(m[2]));
   if ((m = /^round(?:\s+off)?\s+(.+?)\s+to\s+(?:the\s+)?(?:nearest\s+)?(\d+)\s+(?:decimal\s+places?|decimals?|places?|dp|d\.p\.)$/i.exec(s)) || (m = /^(.+?)\s+rounded\s+to\s+(\d+)\s+(?:decimal\s+places?|decimals?|places?)$/i.exec(s))) return wCall('round', wE(m[1]), m[2]);
   if ((m = /^round(?:\s+off)?\s+(.+?)\s+to\s+(\d+)\s+(?:significant\s+(?:figures?|digits?)|sig\.?\s*(?:figs?|digits?)|s\.?f\.?)$/i.exec(s)) || (m = /^(.+?)\s+(?:rounded\s+)?to\s+(\d+)\s+(?:significant\s+(?:figures?|digits?)|sig\.?\s*(?:figs?|digits?))$/i.exec(s))) return wCall('sigfigs', wE(m[1]), m[2]);
   if ((m = /^round(?:\s+off)?\s+(.+?)\s+to\s+the\s+nearest\s+(whole\s+number|integer|unit|one|ones|tenth|tenths|hundredth|hundredths|thousandth|thousandths|ten|tens|hundred|hundreds|thousand|thousands)$/i.exec(s)) || (m = /^(.+?)\s+rounded\s+to\s+the\s+nearest\s+(whole\s+number|integer|unit|one|ones|tenth|hundredth|thousandth|ten|hundred|thousand)$/i.exec(s))) {
@@ -20823,13 +20824,13 @@ function wRules(s) {
   if ((m = /^(?:express|write|convert|change|turn|give|put)?\s*(.+?)\s+(?:as|to|into|in)\s+(?:a\s+)?(?:common\s+|simple\s+|proper\s+|vulgar\s+)?fraction(?:\s+in\s+(?:lowest|simplest)\s+(?:terms|form))?$/i.exec(s)) && /\d/.test(m[1])) {
     const rp = wRepeating(m[1]);
     if (rp) return rp;
-    if (/^[-\u2212]?\d*\.\d+$/.test(m[1].trim())) return wCall('tofraction', m[1].trim().replace('\u2212', '-'));
+    if (/^[-−]?\d*\.\d+$/.test(m[1].trim())) return wCall('tofraction', m[1].trim().replace('−', '-'));
   }
-  if ((m = /^(?:express|write|convert|change|turn|give|put)?\s*(.+?)\s+(?:as|to|into|in)\s+(?:a\s+)?decimal(?:\s+(?:number|form|notation))?$/i.exec(s)) && /\d/.test(m[1]) && /^[-\u2212\d.\/()+*^\s]+$|^[-\u2212\d.\/()+*^\s\u03c0]*(?:pi)?[-\u2212\d.\/()+*^\s]*$/i.test(m[1]) && !/0x/i.test(m[1])) return wCall('todecimal', wE(m[1]));
+  if ((m = /^(?:express|write|convert|change|turn|give|put)?\s*(.+?)\s+(?:as|to|into|in)\s+(?:a\s+)?decimal(?:\s+(?:number|form|notation))?$/i.exec(s)) && /\d/.test(m[1]) && /^[-−\d.\/()+*^\s]+$|^[-−\d.\/()+*^\sπ]*(?:pi)?[-−\d.\/()+*^\s]*$/i.test(m[1]) && !/0x/i.test(m[1])) return wCall('todecimal', wE(m[1]));
   if ((m = /^(?:the\s+)?(?:decimal\s+(?:expansion|form|representation)\s+of|fraction\s+(?:form\s+)?of)\s+(.+)$/i.exec(s))) {
     const rp = wRepeating(m[1]);
     if (rp) return rp;
-    return /^[-\u2212]?\d*\.\d+$/.test(m[1].trim()) ? wCall('tofraction', m[1].trim()) : wCall('todecimal', wE(m[1]));
+    return /^[-−]?\d*\.\d+$/.test(m[1].trim()) ? wCall('tofraction', m[1].trim()) : wCall('todecimal', wE(m[1]));
   }
   // ---- lines through a point, spans of vectors
   if ((m = /^(?:the\s+)?equation\s+of\s+(?:the\s+)?line\s+(?:that\s+)?(?:passes\s+)?(?:through|passing\s+through)\s+\(\s*(-?[\d./]+)\s*,\s*(-?[\d./]+)\s*\)\s+(?:with|and\s+has|having|and)\s+(?:a\s+)?slope\s+(?:of\s+|=\s*)?(-?[\d./]+)$/i.exec(s))) {
@@ -20846,27 +20847,27 @@ function wRules(s) {
   // ---- "solve the system ... by elimination / using matrices"
   if ((m = /^(?:solve\s+)?(?:the\s+)?(?:system|equations?)(?:\s+of\s+equations)?\s*:?\s*(.+?)\s*,?\s*(?:by|using|with|via)\s+(?:the\s+)?(?:method\s+of\s+)?(?:matrices|a\s+matrix|matrix\s+(?:method|inverse)|elimination|substitution|graphing|cramer'?s\s+rule|gaussian\s+elimination|row\s+reduction|an?\s+augmented\s+matrix)$/i.exec(s)) && (m[1].match(/=/g) || []).length >= 2) return m[1].split(/\s*(?:;|,|\band\b)\s*/).filter(Boolean).map((x) => wOps(wExpr(x))).join('; ');
   // ---- normal probabilities with the standard normal variable Z
-  if ((m = /^(?:(?:find|what\s+is|calculate)\s+)?(?:the\s+)?(?:P|probability)\s*\(\s*Z\s*(<|>|\u2264|\u2265|<=|>=)\s*(-?[\d.]+)\s*\)\s*[?.]?$/i.exec(s))) return /[<\u2264]/.test(m[1]) ? wCall('normalcdf', m[2]) : wCall('normalcdf', m[2], 'oo', '0', '1');
-  if ((m = /^(?:(?:find|what\s+is|calculate)\s+)?(?:the\s+)?(?:P|probability)\s*\(\s*(-?[\d.]+)\s*(?:<|\u2264|<=)\s*Z\s*(?:<|\u2264|<=)\s*(-?[\d.]+)\s*\)\s*[?.]?$/i.exec(s))) return wCall('normalcdf', m[1], m[2], '0', '1');
+  if ((m = /^(?:(?:find|what\s+is|calculate)\s+)?(?:the\s+)?(?:P|probability)\s*\(\s*Z\s*(<|>|≤|≥|<=|>=)\s*(-?[\d.]+)\s*\)\s*[?.]?$/i.exec(s))) return /[<≤]/.test(m[1]) ? wCall('normalcdf', m[2]) : wCall('normalcdf', m[2], 'oo', '0', '1');
+  if ((m = /^(?:(?:find|what\s+is|calculate)\s+)?(?:the\s+)?(?:P|probability)\s*\(\s*(-?[\d.]+)\s*(?:<|≤|<=)\s*Z\s*(?:<|≤|<=)\s*(-?[\d.]+)\s*\)\s*[?.]?$/i.exec(s))) return wCall('normalcdf', m[1], m[2], '0', '1');
   if ((m = /^(?:the\s+)?(?:area|probability)\s+under\s+the\s+standard\s+normal\s+(?:curve|distribution)\s+between\s+(-?[\d.]+)\s+and\s+(-?[\d.]+)$/i.exec(s))) return wCall('normalcdf', m[1], m[2], '0', '1');
   if ((m = /^(?:the\s+)?(?:area|probability)\s+under\s+the\s+standard\s+normal\s+(?:curve|distribution)\s+(?:to\s+the\s+)?(left|right|below|above)\s+of\s+(?:z\s*=\s*)?(-?[\d.]+)$/i.exec(s))) return /left|below/i.test(m[1]) ? wCall('normalcdf', m[2]) : wCall('normalcdf', m[2], 'oo', '0', '1');
   // ---- coin and die experiments: expected number, "at least one six in 4 rolls"
   if ((m = /^(?:the\s+)?expected\s+(?:number|count)\s+of\s+(?:\w+\s+)?(?:heads|tails|successes|sixes|hits|\w+)\s+(?:in|out\s+of|from|when)\s+(\d+)\s+(?:coin\s+)?(?:flips|tosses|trials|rolls|attempts|times|draws)(?:.*?(?:p|probability)\s*(?:=|of|is)?\s*(0?\.\d+|\d+\/\d+))?\s*$/i.exec(s))) return wCall('binomstats', m[1], m[2] || (/\b(?:die|dice|rolls?|sixes|six)\b/i.test(s) ? '1/6' : '1/2'));
-  if ((m = /^(?:the\s+)?standard\s+error\s+(?:of\s+the\s+mean\s+)?(?:with|for|if|when|given)\s+(?:a\s+)?(?:sample\s+)?(?:sd|standard\s+deviation|s|\u03c3|sigma)\s*(?:of|=|is)?\s*([\d.]+)\s*(?:,|and)?\s*(?:a\s+)?(?:sample\s+size|n)\s*(?:of|=|is)?\s*(\d+)$/i.exec(s))) return m[1] + '/sqrt(' + m[2] + ')';
+  if ((m = /^(?:the\s+)?standard\s+error\s+(?:of\s+the\s+mean\s+)?(?:with|for|if|when|given)\s+(?:a\s+)?(?:sample\s+)?(?:sd|standard\s+deviation|s|σ|sigma)\s*(?:of|=|is)?\s*([\d.]+)\s*(?:,|and)?\s*(?:a\s+)?(?:sample\s+size|n)\s*(?:of|=|is)?\s*(\d+)$/i.exec(s))) return m[1] + '/sqrt(' + m[2] + ')';
   // ---- sums over the first n integers, squares, cubes; their mean
   if ((m = /^(?:the\s+)?sum\s+of\s+the\s+(squares|cubes|fourth\s+powers)\s+of\s+the\s+first\s+(\d+)\s+(?:positive\s+)?(?:integers|natural\s+numbers|whole\s+numbers|counting\s+numbers)$/i.exec(s))) return wCall('sum', 'k^' + ({ squares: 2, cubes: 3 }[m[1].toLowerCase()] || 4), 'k', '1', m[2]);
   if ((m = /^(?:the\s+)?(?:mean|average)\s+of\s+the\s+first\s+(\d+)\s+(?:positive\s+)?(?:integers|natural\s+numbers|whole\s+numbers|counting\s+numbers)$/i.exec(s)) && Number(m[1]) <= 200) return wCall('mean', '[' + Array.from({ length: Number(m[1]) }, (_, i) => i + 1).join(', ') + ']');
   // ---- the n-th term of a sequence given by its first terms
-  if ((m = /^(?:find\s+)?(?:the\s+)?(\d+)(?:st|nd|rd|th)\s+term\s+(?:of|in)\s+(?:the\s+)?(?:sequence\s+)?([-\u2212\d.,\s\/]+?)\s*(?:,\s*)?(?:\.\.\.|\u2026)?$/i.exec(s)) && !/arithmetic|geometric/i.test(s)) {
+  if ((m = /^(?:find\s+)?(?:the\s+)?(\d+)(?:st|nd|rd|th)\s+term\s+(?:of|in)\s+(?:the\s+)?(?:sequence\s+)?([-−\d.,\s\/]+?)\s*(?:,\s*)?(?:\.\.\.|…)?$/i.exec(s)) && !/arithmetic|geometric/i.test(s)) {
     const nums = wNums(m[2]);
     if (nums && nums.length >= 3) return wCall('nthterm', '[' + nums.join(', ') + ']', m[1]);
   }
-  if ((m = /^(?:find\s+)?(?:the\s+)?(?:nth|general|n-th)\s+term\s+(?:of|for)\s+(?:the\s+)?(?:sequence\s+)?([-\u2212\d.,\s\/]+?)\s*(?:,\s*)?(?:\.\.\.|\u2026)?$/i.exec(s))) {
+  if ((m = /^(?:find\s+)?(?:the\s+)?(?:nth|general|n-th)\s+term\s+(?:of|for)\s+(?:the\s+)?(?:sequence\s+)?([-−\d.,\s\/]+?)\s*(?:,\s*)?(?:\.\.\.|…)?$/i.exec(s))) {
     const nums = wNums(m[1]);
     if (nums && nums.length >= 3) return wCall('sequence', ...nums);
   }
-  // ---- regression from two lists: line, r\u00b2, prediction
-  if ((m = /^(?:(?:the|an?)\s+)?(?:equation\s+of\s+(?:the\s+)?)?(?:regression\s+line|line\s+of\s+best\s+fit|least[- ]squares\s+line|linear\s+regression)\s+for\s+(.+)$/i.exec(s)) || (m = /^(?:the\s+)?(?:coefficient\s+of\s+determination|r\s*(?:squared|\u00b2|\^2)|correlation\s+coefficient)\s+(?:for|of|between)\s+(.+)$/i.exec(s))) {
+  // ---- regression from two lists: line, r², prediction
+  if ((m = /^(?:(?:the|an?)\s+)?(?:equation\s+of\s+(?:the\s+)?)?(?:regression\s+line|line\s+of\s+best\s+fit|least[- ]squares\s+line|linear\s+regression)\s+for\s+(.+)$/i.exec(s)) || (m = /^(?:the\s+)?(?:coefficient\s+of\s+determination|r\s*(?:squared|²|\^2)|correlation\s+coefficient)\s+(?:for|of|between)\s+(.+)$/i.exec(s))) {
     const b = wBrackets(m[1]);
     if (b.length === 2) return wCall('linreg', b[0], b[1]);
   }
@@ -20893,8 +20894,8 @@ function wRules(s) {
   // ---- critical values, sample size, rolling several of one face
   if ((m = /^(?:the\s+)?t\s*(?:-|\s)?(?:critical\s+value|crit(?:ical)?|score)\s+(?:for|at|of)\s+(\d+(?:\.\d+)?)\s*%?\s*(?:confidence|level)?\s*(?:with|and|,)?\s*(\d+)\s+degrees\s+of\s+freedom$/i.exec(s))) return wCall('tcrit', m[1], m[2]);
   if ((m = /^(?:the\s+)?z\s*(?:-|\s)?(?:critical\s+value|crit(?:ical)?|score)\s+(?:for|at|of)\s+(\d+(?:\.\d+)?)\s*%?(?:\s*confidence)?$/i.exec(s))) return wCall('zcrit', m[1]);
-  if ((m = /^(?:the\s+)?chi\s*-?\s*(?:square|squared|sq)(?:d)?\s+critical\s+value\s+(?:at|for|with)\s+(?:alpha\s*=\s*|\u03b1\s*=\s*|significance\s+level\s+)?(0?\.\d+)\s*(?:significance\s+level\s*)?(?:and|with|,)?\s*(\d+)\s+degrees\s+of\s+freedom$/i.exec(s))) return wCall('invchi2', String(1 - Number(m[1])), m[2]);
-  if ((m = /^(?:the\s+)?sample\s+size\s+(?:needed|required|necessary)?\s*(?:for|to\s+(?:get|have|achieve))?\s*(?:a\s+)?margin\s+of\s+error\s*(?:of|=)?\s*([\d.]+)\s*(?:with|and|,|given)?\s*(?:a\s+)?(?:population\s+)?(?:sd|standard\s+deviation|\u03c3|sigma)\s*(?:of|=)?\s*([\d.]+)\s*(?:at|with|and|,)?\s*(\d+(?:\.\d+)?)\s*%\s*(?:confidence)?$/i.exec(s))) return wCall('samplesize', m[2], m[1], String(Number(m[3]) / 100));
+  if ((m = /^(?:the\s+)?chi\s*-?\s*(?:square|squared|sq)(?:d)?\s+critical\s+value\s+(?:at|for|with)\s+(?:alpha\s*=\s*|α\s*=\s*|significance\s+level\s+)?(0?\.\d+)\s*(?:significance\s+level\s*)?(?:and|with|,)?\s*(\d+)\s+degrees\s+of\s+freedom$/i.exec(s))) return wCall('invchi2', String(1 - Number(m[1])), m[2]);
+  if ((m = /^(?:the\s+)?sample\s+size\s+(?:needed|required|necessary)?\s*(?:for|to\s+(?:get|have|achieve))?\s*(?:a\s+)?margin\s+of\s+error\s*(?:of|=)?\s*([\d.]+)\s*(?:with|and|,|given)?\s*(?:a\s+)?(?:population\s+)?(?:sd|standard\s+deviation|σ|sigma)\s*(?:of|=)?\s*([\d.]+)\s*(?:at|with|and|,)?\s*(\d+(?:\.\d+)?)\s*%\s*(?:confidence)?$/i.exec(s))) return wCall('samplesize', m[2], m[1], String(Number(m[3]) / 100));
   if ((m = /^(?:what\s+is\s+)?(?:the\s+)?probability\s+of\s+rolling\s+(two|three|four|five|six)\s+(?:sixes|ones|twos|threes|fours|fives|[a-z]+s)(?:\s+in\s+a\s+row)?$/i.exec(s))) return '(1/6)^' + { two: 2, three: 3, four: 4, five: 5, six: 6 }[m[1].toLowerCase()];
   if (/\bgeometric\b/i.test(s) && (m = /first\s+success\s+(?:is\s+|occurs\s+|happens\s+)?(?:on|at|in)\s+(?:the\s+)?(?:trial\s+)?(\d+)/i.exec(s))) {
     const p = (/\bp\s*=\s*(0?\.\d+|\d+\/\d+)/i.exec(s) || /probability\s+(?:of\s+success\s+)?(?:of\s+|is\s+|=\s*)?(0?\.\d+|\d+\/\d+)/i.exec(s) || [])[1];
@@ -20902,8 +20903,8 @@ function wRules(s) {
   }
   // ---- percentiles of a normal distribution, hypothesis tests from summary numbers, z for a value
   if ((m = /^(?:find\s+)?(?:the\s+)?(\d+(?:\.\d+)?)(?:st|nd|rd|th)?\s+percentile\s+(?:of|for)\s+(?:a\s+|the\s+)?(?:normal|normally\s+distributed)\b.*$/i.exec(s))) {
-    const mean = (/(?:mean|\u03bc|mu)\s*(?:of|=|is)?\s*(-?[\d.]+)/i.exec(s) || [])[1];
-    const sd = (/(?:standard\s+deviation|std|sd|\u03c3|sigma)\s*(?:of|=|is)?\s*([\d.]+)/i.exec(s) || [])[1];
+    const mean = (/(?:mean|μ|mu)\s*(?:of|=|is)?\s*(-?[\d.]+)/i.exec(s) || [])[1];
+    const sd = (/(?:standard\s+deviation|std|sd|σ|sigma)\s*(?:of|=|is)?\s*([\d.]+)/i.exec(s) || [])[1];
     if (mean != null && sd != null) return wCall('invnorm', String(Number(m[1]) / 100), mean, sd);
   }
   if ((m = /^(?:percentile|the\s+(\d+(?:\.\d+)?)(?:st|nd|rd|th)\s+percentile(?:\s+of)?)\s*(\d+(?:\.\d+)?)?\s*(?:of|for)?\s*(\[[^\]]*\])$/i.exec(s))) {
@@ -20913,10 +20914,10 @@ function wRules(s) {
   if (/\b(?:t|z)[- ]?test\b/i.test(s) && !/\btwo[- ]sample\b|\bpaired\b|\bslope\b/i.test(s)) {
     const num = '(-?\\d+(?:\\.\\d+)?)';
     const mean = new RegExp('(?:sample\\s+)?mean\\s*(?:of|=|is)?\\s*' + num, 'i').exec(s);
-    const mu0 = new RegExp('(?:hypothesi[sz]ed\\s+mean|null\\s+mean|population\\s+mean|mu\\s*0|\u03bc\\s*0|mu_0|mu|\u03bc)\\s*(?:of|=|is)?\\s*' + num, 'i').exec(s);
+    const mu0 = new RegExp('(?:hypothesi[sz]ed\\s+mean|null\\s+mean|population\\s+mean|mu\\s*0|μ\\s*0|mu_0|mu|μ)\\s*(?:of|=|is)?\\s*' + num, 'i').exec(s);
     const nn = /\bn\s*=\s*(\d+)|sample\s+(?:size|of)\s*(?:is\s*)?(\d+)/i.exec(s);
     const isZ = /\bz[- ]?test\b/i.test(s);
-    const sd = isZ ? new RegExp('(?:\u03c3|sigma|population\\s+standard\\s+deviation|standard\\s+deviation|sd)\\s*(?:of|=|is)?\\s*' + num, 'i').exec(s) : new RegExp('(?:sample\\s+standard\\s+deviation|standard\\s+deviation|std|sd|\\bs)\\s*(?:of|=|is)?\\s*' + num, 'i').exec(s);
+    const sd = isZ ? new RegExp('(?:σ|sigma|population\\s+standard\\s+deviation|standard\\s+deviation|sd)\\s*(?:of|=|is)?\\s*' + num, 'i').exec(s) : new RegExp('(?:sample\\s+standard\\s+deviation|standard\\s+deviation|std|sd|\\bs)\\s*(?:of|=|is)?\\s*' + num, 'i').exec(s);
     if (mean && mu0 && sd && nn) return isZ ? wCall('ztest', mean[1], mu0[1], sd[1], nn[1] || nn[2]) : wCall('ttest', mean[1], sd[1], nn[1] || nn[2], mu0[1]);
   }
   if ((m = /^(?:test\s+(?:whether|if)\s+)?(?:the\s+)?(?:a\s+)?(?:one[- ]?sample\s+)?(?:z[- ]test\s+for\s+(?:a\s+)?)?proportion\s+(?:is|equals|=)?\s*(0?\.\d+|\d+\/\d+)?.*?(\d+)\s+successes?\s+(?:in|out\s+of|from)\s+(\d+)/i.exec(s)) && m[1]) return wCall('proptest', m[2], m[3], m[1]);
@@ -20945,7 +20946,7 @@ function wRules(s) {
     }
   }
   // ---- equation with an interval for the unknown
-  if (/[<>\u2264\u2265]|\[|\(/.test(s) && /=/.test(s) && !/\b(?:fourier|series|integral|integrate|derivative|limit|laplace|average|area|volume|length|taylor|maclaurin|sum|plot|graph|domain|tangent)\b/i.test(s)) {
+  if (/[<>≤≥]|\[|\(/.test(s) && /=/.test(s) && !/\b(?:fourier|series|integral|integrate|derivative|limit|laplace|average|area|volume|length|taylor|maclaurin|sum|plot|graph|domain|tangent)\b/i.test(s)) {
     const win = wWindow(s.replace(/^solve\s+(?:the\s+equation\s+)?/i, ''));
     if (win) return win;
   }
@@ -21030,21 +21031,21 @@ function wRules(s) {
   }
 
   // ---- limits
-  if ((m = /^(?:(?:the|a|an)\s+)?(?:two-sided\s+)?limit\s+(?:of\s+)?(.+?)\s+as\s+([a-z])\s*(?:approaches|tends\s+to|goes\s+to|->|\u2192|\u27f6|\u2192|approach|tend\s+to)\s*(.+)$/i.exec(s)) || (m = /^(?:(?:the|a|an)\s+)?limit\s+as\s+([a-z])\s*(?:approaches|tends\s+to|goes\s+to|->|\u2192|\u27f6|approach|tend\s+to)\s*(.+?)\s+of\s+(.+)$/i.exec(s))) {
+  if ((m = /^(?:(?:the|a|an)\s+)?(?:two-sided\s+)?limit\s+(?:of\s+)?(.+?)\s+as\s+([a-z])\s*(?:approaches|tends\s+to|goes\s+to|->|→|⟶|→|approach|tend\s+to)\s*(.+)$/i.exec(s)) || (m = /^(?:(?:the|a|an)\s+)?limit\s+as\s+([a-z])\s*(?:approaches|tends\s+to|goes\s+to|->|→|⟶|approach|tend\s+to)\s*(.+?)\s+of\s+(.+)$/i.exec(s))) {
     const first = /^[a-z]$/i.test(m[1]) && m.length === 4 && !/^[a-z]$/i.test(m[2]);
     const expr = first ? m[3] : m[1];
     const v = first ? m[1] : m[2];
     let tail = first ? m[2] : m[3];
     let side = null;
-    tail = tail.replace(/\s*(?:from\s+(?:(?:the|a|an)\s+)?(left|right|above|below|positive\s+side|negative\s+side)|\^?\s*([+\-\u2212]))\s*$/i, (mm, w, sg) => {
+    tail = tail.replace(/\s*(?:from\s+(?:(?:the|a|an)\s+)?(left|right|above|below|positive\s+side|negative\s+side)|\^?\s*([+\-−]))\s*$/i, (mm, w, sg) => {
       if (w) side = /right|above|positive/i.test(w) ? 1 : -1;
       else if (sg) side = sg === '+' ? 1 : -1;
       return '';
     });
     const sideWord = /\s*\(?\s*from\s+(?:(?:the|a|an)\s+)?(left|right|above|below)\s*\)?\s*$/i.exec(tail);
     if (sideWord) { side = /right|above/i.test(sideWord[1]) ? 1 : -1; tail = tail.slice(0, sideWord.index); }
-    const sup = /^(.*?)\s*(?:\^\s*\(?\s*([+\-\u2212])\s*\)?|([\u207a\u207b]))$/.exec(tail);
-    if (sup) { side = (sup[2] || sup[3]) === '+' || sup[3] === '\u207a' ? 1 : -1; tail = sup[1]; }
+    const sup = /^(.*?)\s*(?:\^\s*\(?\s*([+\-−])\s*\)?|([⁺⁻]))$/.exec(tail);
+    if (sup) { side = (sup[2] || sup[3]) === '+' || sup[3] === '⁺' ? 1 : -1; tail = sup[1]; }
     const to = wBound(tail.replace(/\s+/g, ' ').trim());
     return wCall('limit', wE(expr), v.toLowerCase(), to, side);
   }
@@ -21092,7 +21093,7 @@ function wRules(s) {
     const e = wExpr(m[1]);
     return /=/.test(e) ? wOps(e) : wOps(e) + ' = 0';
   }
-  if ((m = /^(?:(?:the|a|an)\s+)?(?:critical\s+points|stationary\s+points|turning\s+points|extrema|extreme\s+values|local\s+(?:maxima|minima|extrema)|local\s+maxima\s+and\s+minima|maxima\s+and\s+minima|maximum\s+and\s+minimum)\s+of\s+(.+)$/i.exec(s)) && !/['\u2032]\s*=|\bd[a-z]\s*\/\s*d[a-z]/.test(m[1])) {
+  if ((m = /^(?:(?:the|a|an)\s+)?(?:critical\s+points|stationary\s+points|turning\s+points|extrema|extreme\s+values|local\s+(?:maxima|minima|extrema)|local\s+maxima\s+and\s+minima|maxima\s+and\s+minima|maximum\s+and\s+minimum)\s+of\s+(.+)$/i.exec(s)) && !/['′]\s*=|\bd[a-z]\s*\/\s*d[a-z]/.test(m[1])) {
     const pe = wPeel(m[1]);
     return pe.lo != null ? wCall('critical', wE(pe.rest), pe.v || 'x', wBound(pe.lo), wBound(pe.hi)) : wCall('critical', wE(pe.rest), pe.v);
   }
@@ -21121,7 +21122,7 @@ function wRules(s) {
   if ((m = /^(?:all\s+)?(?:(?:the|a|an)\s+)?primes?\s+(?:numbers?\s+)?(?:between\s+(\d+)\s+and\s+(\d+)|up\s+to\s+(\d+)|less\s+than\s+(\d+)|below\s+(\d+))$/i.exec(s))) return wCall('primes', m[1] || '2', m[2] || m[3] || m[4] || m[5]);
   if ((m = /^how\s+many\s+primes\s+(?:are\s+there\s+)?(?:up\s+to|less\s+than|below|under|are\s+less\s+than|are\s+below)\s+(\d+)$/i.exec(s))) return wCall('primepi', m[1]);
   if ((m = /^(?:(?:the|a|an)\s+)?(?:remainder\s+(?:when|of|if)\s+)?(\d+)\s+(?:is\s+)?(?:divided\s+by|%|mod(?:ulo)?)\s+(\d+)(?:\s+remainder)?$/i.exec(s)) && /remainder|mod/i.test(s)) return wCall('mod', m[1], m[2]);
-  if ((m = /^(?:(?:the|a|an)\s+)?(?:remainder\s+(?:when|of|if|after)\s+)(\d+)\s+(?:is\s+)?(?:divided\s+by|\u00f7|\/)\s+(\d+)$/i.exec(s))) return wCall('mod', m[1], m[2]);
+  if ((m = /^(?:(?:the|a|an)\s+)?(?:remainder\s+(?:when|of|if|after)\s+)(\d+)\s+(?:is\s+)?(?:divided\s+by|÷|\/)\s+(\d+)$/i.exec(s))) return wCall('mod', m[1], m[2]);
   if ((m = /^(?:(?:the|a|an)\s+)?(\d+)\s*(?:st|nd|rd|th)?\s+fibonacci(?:\s+number)?$/i.exec(s)) || (m = /^fibonacci(?:\s+number)?\s+(?:number\s+)?(\d+)$/i.exec(s))) return wCall('fibonacci', m[1]);
   if ((m = /^(?:(?:the|a|an)\s+)?(\d+)\s*(?:st|nd|rd|th)?\s+lucas(?:\s+number)?$/i.exec(s))) return wCall('lucas', m[1]);
   if ((m = /^(\d+)\s*(?:!|factorial)$/i.exec(s)) || (m = /^factorial\s+of\s+(\d+)$/i.exec(s))) return wCall('factorial', m[1]);
@@ -21213,7 +21214,7 @@ function wRules(s) {
     else if (/^y-?\s*axis$/i.test(l)) l = 'x = 0';
     if (pts.length === 1 && pts[0].length === 2 && /=/.test(l)) return wCall('reflect', wVec(pts[0]), wOps(l));
   }
-  if ((m = /^(?:rotate|rotation\s+of)\s+(?:the\s+)?(?:point\s+)?(.+?)\s+(?:by|through)\s+(-?[\d.]+)\s*(?:degrees?|\u00b0)\s*(?:counter-?clockwise|anticlockwise|ccw)?\s*(?:about|around|from|at)?\s*(?:the\s+)?(?:point\s+)?(origin|.*)$/i.exec(s))) {
+  if ((m = /^(?:rotate|rotation\s+of)\s+(?:the\s+)?(?:point\s+)?(.+?)\s+(?:by|through)\s+(-?[\d.]+)\s*(?:degrees?|°)\s*(?:counter-?clockwise|anticlockwise|ccw)?\s*(?:about|around|from|at)?\s*(?:the\s+)?(?:point\s+)?(origin|.*)$/i.exec(s))) {
     const pts = wPoints(m[1]);
     const cen = /origin|^$/i.test(m[3]) ? [] : wPoints(m[3]);
     let ang = m[2];
@@ -21404,19 +21405,19 @@ function wRules(s) {
     if (how === 'more than') return Number(k) + 1 > Number(n) ? null : wCall('binomcdf', n, p, String(Number(k) + 1), n);
     return Number(k) - 1 < 0 ? null : wCall('binomcdf', n, p, String(Number(k) - 1));
   }
-  if ((m = /^(?:x\s*(?:~|follows|is)\s*)?bin(?:omial)?\s*\(\s*(?:n\s*=\s*)?(\d+)\s*,\s*(?:p\s*=\s*)?([\d./]+)\s*\)\s*[,;:.]?\s*(?:find\s+|calculate\s+)?P\s*\(\s*X\s*(=|<=|>=|<|>|\u2264|\u2265)\s*(\d+)\s*\)$/i.exec(s))) {
+  if ((m = /^(?:x\s*(?:~|follows|is)\s*)?bin(?:omial)?\s*\(\s*(?:n\s*=\s*)?(\d+)\s*,\s*(?:p\s*=\s*)?([\d./]+)\s*\)\s*[,;:.]?\s*(?:find\s+|calculate\s+)?P\s*\(\s*X\s*(=|<=|>=|<|>|≤|≥)\s*(\d+)\s*\)$/i.exec(s))) {
     const [, n, p, op, k] = m;
     const K = Number(k);
     if (op === '=') return wCall('binompdf', n, p, k);
-    if (op === '<=' || op === '\u2264') return wCall('binomcdf', n, p, k);
+    if (op === '<=' || op === '≤') return wCall('binomcdf', n, p, k);
     if (op === '<') return K === 0 ? null : wCall('binomcdf', n, p, String(K - 1));
-    if (op === '>=' || op === '\u2265') return wCall('binomcdf', n, p, k, n);
+    if (op === '>=' || op === '≥') return wCall('binomcdf', n, p, k, n);
     return K + 1 > Number(n) ? null : wCall('binomcdf', n, p, String(K + 1), n);
   }
-  if ((m = /^(?:x\s*(?:~|follows|is)\s*)?(?:a\s+)?normal(?:ly\s+distributed)?(?:\s+(?:distribution|random\s+variable|variable))?\s+with\s+(?:a\s+)?mean\s*(?:of|=)?\s*(-?[\d.]+)\s*(?:,|and)?\s*(?:a\s+)?(?:standard\s+deviation|sd|sigma|\u03c3)\s*(?:of|=)?\s*([\d.]+)\s*[,;:.]?\s*(?:find\s+|calculate\s+|what\s+is\s+)?(?:(?:the|a|an)\s+)?(?:probability\s+(?:that\s+)?)?(?:P\s*\(\s*)?(?:X|x)\s*(<=|>=|<|>|\u2264|\u2265|is\s+(?:less|greater|more|fewer)\s+than|is\s+(?:above|below)|between)\s*(-?[\d.]+)(?:\s*(?:and|,)\s*(-?[\d.]+))?\s*\)?$/i.exec(s))) {
+  if ((m = /^(?:x\s*(?:~|follows|is)\s*)?(?:a\s+)?normal(?:ly\s+distributed)?(?:\s+(?:distribution|random\s+variable|variable))?\s+with\s+(?:a\s+)?mean\s*(?:of|=)?\s*(-?[\d.]+)\s*(?:,|and)?\s*(?:a\s+)?(?:standard\s+deviation|sd|sigma|σ)\s*(?:of|=)?\s*([\d.]+)\s*[,;:.]?\s*(?:find\s+|calculate\s+|what\s+is\s+)?(?:(?:the|a|an)\s+)?(?:probability\s+(?:that\s+)?)?(?:P\s*\(\s*)?(?:X|x)\s*(<=|>=|<|>|≤|≥|is\s+(?:less|greater|more|fewer)\s+than|is\s+(?:above|below)|between)\s*(-?[\d.]+)(?:\s*(?:and|,)\s*(-?[\d.]+))?\s*\)?$/i.exec(s))) {
     const [, mu, sd, op, a, b] = m;
     if (/between/i.test(op) && b != null) return wCall('normalcdf', a, b, mu, sd);
-    if (/<|less|below|fewer|\u2264/i.test(op)) return wCall('normalcdf', '-oo', a, mu, sd);
+    if (/<|less|below|fewer|≤/i.test(op)) return wCall('normalcdf', '-oo', a, mu, sd);
     return wCall('normalcdf', a, 'oo', mu, sd);
   }
 
@@ -21472,14 +21473,14 @@ function wRules(s) {
   }
   if ((m = /^(?:the\s+)?(?:remainder\s+(?:when|of|if|after)\s+)(.+?)\s+(?:is\s+)?divided\s+by\s+(.+)$/i.exec(s)) && /[a-z]/i.test(m[1])) return wCall('divide', wE(m[1]), wE(m[2]));
   if ((m = /^divide\s+(.+?)\s+by\s+(.+)$/i.exec(s)) && /[a-z]/i.test(m[1])) return wCall('divide', wE(m[1]), wE(m[2]));
-  if ((m = /^(?:the\s+)?exact\s+value\s+of\s+(.+)$/i.exec(s))) return wE(m[1].replace(/(\d+(?:\.\d+)?)\s*degrees?\b/gi, '$1\u00b0'));
+  if ((m = /^(?:the\s+)?exact\s+value\s+of\s+(.+)$/i.exec(s))) return wE(m[1].replace(/(\d+(?:\.\d+)?)\s*degrees?\b/gi, '$1°'));
   if ((m = /^(.+?)\s+in\s+degrees$/i.exec(s)) && /\b(?:arcsin|arccos|arctan|asin|acos|atan|inverse)/i.test(m[1])) return '(' + wE(m[1]) + ')*180/pi';
   if ((m = /^(?:the\s+)?(\d+)(?:st|nd|rd|th)\s+term\s+of\s+(?:the\s+)?(arithmetic|geometric)\s+(?:sequence|progression|series)\s*:?\s*(.+)$/i.exec(s)) || (m = /^(?:the\s+)?sum\s+of\s+(?:the\s+)?first\s+(\d+)\s+terms\s+of\s+(?:the\s+)?(arithmetic|geometric)\s+(?:sequence|progression|series)\s*:?\s*(.+)$/i.exec(s))) {
-    const nums = wNums(m[3].replace(/\.\.\.|\u2026/g, ''));
+    const nums = wNums(m[3].replace(/\.\.\.|…/g, ''));
     if (nums && nums.length >= 2) return /arith/i.test(m[2]) ? wCall('arith', nums[0], '(' + nums[1] + ') - (' + nums[0] + ')', m[1]) : wCall('geom', nums[0], '(' + nums[1] + ')/(' + nums[0] + ')', m[1]);
   }
   if ((m = /^(?:the\s+)?sum\s+of\s+(?:the\s+)?infinite\s+geometric\s+(?:series|sequence)\s*:?\s*(.+)$/i.exec(s))) {
-    const nums = wNums(m[1].replace(/\.\.\.|\u2026/g, ''));
+    const nums = wNums(m[1].replace(/\.\.\.|…/g, ''));
     if (nums && nums.length >= 2) return wCall('geom', nums[0], '(' + nums[1] + ')/(' + nums[0] + ')', '5');
   }
   if ((m = /^(?:solve\s+)?(?:the\s+)?(?:triangle|law\s+of\s+(?:sines|cosines))\s*(?:with|where|given|:|,)?\s*(.+)$/i.exec(s))) {
@@ -21555,11 +21556,11 @@ function wFunctions(s) {
 const W_WORDY = /\b(?:plus|minus|times|multiplied|divided|over|squared|cubed|power|root|equals?|percent|per\s*cent|less\s+than|greater\s+than|at\s+least|at\s+most|twice|half|negative|sum\s+of|product\s+of|difference)\b/i;
 function convertWordLine(line) {
   const s0 = line.trim().replace(/\s+/g, ' ');
-  if (s0.length >= 4 && s0.length <= 400 && !/[A-Za-z]{3}|\b(?:of|on|in)\b|\.\.\.|\u2026|[\u222a\u2229\u2282\u2286\u00d7\u0394]|\bP\s*\(/.test(s0) && /[,;]\s*[A-Za-z]\s*=/.test(s0)) {
+  if (s0.length >= 4 && s0.length <= 400 && !/[A-Za-z]{3}|\b(?:of|on|in)\b|\.\.\.|…|[∪∩⊂⊆×Δ]|\bP\s*\(/.test(s0) && /[,;]\s*[A-Za-z]\s*=/.test(s0)) {
     const sub = wSubstitution(s0.replace(/\s*[?!.]+$/, ''));
     if (sub) return sub;
   }
-  if (s0.length < 4 || s0.length > 400 || !/[A-Za-z]{3}|\b(?:of|on|in)\b|\.\.\.|\u2026|[\u222a\u2229\u2282\u2286\u00d7\u0394]|\bP\s*\(/.test(s0)) return line;
+  if (s0.length < 4 || s0.length > 400 || !/[A-Za-z]{3}|\b(?:of|on|in)\b|\.\.\.|…|[∪∩⊂⊆×Δ]|\bP\s*\(/.test(s0)) return line;
   const s = s0.replace(/\s*[?!]+$/, '').replace(/\s*(?<!\.)\.$/, '');
   const lead = s.replace(W_LEAD, '');
   WORDS_ASK.v = null;
@@ -21579,7 +21580,7 @@ function convertWordLine(line) {
   return line;
 }
 function convertWords(raw) {
-  if (!/[A-Za-z]{3}|\b(?:of|on|in)\b|\.\.\.|\u2026|[\u222a\u2229\u2282\u2286\u00d7\u0394]|\bP\s*\(/.test(raw) && !/[,;]\s*[A-Za-z]\s*=/.test(raw)) return raw;
+  if (!/[A-Za-z]{3}|\b(?:of|on|in)\b|\.\.\.|…|[∪∩⊂⊆×Δ]|\bP\s*\(/.test(raw) && !/[,;]\s*[A-Za-z]\s*=/.test(raw)) return raw;
   return raw.split('\n').map(convertWordLine).join('\n');
 }
 
@@ -21636,12 +21637,12 @@ function tryWindowedEquation(sts) {
 function wWindow(line) {
   let m;
   const brk = '([\\[(])\\s*(' + W_BOUND + ')\\s*[,;]\\s*(' + W_BOUND + ')\\s*([\\])])\\s*$';
-  if ((m = new RegExp('^(.+=[^<>]*?)\\s*(?:,|;|\\bfor\\b|\\bwhere\\b|\\bwith\\b|\\bwhen\\b|\\bon\\b|\\bin\\b)\\s*(?:the\\s+interval\\s+)?(?:([a-z])\\s*(?:in|\u2208)\\s*)?' + brk, 'i').exec(line)) && !/[<>]/.test(m[1])) {
+  if ((m = new RegExp('^(.+=[^<>]*?)\\s*(?:,|;|\\bfor\\b|\\bwhere\\b|\\bwith\\b|\\bwhen\\b|\\bon\\b|\\bin\\b)\\s*(?:the\\s+interval\\s+)?(?:([a-z])\\s*(?:in|∈)\\s*)?' + brk, 'i').exec(line)) && !/[<>]/.test(m[1])) {
     const v = m[2] || (/(?<![A-Za-z])([a-z])(?![A-Za-z])/i.exec(m[1].replace(/\b(?:sin|cos|tan|cot|sec|csc|ln|log|exp|sqrt|abs|pi)\b/gi, '')) || [])[1];
     if (!v) return null;
     return m[1].trim() + '; ' + m[4] + ' ' + (m[3] === '[' ? '<=' : '<') + ' ' + v + ' ' + (m[6] === ']' ? '<=' : '<') + ' ' + m[5];
   }
-  if ((m = /^(.+?=[^<>\u2264\u2265]*?)\s*(?:,|;|\bfor\b|\bwhere\b|\bwith\b|\bwhen\b|\bon\b|\bin\b|\bif\b)\s*(?:the\s+interval\s+)?(.*[<>\u2264\u2265].*)$/i.exec(line)) && !/[<>\u2264\u2265]/.test(m[1]) && !/=/.test(m[2].replace(/[<>!]=/g, ''))) return m[1].trim() + '; ' + m[2].trim();
+  if ((m = /^(.+?=[^<>≤≥]*?)\s*(?:,|;|\bfor\b|\bwhere\b|\bwith\b|\bwhen\b|\bon\b|\bin\b|\bif\b)\s*(?:the\s+interval\s+)?(.*[<>≤≥].*)$/i.exec(line)) && !/[<>≤≥]/.test(m[1]) && !/=/.test(m[2].replace(/[<>!]=/g, ''))) return m[1].trim() + '; ' + m[2].trim();
   return null;
 }
 
@@ -21650,7 +21651,7 @@ function wDerivs(text) {
   const parts = text.split(/\s*;\s*|\n|\s+and\s+|\s*,\s*(?=[a-z]\s*'|d[a-z]\s*\/)/i).map((t) => t.trim()).filter(Boolean);
   const out = [];
   for (const p of parts) {
-    const m = /^([a-z])\s*['\u2032]\s*(?:\(\s*[a-z]\s*\))?\s*=\s*(.+)$/i.exec(p) || /^d\s*([a-z])\s*\/\s*d\s*[a-z]\s*=\s*(.+)$/i.exec(p);
+    const m = /^([a-z])\s*['′]\s*(?:\(\s*[a-z]\s*\))?\s*=\s*(.+)$/i.exec(p) || /^d\s*([a-z])\s*\/\s*d\s*[a-z]\s*=\s*(.+)$/i.exec(p);
     if (!m) return null;
     out.push({ v: m[1].toLowerCase(), rhs: m[2].trim() });
   }
@@ -21660,7 +21661,7 @@ function wDerivs(text) {
 // 29. Coordinate geometry in the plane: circles (centre and radius, through three points, from a diameter), lines and circles,
 //     two circles, tangents from a point, perpendicular bisectors, parallel and perpendicular lines, intersections and angles,
 //     triangle centres, rotations / reflections / translations / dilations, the section formula, collinearity, convex hulls.
-//     A point is [x, y], a line is [a, b, c] for ax + by = c (or two points, or the equation itself), a circle is [h, k, r\u00b2]
+//     A point is [x, y], a line is [a, b, c] for ax + by = c (or two points, or the equation itself), a circle is [h, k, r²]
 //     (or the equation itself).  Everything is exact: rational coordinates, square roots where the answer needs them.
 // ======================================================================
 const c2Flat = (v, what) => {
@@ -21672,7 +21673,7 @@ const c2Pt = (v, what) => {
   if (!f || f.length !== 2) throw new MathError(what + ' needs a point with two numbers, like [1, 2]');
   return f;
 };
-/** one point or a list of points (an n\u00d72 matrix) */
+/** one point or a list of points (an n×2 matrix) */
 function c2Pts(v, what) {
   const a = needMat(v, what);
   if (a.length === 1 && a[0].length === 2) return [a[0]];
@@ -21699,7 +21700,7 @@ function c2Line(v, what) {
 }
 function c2Circle(v, what) {
   const f = c2Flat(v, what);
-  if (!f || f.length !== 3 || f[2].sign() <= 0) throw new MathError(what + ' needs a circle: its equation ((x-1)^2 + (y+2)^2 = 25, x^2 + y^2 - 4x = 0) or [h, k, r\u00b2]');
+  if (!f || f.length !== 3 || f[2].sign() <= 0) throw new MathError(what + ' needs a circle: its equation ((x-1)^2 + (y+2)^2 = 25, x^2 + y^2 - 4x = 0) or [h, k, r²]');
   return f;
 }
 /** integer coefficients with no common factor, first non-zero one positive */
@@ -21746,8 +21747,8 @@ const c2Dist2 = (u, v) => {
 };
 const c2Sqrt = (q) => symText(simp(sSqrt(sN(q))));
 const c2Eval = (l, p) => l[0].mul(p[0]).add(l[1].mul(p[1])).sub(l[2]); // a x + b y - c
-const c2Deg = (rad) => fmtNum((rad * 180) / Math.PI) + '\u00b0';
-const c2Sq = (v, c) => (c.isZero() ? v + '\u00b2' : '(' + v + (c.sign() > 0 ? ' - ' + c.toString() : ' + ' + c.neg().toString()) + ')\u00b2');
+const c2Deg = (rad) => fmtNum((rad * 180) / Math.PI) + '°';
+const c2Sq = (v, c) => (c.isZero() ? v + '²' : '(' + v + (c.sign() > 0 ? ' - ' + c.toString() : ' + ' + c.neg().toString()) + ')²');
 function c2CircleLines(out, h, k, r2) {
   const r = simp(sSqrt(sN(r2)));
   out.answer.push('centre ' + c2P([h, k]) + ',  radius ' + symText(r));
@@ -21756,7 +21757,7 @@ function c2CircleLines(out, h, k, r2) {
   const E = k.mul(qInt(-2));
   const F = h.mul(h).add(k.mul(k)).sub(r2);
   const term = (co, nm) => (co.isZero() ? '' : (co.sign() < 0 ? ' - ' : ' + ') + (co.abs().eq(Q1) ? '' : co.abs().toString()) + nm);
-  const gen = 'x\u00b2 + y\u00b2' + term(D, 'x') + term(E, 'y') + (F.isZero() ? '' : (F.sign() < 0 ? ' - ' : ' + ') + F.abs().toString()) + ' = 0';
+  const gen = 'x² + y²' + term(D, 'x') + term(E, 'y') + (F.isZero() ? '' : (F.sign() < 0 ? ' - ' : ' + ') + F.abs().toString()) + ' = 0';
   out.work.push('general form: ' + gen);
   out.work.push('area = ' + symText(simp(sMul([S_PI, sN(r2)]))) + ',  circumference = ' + symText(simp(sMul([sI(2), S_PI, r]))));
 }
@@ -21780,7 +21781,7 @@ defCmd('circle', (n) => {
     h = sa.mul(B[1].sub(C[1])).add(sb.mul(C[1].sub(A[1]))).add(sc.mul(A[1].sub(B[1]))).div(D);
     k = sa.mul(C[0].sub(B[0])).add(sb.mul(A[0].sub(C[0]))).add(sc.mul(B[0].sub(A[0]))).div(D);
     r2 = c2Dist2([h, k], A);
-    out.work.push('the centre is on the perpendicular bisectors of the sides: it solves 2(x\u2082 \u2212 x\u2081)x + 2(y\u2082 \u2212 y\u2081)y = |P\u2082|\u00b2 \u2212 |P\u2081|\u00b2 for each pair');
+    out.work.push('the centre is on the perpendicular bisectors of the sides: it solves 2(x₂ − x₁)x + 2(y₂ − y₁)y = |P₂|² − |P₁|² for each pair');
     out.check = c2Dist2([h, k], B).eq(r2) && c2Dist2([h, k], C).eq(r2) ? 'all three points are at distance r from the centre' : null;
   } else if (n.args.length === 2 && args[0] && args[1]) {
     const A = c2Pt(args[0], 'circle');
@@ -21808,7 +21809,7 @@ defCmd('circle', (n) => {
 }, true);
 
 // ---- lines and circles -------------------------------------------------------------------------------------------------------------
-/** intersection of the line ax + by = c with the circle (h, k, r\u00b2): { kind, pts (S pairs), d2 (squared distance centre-line) } */
+/** intersection of the line ax + by = c with the circle (h, k, r²): { kind, pts (S pairs), d2 (squared distance centre-line) } */
 function c2LineCircle(l, ci) {
   const [a, b, c] = l;
   const [h, k, r2] = ci;
@@ -21816,7 +21817,7 @@ function c2LineCircle(l, ci) {
   const e = a.mul(h).add(b.mul(k)).sub(c); // signed numerator of the distance
   const d2 = e.mul(e).div(n2);
   const foot = [h.sub(e.div(n2).mul(a)), k.sub(e.div(n2).mul(b))];
-  const t2 = r2.sub(d2).div(n2); // (half chord)\u00b2 / (a\u00b2 + b\u00b2)
+  const t2 = r2.sub(d2).div(n2); // (half chord)² / (a² + b²)
   if (t2.sign() < 0) return { kind: 'none', d2, foot, t2 };
   if (t2.isZero()) return { kind: 'tangent', pts: [[sN(foot[0]), sN(foot[1])]], d2, foot, t2 };
   const s = simp(sSqrt(sN(t2)));
@@ -21858,7 +21859,7 @@ defMat('circlecircle', (args, n, out) => {
   const R1 = c1[2];
   const R2 = c2[2];
   const m = d2.sub(R1).sub(R2);
-  const cmp = m.mul(m).sub(qInt(4).mul(R1).mul(R2)); // sign of m\u00b2 \u2212 4 R1 R2
+  const cmp = m.mul(m).sub(qInt(4).mul(R1).mul(R2)); // sign of m² − 4 R1 R2
   const dist = c2Sqrt(d2);
   let rel;
   let tangents;
@@ -21886,7 +21887,7 @@ defMat('tangentcircle tangentsfrom', (args, n, out) => {
   if (cmp.isZero()) {
     const l = [P[0].sub(h), P[1].sub(k), P[0].sub(h).mul(P[0]).add(P[1].sub(k).mul(P[1]))];
     out.answer.push('tangent at ' + c2P(P) + ': ' + c2LineText(l));
-    out.work.push('the tangent is perpendicular to the radius: normal vector = P \u2212 centre = ' + c2P(c2Sub(P, [h, k])));
+    out.work.push('the tangent is perpendicular to the radius: normal vector = P − centre = ' + c2P(c2Sub(P, [h, k])));
     return g3Out(out);
   }
   if (cmp.sign() < 0) {
@@ -21894,7 +21895,7 @@ defMat('tangentcircle tangentsfrom', (args, n, out) => {
     out.work.push('distance from the centre ' + c2Sqrt(d2) + ' < radius ' + c2Sqrt(r2));
     return g3Out(out);
   }
-  // the points of contact lie on the polar line (x0 - h)(x - h) + (y0 - k)(y - k) = r\u00b2
+  // the points of contact lie on the polar line (x0 - h)(x - h) + (y0 - k)(y - k) = r²
   const a = P[0].sub(h);
   const b = P[1].sub(k);
   const polar = [a, b, r2.add(a.mul(h)).add(b.mul(k))];
@@ -21907,7 +21908,7 @@ defMat('tangentcircle tangentsfrom', (args, n, out) => {
     const C = simp(sAdd([sMul([A, sN(P[0])]), sMul([B, sN(P[1])])]));
     const rat = A.k === 'n' && B.k === 'n' && C.k === 'n';
     if (rat) out.answer.push('tangent ' + (i + 1) + ': ' + c2LineText([A.q, B.q, C.q]));
-    else out.answer.push('tangent ' + (i + 1) + ': (' + fmtS(A) + ')x + (' + fmtS(B) + ')y = ' + fmtS(C) + '   (slope \u2248 ' + fmtNum(-numS(A, {}) / numS(B, {})) + ')');
+    else out.answer.push('tangent ' + (i + 1) + ': (' + fmtS(A) + ')x + (' + fmtS(B) + ')y = ' + fmtS(C) + '   (slope ≈ ' + fmtNum(-numS(A, {}) / numS(B, {})) + ')');
   });
   return g3Out(out);
 }, [2, 'a circle and a point: tangentcircle(x^2 + y^2 = 25, [7, 1])']);
@@ -21922,7 +21923,7 @@ defMat('perpbisector', (args, n, out) => {
   const b = Qp[1].sub(P[1]);
   const l = [a, b, a.mul(M[0]).add(b.mul(M[1]))];
   out.answer.push('perpendicular bisector: ' + c2LineText(l));
-  out.work.push('midpoint ' + c2P(M) + ';  normal vector = Q \u2212 P = ' + c2P([a, b]) + ';  ' + c2SlopeText(l));
+  out.work.push('midpoint ' + c2P(M) + ';  normal vector = Q − P = ' + c2P([a, b]) + ';  ' + c2SlopeText(l));
   out.check = c2Dist2(P, [M[0], M[1]]).eq(c2Dist2(Qp, M)) ? 'the midpoint is on the line and the line is perpendicular to PQ' : null;
   return g3Out(out);
 }, [2, 'two points: perpbisector([1,2], [5,6])']);
@@ -22003,7 +22004,7 @@ defMat('pointline', (args, n, out) => {
   const e = c2Eval(l, P);
   const foot = [P[0].sub(e.div(n2).mul(l[0])), P[1].sub(e.div(n2).mul(l[1]))];
   out.answer.push('distance = ' + g3Ratio(e.abs(), n2));
-  out.work.push('d = |ax\u2080 + by\u2080 \u2212 c| / \u221a(a\u00b2 + b\u00b2) = |' + e.toString() + '| / ' + c2Sqrt(n2));
+  out.work.push('d = |ax₀ + by₀ − c| / √(a² + b²) = |' + e.toString() + '| / ' + c2Sqrt(n2));
   out.work.push('foot of the perpendicular ' + c2P(foot) + ';  mirror image of the point in the line ' + c2P([foot[0].mul(qInt(2)).sub(P[0]), foot[1].mul(qInt(2)).sub(P[1])]));
   out.check = c2Eval(l, foot).isZero() ? 'the foot lies on the line' : null;
   return g3Out(out);
@@ -22017,7 +22018,7 @@ defMat('parallellines', (args, n, out) => {
   const diff = l2[2].mul(t).sub(l1[2]);
   const n2 = l1[0].mul(l1[0]).add(l1[1].mul(l1[1]));
   out.answer.push('distance = ' + g3Ratio(diff.abs(), n2));
-  out.work.push('d = |c\u2081 \u2212 c\u2082| / \u221a(a\u00b2 + b\u00b2) once both equations have the same a and b');
+  out.work.push('d = |c₁ − c₂| / √(a² + b²) once both equations have the same a and b');
   return g3Out(out);
 }, [2, 'two parallel lines: parallellines(3x + 4y = 5, 3x + 4y = 15)']);
 
@@ -22058,7 +22059,7 @@ defMat('triangle2d trianglecenters', (args, n, out) => {
   out.check = ok && c2Dist2(O, A).eq(c2Dist2(O, B)) && c2Dist2(O, A).eq(c2Dist2(O, C)) ? 'O is equidistant from A, B, C and the altitudes pass through H' : null;
   return g3Out(out);
 }, [3, 'three points: triangle2d([0,0], [4,0], [0,3])']);
-/** circumcentre and R\u00b2 of a triangle (rational) */
+/** circumcentre and R² of a triangle (rational) */
 function c2Circle_(A, B, C) {
   const D = qInt(2).mul(A[0].mul(B[1].sub(C[1])).add(B[0].mul(C[1].sub(A[1]))).add(C[0].mul(A[1].sub(B[1]))));
   const sa = A[0].mul(A[0]).add(A[1].mul(A[1]));
@@ -22071,7 +22072,7 @@ function c2Circle_(A, B, C) {
 
 // ---- transformations ----------------------------------------------------------------------------------------------------------------
 const c2Out = (out, pts, images, plain) => {
-  images.forEach((p, i) => out.answer.push((pts.length > 1 ? 'point ' + (i + 1) + ': ' + c2P(pts[i]) + ' \u2192 ' : 'image: ') + c2PS(p)));
+  images.forEach((p, i) => out.answer.push((pts.length > 1 ? 'point ' + (i + 1) + ': ' + c2P(pts[i]) + ' → ' : 'image: ') + c2PS(p)));
   return plain ? out : g3Out(out);
 };
 defCmd('rotate', (n) => {
@@ -22081,11 +22082,11 @@ defCmd('rotate', (n) => {
   const C = n.args[2] ? c2Pt(evalMat(n.args[2]), 'rotate') : [Q0, Q0];
   const node = n.args[1];
   const S = fromAst(node);
-  const inRad = varsOfS(S).size === 0 && /pi|\u03c0|rad/i.test(showRaw(node));
+  const inRad = varsOfS(S).size === 0 && /pi|π|rad/i.test(showRaw(node));
   const th = inRad ? S : degToRad(S);
   const cs = simp(sFn('cos', [th]));
   const sn = simp(sFn('sin', [th]));
-  out.work.push('rotation by ' + symText(simp(S)) + (inRad ? ' rad' : '\u00b0') + ' about ' + c2P(C) + ':  x\u2032 = cx + (x \u2212 cx)cos \u03b8 \u2212 (y \u2212 cy)sin \u03b8,  y\u2032 = cy + (x \u2212 cx)sin \u03b8 + (y \u2212 cy)cos \u03b8');
+  out.work.push('rotation by ' + symText(simp(S)) + (inRad ? ' rad' : '°') + ' about ' + c2P(C) + ':  x′ = cx + (x − cx)cos θ − (y − cy)sin θ,  y′ = cy + (x − cx)sin θ + (y − cy)cos θ');
   const images = pts.map((P) => {
     const dx = sN(P[0].sub(C[0]));
     const dy = sN(P[1].sub(C[1]));
@@ -22097,7 +22098,7 @@ defMat('reflect', (args, n, out) => {
   const pts = c2Pts(args[0], 'reflect');
   const l = c2Line(args[1], 'reflect');
   const n2 = l[0].mul(l[0]).add(l[1].mul(l[1]));
-  out.work.push('reflection in the line ' + c2LineText(l) + ':  P\u2032 = P \u2212 2(ax + by \u2212 c)/(a\u00b2 + b\u00b2)\u00b7(a, b)');
+  out.work.push('reflection in the line ' + c2LineText(l) + ':  P′ = P − 2(ax + by − c)/(a² + b²)·(a, b)');
   const images = pts.map((P) => {
     const t = c2Eval(l, P).mul(qInt(2)).div(n2);
     return [sN(P[0].sub(t.mul(l[0]))), sN(P[1].sub(t.mul(l[1])))];
@@ -22107,14 +22108,14 @@ defMat('reflect', (args, n, out) => {
 defMat('translate', (args, n, out) => {
   const pts = c2Pts(args[0], 'translate');
   const v = c2Pt(args[1], 'translate');
-  out.work.push('translation by the vector ' + c2P(v) + ':  P\u2032 = P + v');
+  out.work.push('translation by the vector ' + c2P(v) + ':  P′ = P + v');
   return c2Out(out, pts, pts.map((P) => [sN(P[0].add(v[0])), sN(P[1].add(v[1]))]));
 }, [2, 'a point (or points) and a vector: translate([1, 2], [3, -1])']);
 defMat('dilate', (args, n, out) => {
   const pts = c2Pts(args[0], 'dilate');
   const kk = args[1].t === 'num' ? args[1].q : (() => { throw new MathError('dilate needs a scale factor: dilate([1, 2], 3) or dilate([1, 2], 3, [4, 4])'); })();
   const C = args[2] ? c2Pt(args[2], 'dilate') : [Q0, Q0];
-  out.work.push('dilation with factor ' + kk.toString() + ' about ' + c2P(C) + ':  P\u2032 = C + k(P \u2212 C)' + (kk.sign() < 0 ? ' (the image is turned through 180\u00b0)' : ''));
+  out.work.push('dilation with factor ' + kk.toString() + ' about ' + c2P(C) + ':  P′ = C + k(P − C)' + (kk.sign() < 0 ? ' (the image is turned through 180°)' : ''));
   return c2Out(out, pts, pts.map((P) => [sN(C[0].add(kk.mul(P[0].sub(C[0])))), sN(C[1].add(kk.mul(P[1].sub(C[1]))))]));
 }, [2, 'a point (or points), a factor and optionally a centre: dilate([1, 2], 3)']);
 
@@ -22126,11 +22127,11 @@ defMat('section', (args, n, out) => {
   const nn = args[3].t === 'num' ? args[3].q : null;
   if (!m || !nn) throw new MathError('section(P, Q, m, n) needs the ratio m, n as numbers');
   const s = m.add(nn);
-  if (s.isZero()) throw new MathError('m + n must not be 0 (a ratio of 1 : \u22121 has no point)');
+  if (s.isZero()) throw new MathError('m + n must not be 0 (a ratio of 1 : −1 has no point)');
   const R = [nn.mul(P[0]).add(m.mul(Qp[0])).div(s), nn.mul(P[1]).add(m.mul(Qp[1])).div(s)];
   const external = m.sign() * nn.sign() < 0;
   out.answer.push('the point dividing PQ ' + (external ? 'externally' : 'internally') + ' in the ratio ' + m.toString() + ' : ' + nn.toString() + ' is ' + c2P(R));
-  out.work.push('R = (n\u00b7P + m\u00b7Q)/(m + n)' + (external ? '  (a negative ratio means external division)' : ''));
+  out.work.push('R = (n·P + m·Q)/(m + n)' + (external ? '  (a negative ratio means external division)' : ''));
   return g3Out(out);
 }, [4, 'two points and a ratio: section([1, 2], [7, 8], 2, 1)']);
 
@@ -22149,7 +22150,7 @@ defMat('collinear', (args, n, out) => {
     out.answer.push('no, the points are not collinear');
     const P = off[0];
     const area = first[0].sub(pts[0][0]).mul(P[1].sub(pts[0][1])).sub(first[1].sub(pts[0][1]).mul(P[0].sub(pts[0][0]))).abs().div(qInt(2));
-    out.work.push('the triangle ' + c2P(pts[0]) + ', ' + c2P(first) + ', ' + c2P(P) + ' has area ' + area.toString() + ' \u2260 0');
+    out.work.push('the triangle ' + c2P(pts[0]) + ', ' + c2P(first) + ', ' + c2P(P) + ' has area ' + area.toString() + ' ≠ 0');
   }
   return g3Out(out);
 }, [3, 'three or more points: collinear([0,0], [1,2], [3,6])']);
@@ -22186,7 +22187,7 @@ defMat('hull convexhull', (args, n, out) => {
   return g3Out(out);
 }, [3, 'points: hull([0,0], [4,0], [4,3], [1,1], [0,3])']);
 
-// ---- text pre-pass: equations inside the arguments become [a, b, c] (lines) and [h, k, r\u00b2] (circles) -----------------------------------------
+// ---- text pre-pass: equations inside the arguments become [a, b, c] (lines) and [h, k, r²] (circles) -----------------------------------------
 const C2_KINDS = {
   linecircle: ['line', 'circle'], circlecircle: ['circle', 'circle'], tangentcircle: ['circle', null], tangentsfrom: ['circle', null],
   parallel: ['line', null], perpendicular: ['line', null], lineinfo: ['line'],
@@ -22247,7 +22248,7 @@ function convertCoord2d(s) {
     const h = co.D.neg().div(qInt(2).mul(co.A));
     const k = co.E.neg().div(qInt(2).mul(co.A));
     const r2 = h.mul(h).add(k.mul(k)).sub(co.F.div(co.A));
-    if (r2.sign() <= 0) throw new MathError('this equation has no real circle (r\u00b2 = ' + r2.toString() + ')');
+    if (r2.sign() <= 0) throw new MathError('this equation has no real circle (r² = ' + r2.toString() + ')');
     return '[' + h.toString() + ', ' + k.toString() + ', ' + r2.toString() + ']';
   };
   const handle = (kinds) => (name, inner) => {
@@ -22325,14 +22326,14 @@ function phClassify(a, b, c, d) {
       const root = simp(sSqrt(sN(disc.neg())));
       const re = tr.mul(half);
       const im = simp(sMul([sN(half), root]));
-      eig = [(re.isZero() ? '' : re.toString() + ' \u00b1 ') + (fmtS(im) === '1' ? '' : fmtS(im)) + 'i'].map((t) => t.replace(/^(.*)\u00b1 i$/, '$1\u00b1 i'));
+      eig = [(re.isZero() ? '' : re.toString() + ' ± ') + (fmtS(im) === '1' ? '' : fmtS(im)) + 'i'].map((t) => t.replace(/^(.*)± i$/, '$1± i'));
     }
   } else if (sDisc >= 0) {
     const r = Math.sqrt(Math.max(disc, 0));
     eig = sDisc === 0 ? [fmtNum(tr / 2) + ' (double)'] : [fmtNum((tr + r) / 2), fmtNum((tr - r) / 2)];
   } else {
     const im = Math.sqrt(-disc) / 2;
-    eig = [(phZero(tr) ? '' : fmtNum(tr / 2) + ' \u00b1 ') + (fmtNum(im) === '1' ? '' : fmtNum(im)) + 'i'];
+    eig = [(phZero(tr) ? '' : fmtNum(tr / 2) + ' ± ') + (fmtNum(im) === '1' ? '' : fmtNum(im)) + 'i'];
   }
   const label = kind + ': ' + stab;
   return { kind, stab, label, tr, det, disc, eig, sDet, sTr, sDisc, exact };
@@ -22341,13 +22342,13 @@ const phTrDet = (r) => 'trace = ' + (r.exact ? r.tr.toString() : fmtNum(r.tr)) +
 
 defMat('classify phasetype', (args, n, out) => {
   const A = needMat(args[0], 'classify');
-  if (A.length !== A[0].length || A.length < 2 || A.length > 3) throw new MathError('classify needs a 2\u00d72 (or 3\u00d73) matrix A of the system x\' = A x');
+  if (A.length !== A[0].length || A.length < 2 || A.length > 3) throw new MathError('classify needs a 2×2 (or 3×3) matrix A of the system x\' = A x');
   if (A.length === 3) {
     const rts = polyRoots(charPoly(A));
     const reals = rts.real.map((r) => r.val);
     const cx = rts.complex.map((z) => z.re);
     const all = reals.concat(cx);
-    const eigs = rts.real.map((r) => (r.text || fmtNum(r.val))).concat(rts.complex.filter((z) => z.im > 0).map((z) => fmtNum(z.re) + ' \u00b1 ' + fmtNum(Math.abs(z.im)) + 'i'));
+    const eigs = rts.real.map((r) => (r.text || fmtNum(r.val))).concat(rts.complex.filter((z) => z.im > 0).map((z) => fmtNum(z.re) + ' ± ' + fmtNum(Math.abs(z.im)) + 'i'));
     const mx = Math.max(...all);
     const mn = Math.min(...all);
     out.answer.push('eigenvalues ' + eigs.join(', '));
@@ -22357,7 +22358,7 @@ defMat('classify phasetype', (args, n, out) => {
   const r = phClassify(A[0][0], A[0][1], A[1][0], A[1][1]);
   out.answer.push(r.label);
   out.answer.push('eigenvalues ' + r.eig.join(', '));
-  out.work.push(phTrDet(r) + '   (det < 0: saddle;  det > 0 and trace\u00b2 \u2212 4det > 0: node;  < 0: spiral;  trace = 0: centre)');
+  out.work.push(phTrDet(r) + '   (det < 0: saddle;  det > 0 and trace² − 4det > 0: node;  < 0: spiral;  trace = 0: centre)');
   return g3Out(out);
 }, [1, 'a matrix: classify([[3,1],[1,3]])']);
 
@@ -22425,7 +22426,7 @@ defCmd('equilibria phaseline fixedpoints', (n) => {
   const dS = diffS(S, v);
   const F = (x) => numS(S, { [v]: x });
   const Fp = (x) => numS(dS, { [v]: x });
-  out.work.push(v + '\' = ' + fmtS(S) + ';  equilibria are the solutions of f(' + v + ') = 0;  f\u2032(' + v + ') = ' + fmtS(dS));
+  out.work.push(v + '\' = ' + fmtS(S) + ';  equilibria are the solutions of f(' + v + ') = 0;  f′(' + v + ') = ' + fmtS(dS));
   if (!roots.length) {
     out.answer.push('no equilibrium: ' + v + '\' never vanishes, so every solution is ' + (F(0) > 0 ? 'increasing' : 'decreasing') + ' for all t');
     return out;
@@ -22444,7 +22445,7 @@ defCmd('equilibria phaseline fixedpoints', (n) => {
     else if (left < 0 && right > 0) kind = 'unstable (source): solutions nearby move away';
     else if (left === right && left !== 0) kind = 'semi-stable: ' + (left > 0 ? 'solutions below approach it, those above move away' : 'solutions above approach it, those below move away');
     else kind = 'sign of f could not be decided';
-    out.answer.push(v + ' = ' + (r.text && !/\//.test(r.text) ? r.text : phText(r.val)) + ': ' + kind + (phZero(slope) ? '   (f\u2032 = 0 there)' : '   (f\u2032 = ' + fmtNum(slope) + ')'));
+    out.answer.push(v + ' = ' + (r.text && !/\//.test(r.text) ? r.text : phText(r.val)) + ': ' + kind + (phZero(slope) ? '   (f′ = 0 there)' : '   (f′ = ' + fmtNum(slope) + ')'));
   });
   // the phase line
   const cut = [-Infinity].concat(eqs, [Infinity]);
@@ -22454,7 +22455,7 @@ defCmd('equilibria phaseline fixedpoints', (n) => {
     const b = cut[i + 1];
     const mid = a === -Infinity ? b - 1 : b === Infinity ? a + 1 : (a + b) / 2;
     const f = F(mid);
-    parts.push('(' + (a === -Infinity ? '-\u221e' : phText(a).replace(/ \(.*$/, '')) + ', ' + (b === Infinity ? '\u221e' : phText(b).replace(/ \(.*$/, '')) + '): ' + v + '\u2032 ' + (f > 0 ? '> 0, ' + v + ' increases \u2191' : '< 0, ' + v + ' decreases \u2193'));
+    parts.push('(' + (a === -Infinity ? '-∞' : phText(a).replace(/ \(.*$/, '')) + ', ' + (b === Infinity ? '∞' : phText(b).replace(/ \(.*$/, '')) + '): ' + v + '′ ' + (f > 0 ? '> 0, ' + v + ' increases ↑' : '< 0, ' + v + ' decreases ↓'));
   }
   out.work.push('phase line:  ' + parts.join(';  '));
   out.check = 'the sign of f on each interval and at both sides of every equilibrium decides the type';
@@ -22520,10 +22521,10 @@ defCmd('phaseplane linearize', (n) => {
   const F = (p) => [numS(f, { [vx]: p[0], [vy]: p[1] }), numS(g, { [vx]: p[0], [vy]: p[1] })];
   let sols = phEquilibria(F);
   if (!sols.length) {
-    out.answer.push('no equilibrium found (f = g = 0 has no real solution with |value| \u2264 10)');
+    out.answer.push('no equilibrium found (f = g = 0 has no real solution with |value| ≤ 10)');
     return out;
   }
-  // Newton's method converges slowly at a singular Jacobian: snap to the nearest simple value (small fraction or multiple of \u03c0) if it is still an equilibrium
+  // Newton's method converges slowly at a singular Jacobian: snap to the nearest simple value (small fraction or multiple of π) if it is still an equilibrium
   const polishTo = (v) => {
     for (let q = 1; q <= 12; q++) {
       const p = Math.round(v * q);
@@ -22565,7 +22566,7 @@ defCmd('phaseplane linearize', (n) => {
       const term = (c, nm) => (phZero(c) ? '' : (c < 0 ? ' - ' : ' + ') + (Math.abs(Math.abs(c) - 1) < 1e-12 ? '' : phText(Math.abs(c)).replace(/ \(.*$/, '')) + nm);
       let eq = (term(tt[0], vx) + term(tt[1], vy)).replace(/^ \+ /, '').replace(/^ - /, '-');
       eq += ' = ' + phText(tt[2]).replace(/ \(.*$/, '');
-      out.answer.push('a whole line of equilibria (non-isolated): ' + eq + ' \u2014 every point of it is an equilibrium; the Jacobian is singular along it, so linearization does not classify them');
+      out.answer.push('a whole line of equilibria (non-isolated): ' + eq + ' — every point of it is an equilibrium; the Jacobian is singular along it, so linearization does not classify them');
     } else out.answer.push('a curve of equilibria (non-isolated): the Jacobian is singular along it, so linearization does not classify them');
   }
   if (sols.length > 30) sols = sols.slice(0, 30);
@@ -22578,12 +22579,12 @@ defCmd('phaseplane linearize', (n) => {
     const r = phClassify(...J.map((x) => (phZero(x) ? 0 : x)));
     const where = '(' + vx + ', ' + vy + ') = (' + phText(s[0]) + ', ' + phText(s[1]) + ')';
     let tag = r.label;
-    if (r.sDet > 0 && r.sTr === 0 && r.sDisc < 0) tag = 'linearization is a centre: the nonlinear system may have a centre or a (weak) spiral \u2014 not decided by the Jacobian';
+    if (r.sDet > 0 && r.sTr === 0 && r.sDisc < 0) tag = 'linearization is a centre: the nonlinear system may have a centre or a (weak) spiral — not decided by the Jacobian';
     else if (r.sDet === 0 || (r.sDisc === 0 && r.sDet > 0)) tag += ' (borderline case: the linearization may not decide the nonlinear behaviour)';
     out.answer.push(where + ': ' + tag);
     out.work.push(where + ':  J = [[' + J.slice(0, 2).map(fmtNum).join(', ') + '], [' + J.slice(2).map(fmtNum).join(', ') + ']],  ' + phTrDet(r) + ',  eigenvalues ' + r.eig.join(', '));
   });
-  out.notes.push('Only real equilibria with |value| \u2264 10 near the search grid are found; the type comes from the eigenvalues of the Jacobian (linearization).');
+  out.notes.push('Only real equilibria with |value| ≤ 10 near the search grid are found; the type comes from the eigenvalues of the Jacobian (linearization).');
   return out;
 });
 
@@ -22642,9 +22643,9 @@ defCmd('reginf regressioninference slopetest', (n) => {
   const seA = s * Math.sqrt(1 / nn + (mxF * mxF) / sxxF);
   const tcrit = invCdf((x) => tCdf(x, df), (1 + conf) / 2, -5, 5);
   const r2 = syy.isZero() ? 1 : ni2Float(sxy.mul(sxy).div(sxx.mul(syy)));
-  out.answer.push('y = ' + fmtNum(af) + (bf < 0 ? ' \u2212 ' : ' + ') + fmtNum(Math.abs(bf)) + 'x');
+  out.answer.push('y = ' + fmtNum(af) + (bf < 0 ? ' − ' : ' + ') + fmtNum(Math.abs(bf)) + 'x');
   if (seB === 0) {
-    out.answer.push('the points lie exactly on the line: the standard errors are 0, so no test is needed (r\u00b2 = 1)');
+    out.answer.push('the points lie exactly on the line: the standard errors are 0, so no test is needed (r² = 1)');
     return out;
   }
   const tB = bf / seB;
@@ -22654,18 +22655,18 @@ defCmd('reginf regressioninference slopetest', (n) => {
   out.answer.push('slope: b = ' + fmtNum(bf) + ',  SE = ' + fmtNum(seB) + ',  t = ' + fmtNum(tB) + ' (df = ' + df + '),  p-value (two-tailed) = ' + ni2P(pB));
   out.answer.push(fmtNum(conf * 100) + '% confidence interval for the slope: (' + fmtNum(bf - tcrit * seB) + ', ' + fmtNum(bf + tcrit * seB) + ')');
   out.answer.push('intercept: a = ' + fmtNum(af) + ',  SE = ' + fmtNum(seA) + ',  t = ' + fmtNum(tA) + ',  p-value = ' + ni2P(pA) + ';  ' + fmtNum(conf * 100) + '% CI (' + fmtNum(af - tcrit * seA) + ', ' + fmtNum(af + tcrit * seA) + ')');
-  out.answer.push('r\u00b2 = ' + fmtNum(r2) + ',  r = ' + fmtNum(Math.sign(bf) * Math.sqrt(r2)) + ',  residual standard error s = ' + fmtNum(s) + ' (df = ' + df + ')');
+  out.answer.push('r² = ' + fmtNum(r2) + ',  r = ' + fmtNum(Math.sign(bf) * Math.sqrt(r2)) + ',  residual standard error s = ' + fmtNum(s) + ' (df = ' + df + ')');
   const ssr = ni2Float(sxy.mul(sxy).div(sxx));
   const F = ssr / (sseF / df);
-  out.work.push('Sxx = ' + qText(sxx) + ',  Syy = ' + qText(syy) + ',  Sxy = ' + qText(sxy) + ';  SSE = Syy \u2212 b\u00b7Sxy = ' + fmtNum(sseF) + ',  s = \u221a(SSE/(n \u2212 2))');
-  out.work.push('ANOVA: SSR = ' + fmtNum(ssr) + ',  SSE = ' + fmtNum(sseF) + ',  SST = ' + fmtNum(ni2Float(syy)) + ';  F = SSR/(SSE/' + df + ') = ' + fmtNum(F) + ' (= t\u00b2 for the slope),  p = ' + ni2P(pB));
-  out.work.push('SE(b) = s/\u221aSxx,  SE(a) = s\u00b7\u221a(1/n + x\u0304\u00b2/Sxx);  critical value t* = ' + fmtNum(tcrit) + ' for ' + fmtNum(conf * 100) + '% confidence');
+  out.work.push('Sxx = ' + qText(sxx) + ',  Syy = ' + qText(syy) + ',  Sxy = ' + qText(sxy) + ';  SSE = Syy − b·Sxy = ' + fmtNum(sseF) + ',  s = √(SSE/(n − 2))');
+  out.work.push('ANOVA: SSR = ' + fmtNum(ssr) + ',  SSE = ' + fmtNum(sseF) + ',  SST = ' + fmtNum(ni2Float(syy)) + ';  F = SSR/(SSE/' + df + ') = ' + fmtNum(F) + ' (= t² for the slope),  p = ' + ni2P(pB));
+  out.work.push('SE(b) = s/√Sxx,  SE(a) = s·√(1/n + x̄²/Sxx);  critical value t* = ' + fmtNum(tcrit) + ' for ' + fmtNum(conf * 100) + '% confidence');
   if (n.args[3]) {
     const x0 = ni2Float(constQ(n.args[3]));
     const yh = af + bf * x0;
     const seMean = s * Math.sqrt(1 / nn + ((x0 - mxF) ** 2) / sxxF);
     const sePred = s * Math.sqrt(1 + 1 / nn + ((x0 - mxF) ** 2) / sxxF);
-    out.answer.push('at x = ' + fmtNum(x0) + ': \u0177 = ' + fmtNum(yh) + ';  ' + fmtNum(conf * 100) + '% CI for the mean response (' + fmtNum(yh - tcrit * seMean) + ', ' + fmtNum(yh + tcrit * seMean) + ');  prediction interval for a new observation (' + fmtNum(yh - tcrit * sePred) + ', ' + fmtNum(yh + tcrit * sePred) + ')');
+    out.answer.push('at x = ' + fmtNum(x0) + ': ŷ = ' + fmtNum(yh) + ';  ' + fmtNum(conf * 100) + '% CI for the mean response (' + fmtNum(yh - tcrit * seMean) + ', ' + fmtNum(yh + tcrit * seMean) + ');  prediction interval for a new observation (' + fmtNum(yh - tcrit * sePred) + ', ' + fmtNum(yh + tcrit * sePred) + ')');
   }
   out.value = { num: pB };
   return out;
@@ -22723,11 +22724,11 @@ defCmd('mannwhitney ranksum wilcoxonranksum mwu', (n) => {
     p2 = Math.min(1, 2 * ni2Sf(zOf(Math.max(U1, U2))));
     how = 'normal approximation with continuity correction' + (hasTies ? ' and tie correction' : '');
   }
-  out.answer.push('U\u2081 = ' + fmtNum(U1) + ' (first sample),  U\u2082 = ' + fmtNum(U2));
+  out.answer.push('U₁ = ' + fmtNum(U1) + ' (first sample),  U₂ = ' + fmtNum(U2));
   out.answer.push('p-value: two-tailed ' + ni2P(p2) + ',  first sample larger (right-tailed) ' + ni2P(pRight) + ',  first sample smaller (left-tailed) ' + ni2P(pLeft));
-  out.work.push('rank sum of the first sample R\u2081 = ' + fmtNum(R1) + ',  U\u2081 = R\u2081 \u2212 n\u2081(n\u2081 + 1)/2 with n\u2081 = ' + n1 + ', n\u2082 = ' + n2 + ';  U\u2082 = n\u2081n\u2082 \u2212 U\u2081');
+  out.work.push('rank sum of the first sample R₁ = ' + fmtNum(R1) + ',  U₁ = R₁ − n₁(n₁ + 1)/2 with n₁ = ' + n1 + ', n₂ = ' + n2 + ';  U₂ = n₁n₂ − U₁');
   out.work.push('p-value from the ' + how);
-  out.notes.push('H0: the two samples come from the same distribution; reject when the p-value is below \u03b1.');
+  out.notes.push('H0: the two samples come from the same distribution; reject when the p-value is below α.');
   out.value = { num: p2 };
   return out;
 });
@@ -22776,7 +22777,7 @@ defCmd('wilcoxon signedrank wilcoxonsigned', (n) => {
     pLeft = cdf(rPlus);
     pRight = sf(rPlus);
     p2 = Math.min(1, 2 * Math.min(pLeft, pRight));
-    how = 'exact distribution of W\u207a (no ties or zero differences)';
+    how = 'exact distribution of W⁺ (no ties or zero differences)';
   } else {
     const mn = (nn * (nn + 1)) / 4;
     const se = Math.sqrt((nn * (nn + 1) * (2 * nn + 1)) / 24 - ni2TieSum(ties) / 48);
@@ -22789,10 +22790,10 @@ defCmd('wilcoxon signedrank wilcoxonsigned', (n) => {
     how = 'normal approximation with continuity correction' + (hasTies ? ' and tie correction' : '') + (zeros ? ' (zero differences are dropped)' : '');
   }
   const out = newOut();
-  out.answer.push('W\u207a = ' + fmtNum(rPlus) + ',  W\u207b = ' + fmtNum(rMinus) + ',  W = min = ' + fmtNum(W));
+  out.answer.push('W⁺ = ' + fmtNum(rPlus) + ',  W⁻ = ' + fmtNum(rMinus) + ',  W = min = ' + fmtNum(W));
   out.answer.push('p-value: two-tailed ' + ni2P(p2) + ',  right-tailed (median > 0) ' + ni2P(pRight) + ',  left-tailed (median < 0) ' + ni2P(pLeft));
-  out.work.push('n = ' + nn + ' non-zero differences' + (zeros ? ' (' + zeros + ' zero dropped)' : '') + ';  W\u207a = sum of the ranks of |d| for d > 0;  p-value from the ' + how);
-  out.notes.push('H0: the median difference is 0; reject when the p-value is below \u03b1.');
+  out.work.push('n = ' + nn + ' non-zero differences' + (zeros ? ' (' + zeros + ' zero dropped)' : '') + ';  W⁺ = sum of the ranks of |d| for d > 0;  p-value from the ' + how);
+  out.notes.push('H0: the median difference is 0; reject when the p-value is below α.');
   out.value = { num: p2 };
   return out;
 });
@@ -22822,9 +22823,9 @@ defCmd('kruskalwallis kwtest', (n) => {
   const out = newOut();
   out.answer.push('H = ' + fmtNum(H) + ' (df = ' + df + ')');
   out.answer.push('p-value = ' + ni2P(p));
-  out.work.push('rank sums ' + sums.map((s, i) => 'R' + (i + 1) + ' = ' + fmtNum(s) + ' (n = ' + groups[i].length + ')').join(', ') + ';  H = 12/(N(N + 1))\u00b7\u03a3 R\u1d62\u00b2/n\u1d62 \u2212 3(N + 1)' + (corr < 1 ? ', divided by the tie correction ' + fmtNum(corr) : ''));
-  out.work.push('H is compared with the chi-square distribution with k \u2212 1 = ' + df + ' degrees of freedom (best when every group has at least 5 values)');
-  out.notes.push('H0: all groups have the same distribution; reject when the p-value is below \u03b1.');
+  out.work.push('rank sums ' + sums.map((s, i) => 'R' + (i + 1) + ' = ' + fmtNum(s) + ' (n = ' + groups[i].length + ')').join(', ') + ';  H = 12/(N(N + 1))·Σ Rᵢ²/nᵢ − 3(N + 1)' + (corr < 1 ? ', divided by the tie correction ' + fmtNum(corr) : ''));
+  out.work.push('H is compared with the chi-square distribution with k − 1 = ' + df + ' degrees of freedom (best when every group has at least 5 values)');
+  out.notes.push('H0: all groups have the same distribution; reject when the p-value is below α.');
   out.value = { num: p };
   return out;
 });
@@ -22857,14 +22858,14 @@ defCmd('signtest', (n) => {
   return out;
 });
 
-// ---- 2\u00d72 tables: Fisher's exact test, McNemar ----------------------------------------------------------------------------------------------
+// ---- 2×2 tables: Fisher's exact test, McNemar ----------------------------------------------------------------------------------------------
 function ni2Table(n, what) {
   const A = needMat(evalMat(n.args[0]), what);
-  if (A.length !== 2 || A[0].length !== 2 || A.flat().some((q) => !q.isInt() || q.sign() < 0)) throw new MathError(what + ' needs a 2\u00d72 table of counts such as [[8, 2], [1, 5]]');
+  if (A.length !== 2 || A[0].length !== 2 || A.flat().some((q) => !q.isInt() || q.sign() < 0)) throw new MathError(what + ' needs a 2×2 table of counts such as [[8, 2], [1, 5]]');
   return A.map((r) => r.map((q) => Number(q.n)));
 }
 defCmd('fisherexact fishertest', (n) => {
-  needArgs(n, 1, 1, 'a 2\u00d72 table of counts: fisherexact([[8,2],[1,5]])');
+  needArgs(n, 1, 1, 'a 2×2 table of counts: fisherexact([[8,2],[1,5]])');
   const [[a, b], [c, d]] = ni2Table(n, 'fisher');
   const r1 = a + b;
   const r2 = c + d;
@@ -22886,14 +22887,14 @@ defCmd('fisherexact fishertest', (n) => {
   }
   const out = newOut();
   const odds = b * c === 0 ? (a * d === 0 ? NaN : Infinity) : (a * d) / (b * c);
-  out.answer.push('sample odds ratio = ' + (isNaN(odds) ? 'undefined' : odds === Infinity ? '\u221e' : fmtNum(odds)) + ' (ad/bc)');
+  out.answer.push('sample odds ratio = ' + (isNaN(odds) ? 'undefined' : odds === Infinity ? '∞' : fmtNum(odds)) + ' (ad/bc)');
   out.answer.push('Fisher exact p-value: two-tailed ' + ni2P(p2) + ',  right-tailed (a larger) ' + ni2P(pRight) + ',  left-tailed ' + ni2P(pLeft));
   out.work.push('the count in the first cell is hypergeometric given the margins (' + r1 + ', ' + r2 + ' | ' + c1 + ', ' + (N - c1) + ');  two-tailed p = sum of the probabilities of all tables that are not more likely than the observed one');
   out.value = { num: p2 };
   return out;
 });
 defCmd('mcnemar', (n) => {
-  needArgs(n, 1, 1, 'a 2\u00d72 table of paired counts: mcnemar([[59,6],[16,80]])');
+  needArgs(n, 1, 1, 'a 2×2 table of paired counts: mcnemar([[59,6],[16,80]])');
   const [[, b], [c]] = ni2Table(n, 'mcnemar');
   const tot = b + c;
   if (!tot) throw new MathError('there are no discordant pairs (b = c = 0), so the test is undefined');
@@ -22903,9 +22904,9 @@ defCmd('mcnemar', (n) => {
   for (let i = 0; i <= Math.min(b, c); i++) s += ni2BinHalf(tot, i);
   const pExact = Math.min(1, 2 * s);
   const out = newOut();
-  out.answer.push('\u03c7\u00b2 = ' + fmtNum(chi) + ' (df = 1, with continuity correction),  p-value = ' + ni2P(pChi));
+  out.answer.push('χ² = ' + fmtNum(chi) + ' (df = 1, with continuity correction),  p-value = ' + ni2P(pChi));
   out.answer.push('exact binomial p-value = ' + ni2P(pExact) + ' (use it when b + c < 25)');
-  out.work.push('only the discordant pairs matter: b = ' + b + ', c = ' + c + ';  \u03c7\u00b2 = (|b \u2212 c| \u2212 1)\u00b2/(b + c)');
+  out.work.push('only the discordant pairs matter: b = ' + b + ', c = ' + c + ';  χ² = (|b − c| − 1)²/(b + c)');
   out.value = { num: tot < 25 ? pExact : pChi };
   return out;
 });
@@ -22915,9 +22916,9 @@ defCmd('mcnemar', (n) => {
 //     The coefficients come from the exact integrator; the general term is shown when its closed form (with sin(n pi) = 0 and
 //     cos(n pi) = (-1)^n) agrees with the exact coefficients of the first eight harmonics.
 // ======================================================================
-const f4Sub = ['\u2080', '\u2081', '\u2082', '\u2083', '\u2084', '\u2085', '\u2086', '\u2087', '\u2088', '\u2089'];
+const f4Sub = ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'];
 const f4Idx = (n) => String(n).split('').map((d) => f4Sub[Number(d)]).join('');
-/** exact value of the integral of expr\u00b7cos|sin(n w x) over [lo, hi]: through the integrator, as a symbolic expression */
+/** exact value of the integral of expr·cos|sin(n w x) over [lo, hi]: through the integrator, as a symbolic expression */
 function f4Integral(pieceText, trig, nText, wText, v, loText, hiText) {
   const call = 'integrate((' + pieceText + ')' + (trig ? '*' + trig + '(' + nText + '*(' + wText + ')*' + v + ')' : '') + ', ' + v + ', ' + loText + ', ' + hiText + ')';
   return commandValueS(parseExpression(call));
@@ -23040,10 +23041,10 @@ function f4Series(pieces0, v, out, opts) {
   const oddF = allZero(A) && zeroS(a0);
   const sym = (x) => (zeroS(x) ? '0' : symText(x));
   const mean = simp(sDiv(a0, sI(2)));
-  out.answer.push('a\u2080/2 = ' + sym(mean) + '   (the average value of f over one period T = ' + symText(T) + ')');
-  const sb = (c) => (idx === 'n' ? c + '\u2099' : c + '_' + idx);
-  out.answer.push(gA ? sb('a') + ' = ' + fmtS(gA) : (evenF || !allZero(A) ? 'a\u2081 = ' + sym(A[0]) + ',  a\u2082 = ' + sym(A[1]) + ',  a\u2083 = ' + sym(A[2]) + ',  a\u2084 = ' + sym(A[3]) + '  (no closed form recognised)' : sb('a') + ' = 0 for every ' + idx));
-  out.answer.push(gB ? sb('b') + ' = ' + fmtS(gB) : (!allZero(B) ? 'b\u2081 = ' + sym(B[0]) + ',  b\u2082 = ' + sym(B[1]) + ',  b\u2083 = ' + sym(B[2]) + ',  b\u2084 = ' + sym(B[3]) + '  (no closed form recognised)' : sb('b') + ' = 0 for every ' + idx));
+  out.answer.push('a₀/2 = ' + sym(mean) + '   (the average value of f over one period T = ' + symText(T) + ')');
+  const sb = (c) => (idx === 'n' ? c + 'ₙ' : c + '_' + idx);
+  out.answer.push(gA ? sb('a') + ' = ' + fmtS(gA) : (evenF || !allZero(A) ? 'a₁ = ' + sym(A[0]) + ',  a₂ = ' + sym(A[1]) + ',  a₃ = ' + sym(A[2]) + ',  a₄ = ' + sym(A[3]) + '  (no closed form recognised)' : sb('a') + ' = 0 for every ' + idx));
+  out.answer.push(gB ? sb('b') + ' = ' + fmtS(gB) : (!allZero(B) ? 'b₁ = ' + sym(B[0]) + ',  b₂ = ' + sym(B[1]) + ',  b₃ = ' + sym(B[2]) + ',  b₄ = ' + sym(B[3]) + '  (no closed form recognised)' : sb('b') + ' = 0 for every ' + idx));
   // the first harmonics as a sum, in the order of the harmonics
   const X = sV(v);
   const parts = [];
@@ -23059,14 +23060,14 @@ function f4Series(pieces0, v, out, opts) {
     shown++;
   }
   const joined = parts.map((t, i) => (i === 0 ? t : t.startsWith('-') ? ' - ' + t.slice(1) : ' + ' + t)).join('') || '0';
-  out.answer.push(shown ? 'f(' + v + ') ~ ' + joined + ' + \u2026   (up to the first ' + shown + ' harmonic' + (shown === 1 ? '' : 's') + ' that ' + (shown === 1 ? 'is' : 'are') + ' not zero)' : 'f(' + v + ') = ' + joined + '   (a constant: there are no harmonics)');
+  out.answer.push(shown ? 'f(' + v + ') ~ ' + joined + ' + …   (up to the first ' + shown + ' harmonic' + (shown === 1 ? '' : 's') + ' that ' + (shown === 1 ? 'is' : 'are') + ' not zero)' : 'f(' + v + ') = ' + joined + '   (a constant: there are no harmonics)');
   const rows = [];
   for (let k = 1; k <= Math.min(6, Math.max(N, 4)); k++) rows.push('n = ' + k + ': a = ' + fmtNum(numS(A[k - 1], {})) + ', b = ' + fmtNum(numS(B[k - 1], {})));
-  out.work.push('coefficients  a\u2099 = (2/T)\u222b f cos(2\u03c0n' + v + '/T) d' + v + ',  b\u2099 = (2/T)\u222b f sin(2\u03c0n' + v + '/T) d' + v + ',  a\u2080 = (2/T)\u222b f d' + v + ';  T = ' + symText(T));
+  out.work.push('coefficients  aₙ = (2/T)∫ f cos(2πn' + v + '/T) d' + v + ',  bₙ = (2/T)∫ f sin(2πn' + v + '/T) d' + v + ',  a₀ = (2/T)∫ f d' + v + ';  T = ' + symText(T));
   out.work.push('numerical values: ' + rows.join(';  '));
-  if (evenF) out.work.push('f is even on the interval, so every b\u2099 is 0 (a cosine series)');
-  if (oddF) out.work.push('f is odd on the interval, so a\u2080 and every a\u2099 are 0 (a sine series)');
-  if (gA === null && !allZero(A)) out.notes.push('The closed form of a\u2099 is not shown; the exact values of the first harmonics are in the numerical row.');
+  if (evenF) out.work.push('f is even on the interval, so every bₙ is 0 (a cosine series)');
+  if (oddF) out.work.push('f is odd on the interval, so a₀ and every aₙ are 0 (a sine series)');
+  if (gA === null && !allZero(A)) out.notes.push('The closed form of aₙ is not shown; the exact values of the first harmonics are in the numerical row.');
   out.notes.push('Where f is continuous the series converges to f; at a jump it converges to the average of the two one-sided limits (Dirichlet).');
   out.value = { S: mean };
   return out;
@@ -23106,7 +23107,7 @@ function f4HalfRange(kind) {
     const mirrored = simp(subsS(f, v, sNeg(sV(v))));
     const left = kind === 'fouriercos' ? mirrored : simp(sNeg(mirrored));
     const out = newOut();
-    out.work.push('f is extended to (\u2212L, L) as an ' + (kind === 'fouriercos' ? 'even' : 'odd') + ' function (half-range ' + (kind === 'fouriercos' ? 'cosine' : 'sine') + ' series), L = ' + symText(L));
+    out.work.push('f is extended to (−L, L) as an ' + (kind === 'fouriercos' ? 'even' : 'odd') + ' function (half-range ' + (kind === 'fouriercos' ? 'cosine' : 'sine') + ' series), L = ' + symText(L));
     return f4Series([{ f: left, lo: simp(sNeg(L)), hi: S0 }, { f, lo: S0, hi: L }], v, out, { terms });
   };
 }
@@ -23127,14 +23128,14 @@ defCmd('sinusoid trigprops', (n) => {
   let term = null;
   for (const t of termsOf(S)) {
     if (freeOf(t, v)) D = sAdd([D, t]);
-    else if (term) throw new MathError('the function must have the form A\u00b7sin(Bx + C) + D with one trigonometric term');
+    else if (term) throw new MathError('the function must have the form A·sin(Bx + C) + D with one trigonometric term');
     else term = t;
   }
   if (!term) throw new MathError('there is no trigonometric term in ' + v);
   const fs = term.k === '*' ? term.a : [term];
   const tr = fs.filter((f) => !freeOf(f, v));
   const kinds = ['sin', 'cos', 'tan', 'cot', 'sec', 'csc'];
-  if (tr.length !== 1 || tr[0].k !== 'f' || !kinds.includes(tr[0].fn) || tr[0].a.length !== 1) throw new MathError('the function must have the form A\u00b7sin(Bx + C) + D (sin, cos, tan, cot, sec or csc)');
+  if (tr.length !== 1 || tr[0].k !== 'f' || !kinds.includes(tr[0].fn) || tr[0].a.length !== 1) throw new MathError('the function must have the form A·sin(Bx + C) + D (sin, cos, tan, cot, sec or csc)');
   let A = fs.filter((f) => freeOf(f, v)).length ? simp(sMul(fs.filter((f) => freeOf(f, v)))) : S1;
   const lin = linearIn_(tr[0].a[0], v);
   if (!lin || zeroS(simp(lin.a1))) throw new MathError('the argument must be a linear expression in ' + v + ' such as 2x - pi');
@@ -23156,20 +23157,20 @@ defCmd('sinusoid trigprops', (n) => {
   const absA = numS(A, {}) < 0 ? simp(sNeg(A)) : A;
   if (fn === 'sin' || fn === 'cos') {
     out.answer.push('amplitude |A| = ' + symText(absA) + (reflected ? '   (A < 0: the graph is reflected in the midline)' : ''));
-    out.answer.push('period = 2\u03c0/|B| = ' + symText(period) + ',  frequency = ' + symText(simp(sDiv(B, sMul([sI(2), S_PI])))));
-    out.answer.push('phase shift = \u2212C/B = ' + symText(h) + (zeroS(h) ? '' : numS(h, {}) > 0 ? ' (to the right)' : ' (to the left)'));
+    out.answer.push('period = 2π/|B| = ' + symText(period) + ',  frequency = ' + symText(simp(sDiv(B, sMul([sI(2), S_PI])))));
+    out.answer.push('phase shift = −C/B = ' + symText(h) + (zeroS(h) ? '' : numS(h, {}) > 0 ? ' (to the right)' : ' (to the left)'));
     out.answer.push('vertical shift D = ' + symText(D) + ',  midline y = ' + symText(D));
     out.answer.push('maximum = ' + symText(simp(sAdd([D, absA]))) + ',  minimum = ' + symText(simp(sSub(D, absA))) + ',  range [' + symText(simp(sSub(D, absA))) + ', ' + symText(simp(sAdd([D, absA]))) + ']');
-    out.work.push(fmtS(simp(sAdd([sMul([A, sFn(fn, [simp(sAdd([sMul([B, sV(v)]), C]))])]), D]))) + ' = A ' + fn + '(B(' + v + ' \u2212 h)) + D with A = ' + symText(A) + ', B = ' + symText(B) + ', h = ' + symText(h) + ', D = ' + symText(D));
+    out.work.push(fmtS(simp(sAdd([sMul([A, sFn(fn, [simp(sAdd([sMul([B, sV(v)]), C]))])]), D]))) + ' = A ' + fn + '(B(' + v + ' − h)) + D with A = ' + symText(A) + ', B = ' + symText(B) + ', h = ' + symText(h) + ', D = ' + symText(D));
     const starts = fn === 'sin' ? 'a sine wave starts a cycle at ' + v + ' = ' + symText(h) : 'a cosine wave has its maximum (for A > 0) at ' + v + ' = ' + symText(h);
     out.work.push(starts + ' and repeats every ' + symText(period));
   } else {
-    out.answer.push('no amplitude (' + fn + ' is unbounded);  period = ' + (periodic ? '2\u03c0/|B|' : '\u03c0/|B|') + ' = ' + symText(period));
-    out.answer.push('phase shift = \u2212C/B = ' + symText(h) + (zeroS(h) ? '' : numS(h, {}) > 0 ? ' (to the right)' : ' (to the left)') + ',  vertical shift D = ' + symText(D));
+    out.answer.push('no amplitude (' + fn + ' is unbounded);  period = ' + (periodic ? '2π/|B|' : 'π/|B|') + ' = ' + symText(period));
+    out.answer.push('phase shift = −C/B = ' + symText(h) + (zeroS(h) ? '' : numS(h, {}) > 0 ? ' (to the right)' : ' (to the left)') + ',  vertical shift D = ' + symText(D));
     // vertical asymptotes: argument = pi/2 + k pi (tan, sec) or k pi (cot, csc)
     const base = fn === 'tan' || fn === 'sec' ? simp(sDiv(sSub(sDiv(S_PI, sI(2)), C), B)) : simp(sDiv(sNeg(C), B));
     const step = simp(sDiv(S_PI, B));
-    out.answer.push('vertical asymptotes ' + v + ' = ' + symText(base) + ' + k\u00b7' + symText(step) + '  (k any integer)');
+    out.answer.push('vertical asymptotes ' + v + ' = ' + symText(base) + ' + k·' + symText(step) + '  (k any integer)');
     if (fn === 'sec' || fn === 'csc') out.work.push('the graph never enters the strip between ' + symText(simp(sAdd([D, S1.k ? absA : absA]))) + ' and ' + symText(simp(sSub(D, absA))) + ' (|A| above and below the midline y = ' + symText(D) + ')');
   }
   out.value = { S: period };
@@ -23199,12 +23200,12 @@ defMat('independent linindep', (args, n, out) => {
   const rank = pivots.length;
   if (rank === k) {
     out.answer.push('linearly independent (the ' + k + ' vectors have rank ' + k + ')');
-    out.work.push('c\u2081v\u2081 + \u2026 + c' + f4Idx(k) + 'v' + f4Idx(k) + ' = 0 has only the solution c = 0' + (k === dim ? ';  they form a basis of the whole space of ' + dim + ' entries' : ''));
+    out.work.push('c₁v₁ + … + c' + f4Idx(k) + 'v' + f4Idx(k) + ' = 0 has only the solution c = 0' + (k === dim ? ';  they form a basis of the whole space of ' + dim + ' entries' : ''));
   } else {
     const rel = mNullspace(M)[0];
     const prim = primitiveVector(rel);
     out.answer.push('linearly dependent (rank ' + rank + ' < ' + k + ')');
-    out.work.push('a non-trivial relation: ' + prim.map((c, i) => (c.isZero() ? null : qParen(c) + '\u00b7' + pcSub(i))).filter(Boolean).join(' + ') + ' = 0');
+    out.work.push('a non-trivial relation: ' + prim.map((c, i) => (c.isZero() ? null : qParen(c) + '·' + pcSub(i))).filter(Boolean).join(' + ') + ' = 0');
     const piv = pivots;
     out.work.push('the vectors ' + pivots.map((c) => pcSub(c)).join(', ') + ' are independent (a basis of their span); the others are combinations of them');
     if (k > dim) out.work.push('more vectors (' + k + ') than entries (' + dim + '): they are always dependent');
@@ -23228,7 +23229,7 @@ defMat('inspan span', (args, n, out) => {
   } else {
     const c = new Array(k).fill(Q0);
     pivots.forEach((pc, i) => { c[pc] = R[i][k]; });
-    out.answer.push('the vector ' + pcVecText(target) + ' is in the span: v = ' + c.map((q, i) => qParen(q) + '\u00b7u' + f4Idx(i + 1)).join(' + '));
+    out.answer.push('the vector ' + pcVecText(target) + ' is in the span: v = ' + c.map((q, i) => qParen(q) + '·u' + f4Idx(i + 1)).join(' + '));
     out.work.push('with ' + gens.map((g, i) => 'u' + f4Idx(i + 1) + ' = ' + pcVecText(g)).join(', '));
     if (pivots.length < k) out.work.push('the spanning vectors are dependent, so the coefficients are not unique (free variables set to 0)');
   }
@@ -23274,7 +23275,7 @@ defCmd('ratroots rationalroots ratzeros', (n) => {
   ps.forEach((p) => qs.forEach((q) => { if (bgcd(p, q) === 1n) cand.push([p, q]); }));
   cand.sort((a, b) => Number(a[0]) / Number(a[1]) - Number(b[0]) / Number(b[1]));
   const out = newOut();
-  out.answer.push('possible rational zeros \u00b1p/q with p | ' + cst + ' and q | ' + lead + ':  ' + (cand.length > 40 ? cand.length * 2 + ' candidates' : cand.map(([p, q]) => '\u00b1' + (q === 1n ? p.toString() : p + '/' + q)).join(', ')));
+  out.answer.push('possible rational zeros ±p/q with p | ' + cst + ' and q | ' + lead + ':  ' + (cand.length > 40 ? cand.length * 2 + ' candidates' : cand.map(([p, q]) => '±' + (q === 1n ? p.toString() : p + '/' + q)).join(', ')));
   const roots = polyRoots(intsToPoly(ints)).real.filter((r) => r.q);
   if (zeros) roots.unshift({ q: Q0, mult: zeros });
   if (!roots.length) out.answer.push('no rational zero: the polynomial has no linear factor with rational coefficients');
@@ -23298,7 +23299,7 @@ defCmd('endbehavior endbehaviour', (n) => {
   const side = (inf) => {
     try {
       const r = runCommandCall(parseExpression('limit(' + fmtS(S, true) + ', ' + v + ', ' + inf + ')'));
-      return r.answer[0].replace(/^.*?(?:=|\u2192)\s*/, '');
+      return r.answer[0].replace(/^.*?(?:=|→)\s*/, '');
     } catch (e) {
       if (e instanceof MathError) return null;
       throw e;
@@ -23306,15 +23307,15 @@ defCmd('endbehavior endbehaviour', (n) => {
   };
   const plus = side('oo');
   const minus = side('-oo');
-  const word = (t, dir) => (t === null ? 'could not be determined' : /^-?\u221e$|infinity|^[-\u2212]?\s*\u221e/.test(t) ? 'f(' + v + ') \u2192 ' + t : 'f(' + v + ') \u2192 ' + t + '  (horizontal asymptote y = ' + t + ')');
-  out.answer.push('as ' + v + ' \u2192 \u221e:  ' + word(plus));
-  out.answer.push('as ' + v + ' \u2192 \u2212\u221e:  ' + word(minus));
+  const word = (t, dir) => (t === null ? 'could not be determined' : /^-?∞$|infinity|^[-−]?\s*∞/.test(t) ? 'f(' + v + ') → ' + t : 'f(' + v + ') → ' + t + '  (horizontal asymptote y = ' + t + ')');
+  out.answer.push('as ' + v + ' → ∞:  ' + word(plus));
+  out.answer.push('as ' + v + ' → −∞:  ' + word(minus));
   try {
     const cs = polyCoeffsS(expandS(S), v);
     if (cs && cs.length > 1 && cs.every((c) => c.k === 'n')) {
       const deg = cs.length - 1;
       const lc = cs[deg].q;
-      out.work.push('polynomial of degree ' + deg + ' (' + (deg % 2 ? 'odd' : 'even') + ') with leading coefficient ' + lc.toString() + ': the end behaviour follows the leading term ' + (lc.eq(Q1) ? '' : lc.eq(qInt(-1)) ? '\u2212' : lc.toString()) + v + toSup(String(deg)) + ' \u2014 ' + (deg % 2 ? (lc.sign() > 0 ? 'falls to the left, rises to the right' : 'rises to the left, falls to the right') : (lc.sign() > 0 ? 'rises on both sides' : 'falls on both sides')));
+      out.work.push('polynomial of degree ' + deg + ' (' + (deg % 2 ? 'odd' : 'even') + ') with leading coefficient ' + lc.toString() + ': the end behaviour follows the leading term ' + (lc.eq(Q1) ? '' : lc.eq(qInt(-1)) ? '−' : lc.toString()) + v + toSup(String(deg)) + ' — ' + (deg % 2 ? (lc.sign() > 0 ? 'falls to the left, rises to the right' : 'rises to the left, falls to the right') : (lc.sign() > 0 ? 'rises on both sides' : 'falls on both sides')));
     }
   } catch (e) {
     if (!(e instanceof NotAlgebraic) && !(e instanceof MathError)) throw e;
@@ -23342,8 +23343,8 @@ defCmd('evenodd parity symmetry', (n) => {
   let even = same;
   let odd = neg && !same;
   if (!even && !odd) { even = numCheck(1); odd = !even && numCheck(-1); }
-  out.answer.push(even ? 'even: f(\u2212' + v + ') = f(' + v + '), the graph is symmetric about the y-axis' : odd ? 'odd: f(\u2212' + v + ') = \u2212f(' + v + '), the graph is symmetric about the origin' : 'neither even nor odd');
-  out.work.push('f(' + v + ') = ' + fmtS(S) + ';  f(\u2212' + v + ') = ' + fmtS(mirrored));
+  out.answer.push(even ? 'even: f(−' + v + ') = f(' + v + '), the graph is symmetric about the y-axis' : odd ? 'odd: f(−' + v + ') = −f(' + v + '), the graph is symmetric about the origin' : 'neither even nor odd');
+  out.work.push('f(' + v + ') = ' + fmtS(S) + ';  f(−' + v + ') = ' + fmtS(mirrored));
   return out;
 });
 
@@ -23357,7 +23358,7 @@ defCmd('coeff coefficient', (n) => {
   if (!cs) throw new MathError('the expression must be a polynomial in ' + v + ' once expanded');
   const out = newOut();
   const c = k >= 0 && k < cs.length ? cs[k] : S0;
-  out.answer.push('coefficient of ' + v + (k === 0 ? '\u2070 (the constant term)' : k === 1 ? '' : toSup(String(k))) + ' = ' + symText(simp(c)));
+  out.answer.push('coefficient of ' + v + (k === 0 ? '⁰ (the constant term)' : k === 1 ? '' : toSup(String(k))) + ' = ' + symText(simp(c)));
   out.work.push('expanded: ' + fmtS(simp(S)));
   out.value = { S: simp(c) };
   return out;
@@ -23387,13 +23388,13 @@ function rgExact(x) {
   return null;
 }
 function rgFmt(x) {
-  if (x === Infinity) return '\u221e';
-  if (x === -Infinity) return '-\u221e';
+  if (x === Infinity) return '∞';
+  if (x === -Infinity) return '-∞';
   const rec = recognizeLoose(x);
   if (rec) return rec.text;
-  return '\u2248' + fmtNum(x);
+  return '≈' + fmtNum(x);
 }
-/** limit of S at the end e of a piece, approached from inside; { v } or { v: \u00b1Infinity } */
+/** limit of S at the end e of a piece, approached from inside; { v } or { v: ±Infinity } */
 function rgLimit(S, v, e, side, F) {
   const isInf = typeof e === 'number' && !isFinite(e);
   const point = isInf ? { inf: e > 0 ? 1 : -1 } : (() => { const ex = e.S || rgExact(e.val !== undefined ? e.val : e); return ex ? { S: ex } : null; })();
@@ -23545,18 +23546,18 @@ defCmd('rangeof functionrange', (n) => {
   const text = merged.map((m) => {
     if (eq(m.lo, m.hi) && !m.loOpen && !m.hiOpen) return '{' + rgFmt(m.lo) + '}';
     return (m.loOpen || !isFinite(m.lo) ? '(' : '[') + rgFmt(m.lo) + ', ' + rgFmt(m.hi) + (m.hiOpen || !isFinite(m.hi) ? ')' : ']');
-  }).join(' \u222a ');
+  }).join(' ∪ ');
   const out = newOut();
   out.answer.push('range: ' + text);
   out.work.push('f(' + v + ') = ' + fmtS(S) + ';  the values come from the local extrema, the end values and the limits at the ends of each interval of the domain');
   out.work.push('domain: ' + domainOf(S, v));
-  out.notes.push('Found by a numerical search with exact limits; a decimal with \u2248 means no simple exact form was recognised.');
+  out.notes.push('Found by a numerical search with exact limits; a decimal with ≈ means no simple exact form was recognised.');
   return out;
 });
 // ======================================================================
 // 34. Applications of multiple integrals and vector calculus:  mass / centre of mass / moments of inertia of a lamina or a solid,
 //     integrals in polar, cylindrical and spherical coordinates, surface area, flux, Green's, the divergence theorem and Stokes' theorem.
-//     Bounds are listed from the OUTER integral to the INNER one; letters are single letters (\u03b8 is t, \u03c6 is f, \u03c1 is r when typed as Greek).
+//     Bounds are listed from the OUTER integral to the INNER one; letters are single letters (θ is t, φ is f, ρ is r when typed as Greek).
 //     Exact values come from the symbolic integrator; when it cannot find an antiderivative a Gauss-Legendre rule gives a decimal.
 // ======================================================================
 const vcNodes = {};
@@ -23621,7 +23622,7 @@ function vcIterated(f, dims) {
   if (!isFinite(num)) throw new MathError('the integral could not be evaluated (a singularity inside the region?)');
   return { num };
 }
-const vcLine = (label, r) => integralLine(label, r).replace(/ = \u2248/, ' \u2248');
+const vcLine = (label, r) => integralLine(label, r).replace(/ = ≈/, ' ≈');
 const vcDivide = (a, b) => {
   if (a.S && b.S) {
     const q = simp(sDiv(a.S, b.S));
@@ -23640,7 +23641,7 @@ function vcDims(args, start, count, what) {
   if (new Set(dims.map((d) => d.v)).size !== dims.length) throw new MathError('the variables of the integration must be different letters');
   return dims;
 }
-const vcRegionText = (dims) => dims.map((d) => fmtS(d.lo) + ' \u2264 ' + d.v + ' \u2264 ' + fmtS(d.hi)).join(',  ');
+const vcRegionText = (dims) => dims.map((d) => fmtS(d.lo) + ' ≤ ' + d.v + ' ≤ ' + fmtS(d.hi)).join(',  ');
 
 // ---- lamina and solid -------------------------------------------------------------------------------------------------------------------------------------
 defCmd('lamina', (n) => {
@@ -23654,18 +23655,18 @@ defCmd('lamina', (n) => {
   const My = vcIterated(simp(sMul([X, rho])), dims);
   const Ix = vcIterated(simp(sMul([Y, Y, rho])), dims);
   const Iy = vcIterated(simp(sMul([X, X, rho])), dims);
-  out.answer.push(vcLine('mass M = \u222c \u03c1 dA', M));
+  out.answer.push(vcLine('mass M = ∬ ρ dA', M));
   const cx = vcDivide(My, M);
   const cy = vcDivide(Mx, M);
-  const t = (r) => (r.S ? symText(r.S) : (recognizeLoose(r.num) ? recognizeLoose(r.num).text + ' (\u2248 ' + fmtNum(r.num) + ')' : '\u2248 ' + fmtNum(r.num)));
-  out.answer.push('centre of mass (x\u0304, \u0233) = (' + t(cx) + ', ' + t(cy) + ')');
-  out.answer.push(vcLine('moment about the x-axis M\u2093 = \u222c y \u03c1 dA', Mx));
-  out.answer.push(vcLine('moment about the y-axis M_y = \u222c x \u03c1 dA', My));
+  const t = (r) => (r.S ? symText(r.S) : (recognizeLoose(r.num) ? recognizeLoose(r.num).text + ' (≈ ' + fmtNum(r.num) + ')' : '≈ ' + fmtNum(r.num)));
+  out.answer.push('centre of mass (x̄, ȳ) = (' + t(cx) + ', ' + t(cy) + ')');
+  out.answer.push(vcLine('moment about the x-axis Mₓ = ∬ y ρ dA', Mx));
+  out.answer.push(vcLine('moment about the y-axis M_y = ∬ x ρ dA', My));
   const I0 = Ix.S && Iy.S ? { S: simp(sAdd([Ix.S, Iy.S])), num: Ix.num + Iy.num } : { num: Ix.num + Iy.num };
-  out.answer.push(vcLine('moments of inertia  I\u2093 = \u222c y\u00b2 \u03c1 dA', Ix));
-  out.answer.push(vcLine('                    I_y = \u222c x\u00b2 \u03c1 dA', Iy));
-  out.answer.push(vcLine('                    I\u2080 = I\u2093 + I_y', I0));
-  out.work.push('region: ' + vcRegionText(dims) + ';  density \u03c1 = ' + fmtS(rho) + ';  x\u0304 = M_y/M,  \u0233 = M\u2093/M');
+  out.answer.push(vcLine('moments of inertia  Iₓ = ∬ y² ρ dA', Ix));
+  out.answer.push(vcLine('                    I_y = ∬ x² ρ dA', Iy));
+  out.answer.push(vcLine('                    I₀ = Iₓ + I_y', I0));
+  out.work.push('region: ' + vcRegionText(dims) + ';  density ρ = ' + fmtS(rho) + ';  x̄ = M_y/M,  ȳ = Mₓ/M');
   if (!M.S) out.notes.push('No closed form was found, so the values are numerical (Gauss-Legendre).');
   out.value = M.S ? { S: M.S } : { num: M.num };
   return out;
@@ -23681,16 +23682,16 @@ defCmd('solid', (n) => {
   const Mx = I(X);
   const My = I(Y);
   const Mz = I(Z);
-  out.answer.push(vcLine('mass M = \u222d \u03c1 dV', M));
-  const t = (r) => (r.S ? symText(r.S) : (recognizeLoose(r.num) ? recognizeLoose(r.num).text + ' (\u2248 ' + fmtNum(r.num) + ')' : '\u2248 ' + fmtNum(r.num)));
-  out.answer.push('centre of mass (x\u0304, \u0233, z\u0304) = (' + t(vcDivide(Mx, M)) + ', ' + t(vcDivide(My, M)) + ', ' + t(vcDivide(Mz, M)) + ')');
+  out.answer.push(vcLine('mass M = ∭ ρ dV', M));
+  const t = (r) => (r.S ? symText(r.S) : (recognizeLoose(r.num) ? recognizeLoose(r.num).text + ' (≈ ' + fmtNum(r.num) + ')' : '≈ ' + fmtNum(r.num)));
+  out.answer.push('centre of mass (x̄, ȳ, z̄) = (' + t(vcDivide(Mx, M)) + ', ' + t(vcDivide(My, M)) + ', ' + t(vcDivide(Mz, M)) + ')');
   const Ixx = I(simp(sAdd([sMul([Y, Y]), sMul([Z, Z])])));
   const Iyy = I(simp(sAdd([sMul([X, X]), sMul([Z, Z])])));
   const Izz = I(simp(sAdd([sMul([X, X]), sMul([Y, Y])])));
-  out.answer.push(vcLine('moments of inertia  I\u2093 = \u222d (y\u00b2 + z\u00b2) \u03c1 dV', Ixx));
-  out.answer.push(vcLine('                    I_y = \u222d (x\u00b2 + z\u00b2) \u03c1 dV', Iyy));
-  out.answer.push(vcLine('                    I_z = \u222d (x\u00b2 + y\u00b2) \u03c1 dV', Izz));
-  out.work.push('region: ' + vcRegionText(dims) + ';  density \u03c1 = ' + fmtS(rho));
+  out.answer.push(vcLine('moments of inertia  Iₓ = ∭ (y² + z²) ρ dV', Ixx));
+  out.answer.push(vcLine('                    I_y = ∭ (x² + z²) ρ dV', Iyy));
+  out.answer.push(vcLine('                    I_z = ∭ (x² + y²) ρ dV', Izz));
+  out.work.push('region: ' + vcRegionText(dims) + ';  density ρ = ' + fmtS(rho));
   if (!M.S) out.notes.push('No closed form was found, so the values are numerical (Gauss-Legendre).');
   out.value = M.S ? { S: M.S } : { num: M.num };
   return out;
@@ -23699,13 +23700,13 @@ defCmd('solid', (n) => {
 // ---- polar, cylindrical, spherical coordinates -------------------------------------------------------------------------------------------------------
 function vcCoord(kind, dims) {
   const [a, b, c] = dims.map((d) => sV(d.v));
-  if (kind === 'polar') return { map: new Map([['x', sMul([b, sFn('cos', [a])])], ['y', sMul([b, sFn('sin', [a])])]]), jac: b, label: 'x = r cos \u03b8, y = r sin \u03b8, dA = r dr d\u03b8' };
-  if (kind === 'cyl') return { map: new Map([['x', sMul([b, sFn('cos', [a])])], ['y', sMul([b, sFn('sin', [a])])]]), jac: b, label: 'x = r cos \u03b8, y = r sin \u03b8, dV = r dz dr d\u03b8' };
-  // spherical: a = \u03b8, b = \u03c6, c = \u03c1
+  if (kind === 'polar') return { map: new Map([['x', sMul([b, sFn('cos', [a])])], ['y', sMul([b, sFn('sin', [a])])]]), jac: b, label: 'x = r cos θ, y = r sin θ, dA = r dr dθ' };
+  if (kind === 'cyl') return { map: new Map([['x', sMul([b, sFn('cos', [a])])], ['y', sMul([b, sFn('sin', [a])])]]), jac: b, label: 'x = r cos θ, y = r sin θ, dV = r dz dr dθ' };
+  // spherical: a = θ, b = φ, c = ρ
   return {
     map: new Map([['x', sMul([c, sFn('sin', [b]), sFn('cos', [a])])], ['y', sMul([c, sFn('sin', [b]), sFn('sin', [a])])], ['z', sMul([c, sFn('cos', [b])])]]),
     jac: sMul([c, c, sFn('sin', [b])]),
-    label: 'x = \u03c1 sin \u03c6 cos \u03b8, y = \u03c1 sin \u03c6 sin \u03b8, z = \u03c1 cos \u03c6, dV = \u03c1\u00b2 sin \u03c6 d\u03c1 d\u03c6 d\u03b8',
+    label: 'x = ρ sin φ cos θ, y = ρ sin φ sin θ, z = ρ cos φ, dV = ρ² sin φ dρ dφ dθ',
   };
 }
 function vcCoordCmd(kind, count, usage, order) {
@@ -23719,17 +23720,17 @@ function vcCoordCmd(kind, count, usage, order) {
     const integrand = simp(expandS(sMul([inner, co.jac])));
     const out = newOut();
     out.work.push('order of the variables: ' + order + ';  ' + co.label);
-    out.work.push('region: ' + vcRegionText(dims) + ';  integrand f\u00b7Jacobian = ' + fmtS(integrand));
+    out.work.push('region: ' + vcRegionText(dims) + ';  integrand f·Jacobian = ' + fmtS(integrand));
     const r = vcIterated(integrand, dims);
-    out.answer.push(vcLine(kind === 'polar' ? '\u222c f dA' : '\u222d f dV', r));
+    out.answer.push(vcLine(kind === 'polar' ? '∬ f dA' : '∭ f dV', r));
     if (!r.S) out.notes.push('No closed form was found, so the value is numerical (Gauss-Legendre).');
     out.value = r.S ? { S: r.S } : { num: r.num };
     return out;
   };
 }
-defCmd('polarint polardouble', vcCoordCmd('polar', 2, 'f, then \u03b8 with its limits and r with its limits (outer first): polarint(r^2, t, 0, 2*pi, r, 0, 1)   (x and y in f are replaced by r cos \u03b8 and r sin \u03b8)', '\u03b8 (outer), r (inner)'));
-defCmd('cylint cylindricalint', vcCoordCmd('cyl', 3, 'f, then \u03b8, r and z with their limits (outer first): cylint(z, t, 0, 2*pi, r, 0, 1, z, 0, 2)', '\u03b8, r, z (z innermost)'));
-defCmd('sphint sphericalint', vcCoordCmd('sph', 3, 'f, then \u03b8, \u03c6 and \u03c1 with their limits (outer first): sphint(1, t, 0, 2*pi, f, 0, pi, r, 0, 1)', '\u03b8 (azimuth), \u03c6 (from the z-axis), \u03c1 (radius)'));
+defCmd('polarint polardouble', vcCoordCmd('polar', 2, 'f, then θ with its limits and r with its limits (outer first): polarint(r^2, t, 0, 2*pi, r, 0, 1)   (x and y in f are replaced by r cos θ and r sin θ)', 'θ (outer), r (inner)'));
+defCmd('cylint cylindricalint', vcCoordCmd('cyl', 3, 'f, then θ, r and z with their limits (outer first): cylint(z, t, 0, 2*pi, r, 0, 1, z, 0, 2)', 'θ, r, z (z innermost)'));
+defCmd('sphint sphericalint', vcCoordCmd('sph', 3, 'f, then θ, φ and ρ with their limits (outer first): sphint(1, t, 0, 2*pi, f, 0, pi, r, 0, 1)', 'θ (azimuth), φ (from the z-axis), ρ (radius)'));
 
 // ---- surfaces: area, flux, Stokes -----------------------------------------------------------------------------------------------------------------------
 const vcCross = (a, b) => [simp(expandS(sSub(sMul([a[1], b[2]]), sMul([a[2], b[1]])))), simp(expandS(sSub(sMul([a[2], b[0]]), sMul([a[0], b[2]])))), simp(expandS(sSub(sMul([a[0], b[1]]), sMul([a[1], b[0]]))))];
@@ -23755,7 +23756,7 @@ defCmd('surfacearea surfarea', (n) => {
   const mag2 = simp(expandS(sAdd(N.map((c) => sMul([c, c])))));
   const mag = simp(sSqrt(mag2));
   const out = newOut();
-  out.work.push('surface ' + (n.args[0].t === 'list' ? 'r(' + dims[0].v + ', ' + dims[1].v + ') = ' + vecText(r) : 'z = ' + fmtS(r[2])) + ';  normal r_' + dims[0].v + ' \u00d7 r_' + dims[1].v + ' = ' + vecText(N) + ';  dS = |r_' + dims[0].v + ' \u00d7 r_' + dims[1].v + '| d' + dims[0].v + ' d' + dims[1].v + ' with |\u2026| = ' + fmtS(mag));
+  out.work.push('surface ' + (n.args[0].t === 'list' ? 'r(' + dims[0].v + ', ' + dims[1].v + ') = ' + vecText(r) : 'z = ' + fmtS(r[2])) + ';  normal r_' + dims[0].v + ' × r_' + dims[1].v + ' = ' + vecText(N) + ';  dS = |r_' + dims[0].v + ' × r_' + dims[1].v + '| d' + dims[0].v + ' d' + dims[1].v + ' with |…| = ' + fmtS(mag));
   const res = vcIterated(mag, dims);
   out.answer.push(vcLine('surface area', res));
   if (!res.S) out.notes.push('No closed form was found, so the value is numerical (Gauss-Legendre).');
@@ -23763,7 +23764,7 @@ defCmd('surfacearea surfarea', (n) => {
   return out;
 });
 defCmd('flux surfaceintegral', (n) => {
-  needArgs(n, 8, 9, 'the field [P, Q, R], the surface, then the limits (outer first): flux([x, y, z], [sin(f)*cos(t), sin(f)*sin(t), cos(f)], f, 0, pi, t, 0, 2*pi);  the normal is r_u \u00d7 r_v for the parameters in the order listed (a graph z = f(x, y) with x first points up); a last argument -1 reverses it');
+  needArgs(n, 8, 9, 'the field [P, Q, R], the surface, then the limits (outer first): flux([x, y, z], [sin(f)*cos(t), sin(f)*sin(t), cos(f)], f, 0, pi, t, 0, 2*pi);  the normal is r_u × r_v for the parameters in the order listed (a graph z = f(x, y) with x first points up); a last argument -1 reverses it');
   if (n.args[0].t !== 'list' || n.args[0].items.length !== 3) throw new MathError('the field must be written [P, Q, R]');
   const dims = vcDims(n.args, 2, 2, 'flux');
   const F = n.args[0].items.map(fromAst);
@@ -23774,10 +23775,10 @@ defCmd('flux surfaceintegral', (n) => {
   const Fr = F.map((c) => simp(subsMany(c, sub)));
   const integrand = simp(expandS(sAdd(Fr.map((c, i) => sMul([c, N[i]])))));
   const out = newOut();
-  out.work.push('flux = \u222c F\u00b7(r_' + dims[0].v + ' \u00d7 r_' + dims[1].v + ') d' + dims[0].v + ' d' + dims[1].v + ';  F(r) = ' + vecText(Fr) + ',  r_' + dims[0].v + ' \u00d7 r_' + dims[1].v + ' = ' + vecText(N) + ';  integrand ' + fmtS(integrand));
+  out.work.push('flux = ∬ F·(r_' + dims[0].v + ' × r_' + dims[1].v + ') d' + dims[0].v + ' d' + dims[1].v + ';  F(r) = ' + vecText(Fr) + ',  r_' + dims[0].v + ' × r_' + dims[1].v + ' = ' + vecText(N) + ';  integrand ' + fmtS(integrand));
   const res = vcIterated(integrand, dims);
-  out.answer.push(vcLine('flux \u222c F\u00b7dS', res));
-  out.notes.push('The orientation is the one of r_' + dims[0].v + ' \u00d7 r_' + dims[1].v + ' (outward for the usual sphere parametrisation, upward for a graph); reverse the sign for the other side.');
+  out.answer.push(vcLine('flux ∬ F·dS', res));
+  out.notes.push('The orientation is the one of r_' + dims[0].v + ' × r_' + dims[1].v + ' (outward for the usual sphere parametrisation, upward for a graph); reverse the sign for the other side.');
   out.value = res.S ? { S: res.S } : { num: res.num };
   return out;
 });
@@ -23788,9 +23789,9 @@ defCmd('green greenstheorem', (n) => {
   const dims = vcDims(n.args, 2, 2, 'green');
   const integrand = simp(expandS(sSub(diffS(Q, dims[0].v), diffS(P, dims[1].v))));
   const out = newOut();
-  out.work.push('Green\'s theorem (counter-clockwise boundary): \u222e P dx + Q dy = \u222c (\u2202Q/\u2202x \u2212 \u2202P/\u2202y) dA;  \u2202Q/\u2202x \u2212 \u2202P/\u2202y = ' + fmtS(integrand) + ';  region ' + vcRegionText(dims));
+  out.work.push('Green\'s theorem (counter-clockwise boundary): ∮ P dx + Q dy = ∬ (∂Q/∂x − ∂P/∂y) dA;  ∂Q/∂x − ∂P/∂y = ' + fmtS(integrand) + ';  region ' + vcRegionText(dims));
   const res = vcIterated(integrand, dims);
-  out.answer.push(vcLine('\u222e P dx + Q dy', res));
+  out.answer.push(vcLine('∮ P dx + Q dy', res));
   out.value = res.S ? { S: res.S } : { num: res.num };
   return out;
 });
@@ -23801,14 +23802,14 @@ defCmd('divtheorem divergencetheorem gauss', (n) => {
   const dims = vcDims(n.args, 1, 3, 'divtheorem');
   const div = simp(expandS(sAdd(F.map((c, i) => diffS(c, dims[i].v)))));
   const out = newOut();
-  out.work.push('divergence theorem: the outward flux through the closed surface = \u222d div F dV;  div F = ' + fmtS(div) + ';  region ' + vcRegionText(dims) + '  (the letters of F are matched with the variables in the order x, y, z as listed)');
+  out.work.push('divergence theorem: the outward flux through the closed surface = ∭ div F dV;  div F = ' + fmtS(div) + ';  region ' + vcRegionText(dims) + '  (the letters of F are matched with the variables in the order x, y, z as listed)');
   const res = vcIterated(div, dims);
-  out.answer.push(vcLine('outward flux \u222f F\u00b7dS', res));
+  out.answer.push(vcLine('outward flux ∯ F·dS', res));
   out.value = res.S ? { S: res.S } : { num: res.num };
   return out;
 });
 defCmd('stokes stokestheorem', (n) => {
-  needArgs(n, 8, 9, 'the field [P, Q, R], the surface [x(u,v), y(u,v), z(u,v)] or a graph z = f(x, y), then the limits (outer first): stokes([-y, x, 0], [r*cos(t), r*sin(t), 1 - r^2], r, 0, 1, t, 0, 2*pi);  the normal is r_u \u00d7 r_v for the parameters in the order listed; a last argument -1 reverses it');
+  needArgs(n, 8, 9, 'the field [P, Q, R], the surface [x(u,v), y(u,v), z(u,v)] or a graph z = f(x, y), then the limits (outer first): stokes([-y, x, 0], [r*cos(t), r*sin(t), 1 - r^2], r, 0, 1, t, 0, 2*pi);  the normal is r_u × r_v for the parameters in the order listed; a last argument -1 reverses it');
   if (n.args[0].t !== 'list' || n.args[0].items.length !== 3) throw new MathError('the field must be written [P, Q, R]');
   const F = n.args[0].items.map(fromAst);
   const dims = vcDims(n.args, 2, 2, 'stokes');
@@ -23821,10 +23822,10 @@ defCmd('stokes stokestheorem', (n) => {
   const cs = curl.map((c) => simp(subsMany(c, sub)));
   const integrand = simp(expandS(sAdd(cs.map((c, i) => sMul([c, N[i]])))));
   const out = newOut();
-  out.work.push('Stokes\' theorem: \u222e F\u00b7dr = \u222c curl F \u00b7 (r_' + dims[0].v + ' \u00d7 r_' + dims[1].v + ') d' + dims[0].v + ' d' + dims[1].v + ';  curl F = ' + vecText(curl) + ',  r_' + dims[0].v + ' \u00d7 r_' + dims[1].v + ' = ' + vecText(N));
+  out.work.push('Stokes\' theorem: ∮ F·dr = ∬ curl F · (r_' + dims[0].v + ' × r_' + dims[1].v + ') d' + dims[0].v + ' d' + dims[1].v + ';  curl F = ' + vecText(curl) + ',  r_' + dims[0].v + ' × r_' + dims[1].v + ' = ' + vecText(N));
   const res = vcIterated(integrand, dims);
-  out.answer.push(vcLine('circulation \u222e F\u00b7dr = \u222c curl F\u00b7dS', res));
-  out.notes.push('The boundary is traversed counter-clockwise when seen from the side the normal r_' + dims[0].v + ' \u00d7 r_' + dims[1].v + ' points to.');
+  out.answer.push(vcLine('circulation ∮ F·dr = ∬ curl F·dS', res));
+  out.notes.push('The boundary is traversed counter-clockwise when seen from the side the normal r_' + dims[0].v + ' × r_' + dims[1].v + ' points to.');
   out.value = res.S ? { S: res.S } : { num: res.num };
   return out;
 });
@@ -24033,7 +24034,7 @@ const sdRadical = (S) => {
   walk(S);
   return found;
 };
-/** Textbook text of an element: "7 + 4\u221a3", "(\u221a6 - \u221a2)/4", "\u221a5 - 1", "3\u221a7/7"; null for a rational number or an unwieldy element. */
+/** Textbook text of an element: "7 + 4√3", "(√6 - √2)/4", "√5 - 1", "3√7/7"; null for a rational number or an unwieldy element. */
 function sdText(a) {
   if (sdIsRat(a) || a.size > 8) return null;
   let D = 1n;
@@ -24054,14 +24055,14 @@ function sdText(a) {
   let body = '';
   order.forEach((r, i) => {
     const mag = babs(r.c);
-    const t = r.k === 1n ? String(mag) : (mag === 1n ? '' : String(mag)) + '\u221a' + r.k;
+    const t = r.k === 1n ? String(mag) : (mag === 1n ? '' : String(mag)) + '√' + r.k;
     if (i === 0) body = (r.c < 0n ? '-' : '') + t;
     else body += (r.c < 0n ? ' - ' : ' + ') + t;
   });
   if (D === 1n) return body;
   return order.length > 1 ? '(' + body + ')/' + D : body + '/' + D;
 }
-/** "text (\u2248 value)" for a constant made of rationals and square roots, or null when it is not one (or is a plain rational). */
+/** "text (≈ value)" for a constant made of rationals and square roots, or null when it is not one (or is a plain rational). */
 function surdText(S) {
   if (S.k === 'n' || varsOfS(S).size) return null;
   const x = sdFromS(S);
@@ -24281,7 +24282,7 @@ defCmd('rationalize rationalise radsimp denest', (n) => {
     const t = sdText(x);
     if (t) out.answer.push(t + ' (' + approxSym(sdNum(x)) + ' ' + fmtNum(sdNum(x)) + ')');
     else out.answer.push(describeNumber(sdNum(x)) || String(sdRatQ(x)));
-    out.work.push('Wrote the number as a + b\u221ac + ... with no root in a denominator (multiplying by conjugates) and simplified nested roots');
+    out.work.push('Wrote the number as a + b√c + ... with no root in a denominator (multiplying by conjugates) and simplified nested roots');
     return out;
   }
   const t = rationalizeSym(S);
@@ -24782,16 +24783,16 @@ defCmd('linapprox linearapprox linearization', (n) => {
   const out = newOut();
   const L = expandS(simp(sAdd([fa, sMul([da, sSub(sV(v), aS)])])));
   out.answer.push('L(' + v + ') = ' + fmtS(L));
-  out.work.push('L(' + v + ') = f(a) + f\'(a)(' + v + ' \u2212 a) with a = ' + fmtS(aS) + ',  f(a) = ' + tbVal(fa) + ',  f\'(a) = ' + tbVal(da));
+  out.work.push('L(' + v + ') = f(a) + f\'(a)(' + v + ' − a) with a = ' + fmtS(aS) + ',  f(a) = ' + tbVal(fa) + ',  f\'(a) = ' + tbVal(da));
   if (rest[1]) {
     const x0 = rest[1];
     const x0t = showRaw(nodes[1]);
     const est = simp(subsS(L, v, x0));
     const exact = evalAt(S, v, tbNum(x0));
-    out.answer.push('estimate: f(' + x0t + ') \u2248 L(' + x0t + ') = ' + tbVal(est));
+    out.answer.push('estimate: f(' + x0t + ') ≈ L(' + x0t + ') = ' + tbVal(est));
     if (isFinite(exact)) {
       const err = Math.abs(exact - tbNum(est));
-      out.answer.push('actual f(' + x0t + ') = ' + fmtNum(exact) + ',  error \u2248 ' + fmtNum(err));
+      out.answer.push('actual f(' + x0t + ') = ' + fmtNum(exact) + ',  error ≈ ' + fmtNum(err));
     }
   }
   out.value = { S: L };
@@ -24823,13 +24824,13 @@ function tbTheorem(n, rolle) {
   out.work.push('f(' + fmtS(aS) + ') = ' + tbVal(fa) + ',  f(' + fmtS(bS) + ') = ' + tbVal(fb));
   if (rolle) {
     if (Math.abs(tbNum(fa) - tbNum(fb)) > 1e-12 * (1 + Math.abs(tbNum(fa)))) {
-      out.answer.push("Rolle's theorem does not apply: f(a) \u2260 f(b)");
+      out.answer.push("Rolle's theorem does not apply: f(a) ≠ f(b)");
       out.notes.push('The mean value theorem still holds: f\'(c) = ' + tbVal(rate) + ' for the values of c below.');
     } else out.answer.push("Rolle's theorem applies: f(a) = f(b) = " + tbVal(fa));
-  } else out.answer.push('average rate of change (f(b) \u2212 f(a))/(b \u2212 a) = ' + tbVal(rate));
+  } else out.answer.push('average rate of change (f(b) − f(a))/(b − a) = ' + tbVal(rate));
   const cs = tbSolveDerivative(d, v, rate, a, b);
   if (!cs.length) out.answer.push('no c in (' + fmtS(aS) + ', ' + fmtS(bS) + ') with f\'(c) = ' + tbVal(rate) + ' was found');
-  cs.forEach((c) => out.answer.push('c = ' + bpText(c) + (c.S && c.S.k !== 'n' ? ' (\u2248 ' + fmtNum(c.val) + ')' : '') + ',  f\'(c) = ' + tbVal(rate)));
+  cs.forEach((c) => out.answer.push('c = ' + bpText(c) + (c.S && c.S.k !== 'n' ? ' (≈ ' + fmtNum(c.val) + ')' : '') + ',  f\'(c) = ' + tbVal(rate)));
   out.work.push("f'(" + v + ') = ' + fmtS(simp(d)) + ',  solved f\'(c) = ' + tbVal(rate));
   return out;
 }
@@ -24863,7 +24864,7 @@ defCmd('ivt intermediatevalue', (n) => {
   }
   out.answer.push(fmtS(k) + ' lies between f(a) and f(b), so there is at least one c in [' + fmtS(aS) + ', ' + fmtS(bS) + '] with f(c) = ' + fmtS(k));
   const roots = realRootsOf(simp(sSub(S, k)), v, a, b).filter((r) => r.val >= a - 1e-9 && r.val <= b + 1e-9);
-  roots.forEach((c) => out.answer.push('c = ' + bpText(c) + (c.S && c.S.k !== 'n' ? ' (\u2248 ' + fmtNum(c.val) + ')' : '')));
+  roots.forEach((c) => out.answer.push('c = ' + bpText(c) + (c.S && c.S.k !== 'n' ? ' (≈ ' + fmtNum(c.val) + ')' : '')));
   return out;
 });
 
@@ -24909,7 +24910,7 @@ defCmd('seriessum patternsum', (n) => {
   const last = lastNode && !infinite ? constQ(lastNode) : null;
   if (!isArith && !isGeom) {
     const g = tbGuessSeries(t);
-    if (!g) throw new MathError('the terms are neither an arithmetic sequence (constant difference) nor a geometric sequence (constant ratio), nor one of the common patterns (1/n, 1/n\u00b2, 1/n!, n/2\u207f, alternating ...); write the sum(...) yourself');
+    if (!g) throw new MathError('the terms are neither an arithmetic sequence (constant difference) nor a geometric sequence (constant ratio), nor one of the common patterns (1/n, 1/n², 1/n!, n/2ⁿ, alternating ...); write the sum(...) yourself');
     let upper = 'oo';
     if (!infinite) {
       if (last === null) upper = String(g.start + t.length - 1);
@@ -24944,8 +24945,8 @@ defCmd('seriessum patternsum', (n) => {
     }
     const an = t[0].add(d.mul(new Q(cnt - 1n)));
     const sum = t[0].add(an).mul(new Q(cnt)).div(qInt(2));
-    out.work.push('n = ' + cnt + ' terms,  last term a\u2099 = a + (n \u2212 1)d = ' + an.toString());
-    out.work.push('S\u2099 = n(a + a\u2099)/2');
+    out.work.push('n = ' + cnt + ' terms,  last term aₙ = a + (n − 1)d = ' + an.toString());
+    out.work.push('Sₙ = n(a + aₙ)/2');
     out.answer.push('sum = ' + qText(sum));
     out.value = { q: sum };
     return out;
@@ -24954,11 +24955,11 @@ defCmd('seriessum patternsum', (n) => {
   out.work.push('Geometric sequence: first term a = ' + t[0].toString() + ', common ratio r = ' + r.toString());
   if (infinite) {
     if (r.abs().cmp(Q1) >= 0) {
-      out.answer.push('the series diverges (|r| \u2265 1)');
+      out.answer.push('the series diverges (|r| ≥ 1)');
       return out;
     }
     const sum = t[0].div(Q1.sub(r));
-    out.work.push('S = a/(1 \u2212 r) because |r| < 1');
+    out.work.push('S = a/(1 − r) because |r| < 1');
     out.answer.push('sum = ' + qText(sum));
     out.value = { q: sum };
     return out;
@@ -24974,7 +24975,7 @@ defCmd('seriessum patternsum', (n) => {
     if (!cur.eq(last)) throw new MathError('the last term ' + last.toString() + ' is not in the sequence');
   }
   const sum = r.eq(Q1) ? t[0].mul(new Q(cnt)) : t[0].mul(Q1.sub(r.pow(Number(cnt)))).div(Q1.sub(r));
-  out.work.push('n = ' + cnt + ' terms,  S\u2099 = a(1 \u2212 r\u207f)/(1 \u2212 r)');
+  out.work.push('n = ' + cnt + ' terms,  Sₙ = a(1 − rⁿ)/(1 − r)');
   out.answer.push('sum = ' + qText(sum));
   out.value = { q: sum };
   return out;
@@ -24991,7 +24992,7 @@ defCmd('diestats fairdie', (n) => {
   const s = n.args[0] ? constQ(n.args[0]) : qInt(6);
   if (!s.isInt() || s.cmp(qInt(2)) < 0) throw new MathError('a die has a whole number of faces, at least 2');
   const out = newOut();
-  out.work.push('Uniform on 1, 2, ..., ' + s + ':  E[X] = (n + 1)/2,  Var(X) = (n\u00b2 \u2212 1)/12');
+  out.work.push('Uniform on 1, 2, ..., ' + s + ':  E[X] = (n + 1)/2,  Var(X) = (n² − 1)/12');
   return tbMoments(out, 'fair ' + s + '-sided die', s.add(Q1).div(qInt(2)), s.mul(s).sub(Q1).div(qInt(12)));
 });
 defCmd('binomstats binomialstats', (n) => {
@@ -25000,23 +25001,23 @@ defCmd('binomstats binomialstats', (n) => {
   const p = constQ(n.args[1]);
   if (!N.isInt() || N.sign() < 0 || p.sign() < 0 || p.cmp(Q1) > 0) throw new MathError('n must be a whole number and p a probability between 0 and 1');
   const out = newOut();
-  out.work.push('Binomial: E[X] = np,  Var(X) = np(1 \u2212 p)');
+  out.work.push('Binomial: E[X] = np,  Var(X) = np(1 − p)');
   return tbMoments(out, 'binomial(n = ' + N + ', p = ' + p + ')', N.mul(p), N.mul(p).mul(Q1.sub(p)));
 });
 defCmd('poissonstats', (n) => {
-  needArgs(n, 1, 1, 'the rate \u03bb');
+  needArgs(n, 1, 1, 'the rate λ');
   const l = constQ(n.args[0]);
-  if (l.sign() <= 0) throw new MathError('\u03bb must be positive');
+  if (l.sign() <= 0) throw new MathError('λ must be positive');
   const out = newOut();
-  out.work.push('Poisson: E[X] = Var(X) = \u03bb');
-  return tbMoments(out, 'Poisson(\u03bb = ' + l + ')', l, l);
+  out.work.push('Poisson: E[X] = Var(X) = λ');
+  return tbMoments(out, 'Poisson(λ = ' + l + ')', l, l);
 });
 defCmd('geomstats geometricstats', (n) => {
   needArgs(n, 1, 1, 'the success probability p');
   const p = constQ(n.args[0]);
   if (p.sign() <= 0 || p.cmp(Q1) > 0) throw new MathError('p must be between 0 and 1 (not 0)');
   const out = newOut();
-  out.work.push('Geometric (number of trials up to and including the first success): E[X] = 1/p,  Var(X) = (1 \u2212 p)/p\u00b2');
+  out.work.push('Geometric (number of trials up to and including the first success): E[X] = 1/p,  Var(X) = (1 − p)/p²');
   return tbMoments(out, 'geometric(p = ' + p + ')', p.inv(), Q1.sub(p).div(p.mul(p)));
 });
 
@@ -25050,7 +25051,7 @@ defCmd('discriminant disc', (n) => {
   const { v, a, b, c } = quadParts(n, 'a quadratic expression');
   const out = newOut();
   const D = q2(sSub(sPow(b, sI(2)), sMul([sI(4), a, c])));
-  out.answer.push(varsOfS(D).size ? 'D = ' + fmtS(D) : 'D = b\u00b2 \u2212 4ac = ' + symText(D));
+  out.answer.push(varsOfS(D).size ? 'D = ' + fmtS(D) : 'D = b² − 4ac = ' + symText(D));
   if (D.k === 'n' || !varsOfS(D).size) {
     const d = numS(D, {});
     out.answer.push(d > 0 ? 'D > 0: two distinct real roots' : d === 0 ? 'D = 0: one repeated real root (the parabola touches the ' + v + '-axis)' : 'D < 0: no real roots, two complex conjugate roots');
@@ -25068,14 +25069,14 @@ defCmd('completesquare completethesquare', (n) => {
   const form = sAdd([sMul([a, sPow(sSub(X, h), sI(2))]), k]);
   out.answer.push(fmtS(q2(sAdd([sMul([a, sPow(X, sI(2))]), sMul([b, X]), c]))) + ' = ' + fmtS(form));
   out.answer.push('vertex (h, k) = (' + symText(h) + ', ' + symText(k) + ')');
-  out.work.push('a(' + v + ' \u2212 h)\u00b2 + k with h = \u2212b/(2a) and k = c \u2212 b\u00b2/(4a)');
+  out.work.push('a(' + v + ' − h)² + k with h = −b/(2a) and k = c − b²/(4a)');
   if (!varsOfS(sAdd([a, b, c])).size) {
     const kk = numS(k, {});
     const aa = numS(a, {});
-    // roots of a(x - h)^2 + k = 0:  x = h \u00b1 sqrt(-k/a)
+    // roots of a(x - h)^2 + k = 0:  x = h ± sqrt(-k/a)
     const r = q2(sDiv(sNeg(k), a));
-    if (numS(r, {}) >= 0) out.work.push('Setting it to 0: ' + v + ' = ' + fmtS(h) + ' \u00b1 ' + fmtS(simp(sSqrt(r))));
-    else out.work.push('Setting it to 0 gives ' + v + ' = ' + fmtS(h) + ' \u00b1 ' + fmtS(simp(sSqrt(sNeg(r)))) + ' i (no real roots)');
+    if (numS(r, {}) >= 0) out.work.push('Setting it to 0: ' + v + ' = ' + fmtS(h) + ' ± ' + fmtS(simp(sSqrt(r))));
+    else out.work.push('Setting it to 0 gives ' + v + ' = ' + fmtS(h) + ' ± ' + fmtS(simp(sSqrt(sNeg(r)))) + ' i (no real roots)');
     void kk; void aa;
   }
   return out;
@@ -25089,7 +25090,7 @@ defCmd('vertex quadvertex', (n) => {
   out.answer.push('axis of symmetry: ' + v + ' = ' + fmtS(h));
   if (!varsOfS(a).size) out.answer.push(numS(a, {}) > 0 ? 'opens upward: minimum value ' + symText(k) + ' at ' + v + ' = ' + fmtS(h) : 'opens downward: maximum value ' + symText(k) + ' at ' + v + ' = ' + fmtS(h));
   out.answer.push('y-intercept: (0, ' + fmtS(c) + ')');
-  out.work.push('h = \u2212b/(2a), k = f(h)');
+  out.work.push('h = −b/(2a), k = f(h)');
   return out;
 });
 
@@ -25126,7 +25127,7 @@ function rewriteLogs(n) {
   if (base === null) return n;
   const name = 'logb' + base;
   AST_FN[name] = name;
-  FN_LABEL[name] = base === 10 ? 'log' : 'log' + String(base).split('').map((d) => '\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089'[+d]).join('');
+  FN_LABEL[name] = base === 10 ? 'log' : 'log' + String(base).split('').map((d) => '₀₁₂₃₄₅₆₇₈₉'[+d]).join('');
   return { ...n, fn: name, args };
 }
 const isLogS = (t) => t.k === 'f' && t.a.length === 1 && (t.fn === 'ln' || /^logb\d+$/.test(t.fn));
@@ -25194,7 +25195,7 @@ function logCmd(condense) {
     const T = condense ? logCondenseS(S) : simp(expandS(logExpandS(S)));
     if (!sameFunctionPositive(S, T)) throw new MathError('I could not ' + (condense ? 'condense' : 'expand') + ' this logarithmic expression');
     out.answer.push(fmtS(T));
-    out.work.push(condense ? 'Used c\u00b7log(u) = log(u\u1d9c), log(u) + log(v) = log(uv) and log(u) \u2212 log(v) = log(u/v)' : 'Used log(uv) = log(u) + log(v), log(u/v) = log(u) \u2212 log(v) and log(u\u1d9c) = c\u00b7log(u)');
+    out.work.push(condense ? 'Used c·log(u) = log(uᶜ), log(u) + log(v) = log(uv) and log(u) − log(v) = log(u/v)' : 'Used log(uv) = log(u) + log(v), log(u/v) = log(u) − log(v) and log(uᶜ) = c·log(u)');
     out.notes.push('The variables are taken to be positive.');
     return out;
   };
@@ -25247,7 +25248,7 @@ const numericSetItems = (items) => items.every((i) => !varsOfS(i.S).size && isFi
 function sortSetItems(items) {
   return numericSetItems(items) ? items.slice().sort((x, y) => numS(x.S, {}) - numS(y.S, {})) : items;
 }
-const setShow = (items) => (items.length ? '{' + items.map((i) => fmtS(i.S)).join(', ') + '}' : '\u2205 (the empty set)');
+const setShow = (items) => (items.length ? '{' + items.map((i) => fmtS(i.S)).join(', ') + '}' : '∅ (the empty set)');
 function setArgs(n, lo, hi, usage) {
   needArgs(n, lo, hi, usage);
   return n.args.map(setItemsOf);
@@ -25274,7 +25275,7 @@ defCmd('issubset subsetof', (n) => {
   const [A, B] = setArgs(n, 2, 2, 'two sets');
   const sub = A.every((i) => B.some((j) => j.k === i.k));
   const out = newOut();
-  out.answer.push(sub ? 'A \u2286 B: every element of A is in B' + (A.length < B.length ? ' (a proper subset)' : ' (the sets are equal)') : 'A is not a subset of B: ' + setShow(A.filter((i) => !B.some((j) => j.k === i.k))) + ' not in B');
+  out.answer.push(sub ? 'A ⊆ B: every element of A is in B' + (A.length < B.length ? ' (a proper subset)' : ' (the sets are equal)') : 'A is not a subset of B: ' + setShow(A.filter((i) => !B.some((j) => j.k === i.k))) + ' not in B');
   out.value = { q: sub ? Q1 : Q0 };
   return out;
 });
@@ -25294,7 +25295,7 @@ defCmd('powerset subsets', (n) => {
     const subsets = [];
     for (let m = 0; m < 1 << s.length; m++) subsets.push(s.filter((_, i) => m & (1 << i)));
     subsets.sort((x, y) => x.length - y.length);
-    out.answer.push(subsets.map((x) => (x.length ? '{' + x.map((i) => fmtS(i.S)).join(', ') + '}' : '\u2205')).join(', '));
+    out.answer.push(subsets.map((x) => (x.length ? '{' + x.map((i) => fmtS(i.S)).join(', ') + '}' : '∅')).join(', '));
   }
   out.value = { q: qInt(2).pow(s.length) };
   return out;
@@ -25304,7 +25305,7 @@ defCmd('cartesian cartesianproduct', (n) => {
   const out = newOut();
   const a = sortSetItems(A);
   const b = sortSetItems(B);
-  out.answer.push('|A \u00d7 B| = ' + a.length * b.length);
+  out.answer.push('|A × B| = ' + a.length * b.length);
   if (a.length * b.length <= 40) out.answer.push('{' + a.flatMap((x) => b.map((y) => '(' + fmtS(x.S) + ', ' + fmtS(y.S) + ')')).join(', ') + '}');
   out.value = { q: qInt(a.length * b.length) };
   return out;
@@ -25323,7 +25324,7 @@ defCmd('binomterm', (n) => {
   const T = simp(expandS(sMul([sN(new Q(c)), sPow(A, sI(N - K + 1)), sPow(B, sI(K - 1))])));
   const out = newOut();
   out.answer.push('term ' + K + ' = ' + fmtS(T));
-  out.work.push('T(k+1) = C(n, k) a\u207f\u207b\u1d4f b\u1d4f with n = ' + N + ', k = ' + (K - 1) + ': C(' + N + ', ' + (K - 1) + ') = ' + c);
+  out.work.push('T(k+1) = C(n, k) aⁿ⁻ᵏ bᵏ with n = ' + N + ', k = ' + (K - 1) + ': C(' + N + ', ' + (K - 1) + ') = ' + c);
   out.value = { S: T };
   return out;
 });
@@ -25353,7 +25354,7 @@ defCmd('perfect isperfect perfectnumber', (n) => {
     list = ds.join(' + ');
   }
   out.answer.push(v + ' is ' + kind + ': the proper divisors ' + (list ? '(' + list + ') ' : '') + 'add up to ' + proper + (proper === v ? '' : proper > v ? ', more than ' + v : ', less than ' + v));
-  out.work.push('\u03c3(' + v + ') = ' + sigma + ' (sum of all divisors); the proper divisors exclude ' + v + ' itself');
+  out.work.push('σ(' + v + ') = ' + sigma + ' (sum of all divisors); the proper divisors exclude ' + v + ' itself');
   out.value = { q: proper === v ? Q1 : Q0 };
   return out;
 });
@@ -25364,7 +25365,7 @@ defCmd('perfectsq issq', (n) => {
   if (v < 0n) out.answer.push(v + ' is not a perfect square (it is negative)');
   else {
     const r = isqrt(v);
-    out.answer.push(r * r === v ? v + ' = ' + r + '\u00b2 is a perfect square' : v + ' is not a perfect square (' + r + '\u00b2 = ' + r * r + ' < ' + v + ' < ' + (r + 1n) * (r + 1n) + ' = ' + (r + 1n) + '\u00b2)');
+    out.answer.push(r * r === v ? v + ' = ' + r + '² is a perfect square' : v + ' is not a perfect square (' + r + '² = ' + r * r + ' < ' + v + ' < ' + (r + 1n) * (r + 1n) + ' = ' + (r + 1n) + '²)');
     out.value = { q: r * r === v ? Q1 : Q0 };
   }
   return out;
@@ -25377,7 +25378,7 @@ defCmd('perfectcb iscb', (n) => {
   const a = babs(v);
   const r = iroot(a, 3);
   const yes = r * r * r === a;
-  out.answer.push(yes ? v + ' = ' + (neg ? '(-' + r + ')' : r) + '\u00b3 is a perfect cube' : v + ' is not a perfect cube (' + r + '\u00b3 = ' + r ** 3n + ' and ' + (r + 1n) + '\u00b3 = ' + (r + 1n) ** 3n + ' are on either side of ' + a + ')');
+  out.answer.push(yes ? v + ' = ' + (neg ? '(-' + r + ')' : r) + '³ is a perfect cube' : v + ' is not a perfect cube (' + r + '³ = ' + r ** 3n + ' and ' + (r + 1n) + '³ = ' + (r + 1n) ** 3n + ' are on either side of ' + a + ')');
   out.value = { q: yes ? Q1 : Q0 };
   return out;
 });
@@ -25425,19 +25426,19 @@ defCmd('todecimal asdecimal fractiontodecimal', (n) => {
   } catch (e) {
     const v = numS(fromAst(n.args[0]), {});
     if (!isFinite(v)) throw new MathError('a finite number is needed');
-    out.answer.push('\u2248 ' + fmtNum(v));
+    out.answer.push('≈ ' + fmtNum(v));
     out.notes.push('That number is not a fraction, so its decimal expansion never ends or repeats.');
     return out;
   }
   const { ip, pre, rep } = nbExpansion(q);
   const sign = q.sign() < 0 ? '-' : '';
   if (rep === null) {
-    out.answer.push(sign + ip + '.' + pre.slice(0, 40).join('') + '\u2026  (the repeating block is longer than 3000 digits)');
+    out.answer.push(sign + ip + '.' + pre.slice(0, 40).join('') + '…  (the repeating block is longer than 3000 digits)');
   } else if (!rep.length) {
     out.answer.push(sign + ip + (pre.length ? '.' + pre.join('') : '') + (pre.length ? '' : '  (a whole number)'));
   } else {
-    const shown = rep.length > 12 ? rep.slice(0, 12).join('') + '\u2026' : rep.join('');
-    const approx = sign + ip + '.' + pre.join('') + (rep.length <= 6 ? rep.join('').repeat(Math.max(2, Math.ceil(6 / rep.length))) : rep.slice(0, 12).join('')) + '\u2026';
+    const shown = rep.length > 12 ? rep.slice(0, 12).join('') + '…' : rep.join('');
+    const approx = sign + ip + '.' + pre.join('') + (rep.length <= 6 ? rep.join('').repeat(Math.max(2, Math.ceil(6 / rep.length))) : rep.slice(0, 12).join('')) + '…';
     out.answer.push(sign + ip + '.' + pre.join('') + '(' + shown + ')' + '   i.e. ' + approx + '   (repeating block "' + shown + '", ' + rep.length + ' digit' + (rep.length === 1 ? '' : 's') + ')');
   }
   out.work.push('Long division of ' + babs(q.n) + ' by ' + q.d + ': the expansion ' + (rep && rep.length ? 'repeats because a remainder came back' : 'ends when the remainder is 0'));
@@ -25479,7 +25480,7 @@ defCmd('nthterm', (n) => {
     while (seq.length < k) seq.push(fit.p.mul(seq[seq.length - 1]).add(fit.q.mul(seq[seq.length - 2])));
     term = seq[k - 1];
   }
-  out.answer = ['a' + String(k).split('').map((d) => '\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089'[+d]).join('') + ' = ' + qText(term), out.answer[0]];
+  out.answer = ['a' + String(k).split('').map((d) => '₀₁₂₃₄₅₆₇₈₉'[+d]).join('') + ' = ' + qText(term), out.answer[0]];
   out.value = { q: term };
   return out;
 });

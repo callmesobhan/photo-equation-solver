@@ -15914,7 +15914,8 @@ defCmd('farey fareysequence', (n) => {
   const seen = new Set();
   const all = ['0/1'];
   for (let q = 1; q <= N; q++) for (let p = 0; p <= q; p++) if (gcdNum(p, q) === 1) all.push(p + '/' + q);
-  all.sort((x, y) => eval(x) - eval(y)); // eslint-disable-line no-eval
+  const fracValue = (f) => { const [num, den] = f.split('/'); return Number(num) / Number(den); };
+  all.sort((x, y) => fracValue(x) - fracValue(y));
   all.forEach((s) => { if (!seen.has(s)) { seen.add(s); uniq.push(s); } });
   void seq;
   out.answer.push('F' + N + ' = ' + uniq.join(', ') + '   (' + uniq.length + ' fractions)');

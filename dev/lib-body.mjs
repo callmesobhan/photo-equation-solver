@@ -6,12 +6,15 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
-export function readSources() {
+/** escape (default): every non-ASCII character becomes \\uXXXX, as the Gallery page needs. escape:false keeps real UTF-8, as the Node module can. */
+export function readSources({ escape = true } = {}) {
   const srcDir = path.join(here, 'src');
   const parts = fs.readdirSync(srcDir).filter((f) => f.endsWith('.js')).sort();
   let body = parts.map((f) => fs.readFileSync(path.join(srcDir, f), 'utf8').trimEnd()).join('\n');
-  body = body.replace(/[^\x00-\x7e]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
-  if (/[^\x00-\x7e]/.test(body.replace(/\\u[0-9a-f]{4}/g, ''))) throw new Error('non-ASCII left over');
+  if (escape) {
+    body = body.replace(/[^\x00-\x7e]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
+    if (/[^\x00-\x7e]/.test(body.replace(/\\u[0-9a-f]{4}/g, ''))) throw new Error('non-ASCII left over');
+  }
   const names = [...body.matchAll(/^(?:async\s+)?(?:function\s*\*?|class|const|let)\s+([A-Za-z_$][\w$]*)/gm)].map((m) => m[1]);
   const seen = new Map();
   for (const f of parts) {

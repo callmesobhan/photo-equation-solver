@@ -46,6 +46,20 @@ for (const t of TIERS) {
   for (const f of ['README.md', 'LICENSE', 'scripts/bin/cli.js', 'scripts/bin/server.js', 'scripts/lib/mcp.js', 'scripts/lib/solver.cjs', 'scripts/package.json']) if (!fs.existsSync(path.join(stage, f))) fail(t.name + ': ' + f + ' is missing');
   if (fs.existsSync(path.join(stage, 'scripts', 'node_modules'))) fail(t.name + ': node_modules must not be packaged');
 
+  // hygiene: what a security scan or a reviewer looks for (Agensi's scan flags eval, network access, environment harvesting, obfuscation)
+  const textFiles = [];
+  (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) (e.isDirectory() ? walk(path.join(d, e.name)) : textFiles.push(path.join(d, e.name))); })(stage);
+  for (const f of textFiles) {
+    const body = fs.readFileSync(f, 'utf8');
+    const rel = path.relative(stage, f);
+    for (const [rx, what] of [[/\beval\s*\(/, 'eval('], [/new Function\s*\(/, 'new Function('], [/child_process/, 'child_process'], [/require\(['"](?:https?|net|dns|dgram|tls|http2)['"]\)/, 'a network module'], [/\bfetch\s*\(/, 'fetch('], [/XMLHttpRequest/, 'XMLHttpRequest'], [/https?:\/\//, 'a URL']]) {
+      if (rx.test(body)) fail(t.name + ': ' + rel + ' contains ' + what);
+    }
+    const escapes = (body.match(/\\u[0-9a-fA-F]{4}/g) || []).length;
+    if (escapes > 50) fail(t.name + ': ' + rel + ' has ' + escapes + ' \\uXXXX escapes (they read as obfuscation: keep real UTF-8)');
+    if ((body.match(/process\.env/g) || []).length > 2) fail(t.name + ': ' + rel + ' reads many environment variables');
+  }
+
   // smoke tests of the assembled copy, run from its own folder as an agent would
   const cli = (...args) => spawnSync('node', ['scripts/bin/cli.js', ...args], { cwd: stage, encoding: 'utf8', input: '' });
   const a = cli('x^2 - 5x + 6 = 0');
