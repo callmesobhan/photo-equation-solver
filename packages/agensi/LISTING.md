@@ -8,6 +8,10 @@ separately licensed engine. A free text-only listing that points to the reposito
 "Requires" line and states plainly in the description that the engine has its own licence: free to evaluate for 30
 days, paid after that. This copy follows that.
 
+Update: Joeri then confirmed that links to your GitHub, your site or a commercial licence page are fine in the
+description, and so is a licence note saying how to get in touch with you. The listing must still be clear about what
+the buyer gets. This copy now has a "What you get" section and links the repository's LICENSING.md.
+
 ## Name (up to 60 characters, unique on Agensi)
 
 Photo Equation Solver: exact maths for your agent
@@ -19,6 +23,17 @@ Exact, offline maths for your agent. Equations, calculus, matrices, statistics, 
 ## Description (Markdown)
 
 Language models are good at explaining maths and unreliable at calculating it. This skill sends the calculating to an exact engine that runs on your own computer, and keeps the model for reading the problem and explaining the result.
+
+**What you get, and what you don't**
+
+This listing is free. You get the skill itself: instructions that teach your agent how to use the maths engine (how
+to write a problem, how to read the result, when to ask for syntax help), a command cheat sheet, and the install
+steps. These are three text files.
+
+You do **not** get the engine. It is a separate program, which you download once from the author's GitHub repository
+(the install steps show how; it needs Node.js 18 or newer). The engine has its own licence: it is free to evaluate for
+30 days and paid after that. To ask for a licence, see the licensing page, which has a short request form:
+https://github.com/callmesobhan/photo-equation-solver/blob/main/LICENSING.md
 
 **What it does**
 
@@ -36,7 +51,7 @@ The skill gives your agent the rules for using the engine: how to write a proble
 
 **Where it stops**
 
-- The engine is a separate program with its own licence. Its source is readable; it is free to evaluate for 30 days and paid after that. The licence is in the repository, and the licence stays between you and its author.
+- The engine is a separate program with its own licence. Its source is readable; it is free to evaluate for 30 days and paid after that. The licence is in the repository, and it stays between you and its author. To ask for one, see https://github.com/callmesobhan/photo-equation-solver/blob/main/LICENSING.md.
 - It does not replace understanding: an agent can still misread a photo. The result always starts with a "Read as" line so you can check what was understood.
 - Graphs need one optional package.
 - Tested with the engine's own automated checks and with Claude Code. Not yet tried in other agents.
@@ -92,11 +107,13 @@ Already in the SKILL.md front matter, which the form reads: tags, keywords and u
 - **Does it need internet?** Only once, to download the engine. Solving is offline.
 - **Which agents?** Any agent that can run a shell command with Node.js. Tried so far in Claude Code only.
 - **Is the answer always right?** The engine's arithmetic is exact and checked against independent libraries. A model can still misread a photo or mistype a problem, which is why the "Read as" line comes first.
-- **Do I pay for the engine?** It is free to evaluate for 30 days and paid after that, under its own licence (see the install steps). This listing is free.
+- **Do I pay for the engine?** It is free to evaluate for 30 days and paid after that, under its own licence. This listing is free. To ask for a licence, use the request form described at https://github.com/callmesobhan/photo-equation-solver/blob/main/LICENSING.md.
 
 ## Docs link
 
 https://github.com/callmesobhan/photo-equation-solver
+
+(The licensing page is https://github.com/callmesobhan/photo-equation-solver/blob/main/LICENSING.md, and may be mentioned in the description.)
 
 ## Price
 
@@ -106,10 +123,10 @@ Free. (Agensi declined a paid listing for a skill that depends on a separately l
 
 1. Decide whether you want a free listing at all. It is a way to be found; it earns nothing on Agensi, and the
    engine's licence is sold by you, directly.
-2. Make sure someone who reaches the end of the 30 days can actually get a licence from you: write how to ask for one
-   in the repository (for example a LICENSING.md), and link only the repository from the listing. Agensi bans links
-   to outside checkouts and licence keys delivered outside Agensi.
-3. Try the zip in a second agent (the form's own advice) and name in the listing only the agents you have tried.
+2. The route for asking for a licence now exists (LICENSING.md and the issue form are in the repository), and Agensi
+   confirmed that linking it and a contact note are fine. Still: no checkout links and no licence keys in the listing.
+3. Try the zip in a second agent (the form's own advice) and name in the listing only the agents you have tried. So far:
+   Claude Code. (Antigravity is planned.)
 4. A free listing needs no payout setup and no identity check.
 5. Taking a listing down once people have it means emailing info@agensi.io (the docs say skills that someone has
    bought can't be deleted from Creator Studio).
