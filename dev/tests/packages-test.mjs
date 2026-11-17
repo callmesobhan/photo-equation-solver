@@ -57,7 +57,32 @@ for (const f of mds) {
   for (const m of text.matchAll(/node (?:scripts\/bin|~\/photo-equation-solver\/mcp-server\/bin)\/cli\.js help(?: (\w+))?/g)) jobs.push({ where: rel, equation: m[1] ? 'help ' + m[1] : 'help', solveFor: '' });
 }
 
-let bad = 0;
+// teacher kit commands in the package documents: run the real scripts from a scratch folder (--out files land there)
+import { spawnSync } from 'node:child_process';
+import os from 'node:os';
+const kitJobs = [];
+for (const f of mds) {
+  const text = fs.readFileSync(f, 'utf8');
+  for (const m of text.matchAll(/node ~\/photo-equation-solver\/teacher-kit\/bin\/(worksheet|check-working)\.js([^\n`]*)/g)) kitJobs.push({ where: path.relative(root, f), script: m[1], rest: m[2].trim() });
+}
+const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'pes-docs-'));
+fs.writeFileSync(path.join(scratch, 'working.txt'), '2(x + 3) = 14\n2x + 6 = 14\n2x = 20\nx = 10\n');
+let kitBad = 0;
+const kitSeen = new Set();
+for (const j of kitJobs) {
+  const key = j.script + ' ' + j.rest;
+  if (kitSeen.has(key) || /<[^>]*>/.test(j.rest)) continue; // a placeholder such as <topic>
+  kitSeen.add(key);
+  // split the rest into arguments the way a shell would: words and "double quoted strings"
+  const argv = [...j.rest.matchAll(/"([^"]*)"|(\S+)/g)].map((a) => (a[1] !== undefined ? a[1] : a[2]));
+  const r = spawnSync('node', [path.join(root, 'teacher-kit', 'bin', j.script + '.js'), ...argv], { cwd: scratch, encoding: 'utf8' });
+  const okCodes = j.script === 'worksheet' ? [0] : [0, 1, 3]; // a documented example of a wrong step exits 1
+  if (!okCodes.includes(r.status)) { kitBad++; console.log('✗ ' + j.where + ': ' + j.script + ' ' + j.rest + '\n    exit ' + r.status + ' ' + (r.stderr || r.stdout).slice(0, 160)); }
+}
+fs.rmSync(scratch, { recursive: true, force: true });
+if (kitSeen.size) console.log((kitBad ? '' : '✓ ') + kitSeen.size + ' distinct teacher kit command lines in the package documents ' + (kitBad ? 'with ' + kitBad + ' failing' : 'all run'));
+
+let bad = kitBad;
 const seen = new Set();
 for (const j of jobs) {
   if (/^<[^>]*>$/.test(j.equation)) continue; // a placeholder such as "<the maths>"

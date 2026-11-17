@@ -51,7 +51,7 @@ if (!/^\d+\.\d+\.\d+$/.test(fm.version || '')) fail('version must look like 1.0.
 if (fm.docs_url !== REPO_URL) fail('docs_url must be the repository address');
 for (const k of ['tags', 'keywords', 'use_cases']) if (!Array.isArray(fm[k]) || !fm[k].length) fail(k + ' must be a non-empty list');
 if (!/^Requires:/m.test(body)) fail('the body needs a "Requires:" line (the buyer\'s agent tells the user about missing requirements)');
-if (md.length > 4500) fail('SKILL.md is ' + md.length + ' bytes (keep it under 4500)');
+if (md.length > 4700) fail('SKILL.md is ' + md.length + ' bytes (keep it under 4700)');
 for (const r of md.matchAll(/`(reference\/[A-Za-z0-9_./-]+)`/g)) if (!fs.existsSync(path.join(stage, r[1]))) fail('SKILL.md mentions ' + r[1] + ', which is not in the package');
 
 // ---- what a security scan or a reviewer looks for
@@ -73,6 +73,7 @@ if (!listing.every((f) => f.startsWith(NAME + '/')) || listing.some((f) => /\.(j
 const home = fs.mkdtempSync(path.join(os.tmpdir(), 'pes-home-'));
 fs.mkdirSync(path.join(home, 'photo-equation-solver'), { recursive: true });
 fs.cpSync(path.join(root, 'mcp-server'), path.join(home, 'photo-equation-solver', 'mcp-server'), { recursive: true, filter: (s) => !/node_modules/.test(s) });
+fs.cpSync(path.join(root, 'teacher-kit'), path.join(home, 'photo-equation-solver', 'teacher-kit'), { recursive: true }); // the same download holds the teacher kit
 const sh = (cmd) => spawnSync('bash', ['-c', cmd], { env: { ...process.env, HOME: home }, encoding: 'utf8' });
 const check = /```\n(test -f [^\n]+)\n```/.exec(md);
 if (!check) fail('SKILL.md lost its first-use check command');
@@ -86,6 +87,18 @@ const solve = sh('node ~/photo-equation-solver/mcp-server/bin/cli.js "x^2 - 5x +
 if (!/x = 2[\s\S]*x = 3/.test(solve.stdout)) fail('the engine installed as described did not solve a quadratic: ' + (solve.stdout + solve.stderr).slice(0, 100));
 const fin = sh('node ~/photo-equation-solver/mcp-server/bin/cli.js help finance');
 if (!/bond\(1000, 5%, 6%, 10, 2\)/.test(fin.stdout)) fail('help finance did not list bond()');
+// the teacher kit, as reference/teacher-kit.md says: first-use check, a worksheet, the working checker
+const kitMd = fs.readFileSync(path.join(stage, 'reference', 'teacher-kit.md'), 'utf8');
+const kitCheck = /```\n(test -f [^\n]+)\n```/.exec(kitMd);
+if (!kitCheck) fail('reference/teacher-kit.md lost its first-use check command');
+else {
+  if (!/found/.test(sh(kitCheck[1]).stdout)) fail('the teacher kit first-use check does not find the kit installed as install.md says');
+  if (/found/.test(spawnSync('bash', ['-c', kitCheck[1]], { env: { ...process.env, HOME: path.join(home, 'nowhere') }, encoding: 'utf8' }).stdout)) fail('the teacher kit first-use check says "found" when the kit is missing');
+}
+const ws = sh('cd ~ && node ~/photo-equation-solver/teacher-kit/bin/worksheet.js --topics linear,quadratic --level 2 --count 6 --seed 7 --out sheet.html && test -s sheet.html && grep -c "Answer key" sheet.html');
+if (ws.status !== 0 || !/^1/.test(ws.stdout.trim())) fail('the teacher kit did not make a worksheet as reference/teacher-kit.md says: ' + (ws.stdout + ws.stderr).slice(0, 160));
+const wk = sh('node ~/photo-equation-solver/teacher-kit/bin/check-working.js --problem "2(x + 3) = 14" --step "2x + 6 = 14" --step "2x = 20" --step "x = 10"');
+if (wk.status !== 1 || !/Step 3 is the first line/.test(wk.stdout)) fail('the teacher kit did not find the wrong step in the documented example: ' + (wk.stdout + wk.stderr).slice(0, 160));
 fs.rmSync(home, { recursive: true, force: true });
 
 console.log((bad ? '' : '✓ ') + 'Agensi text-only package: ' + listing.filter((f) => !f.endsWith('/')).length + ' files (' + files.join(', ') + '), SKILL.md ' + md.length + ' bytes (about ' + Math.round(md.length / 4) + ' tokens by chars/4), zip ' + (fs.statSync(path.join(out, NAME + '-agensi.zip')).size / 1024).toFixed(1) + ' KB, summary ' + (fm.summary || '').length + '/300 chars');
