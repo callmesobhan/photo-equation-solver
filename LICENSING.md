@@ -15,6 +15,7 @@ It is a summary. If it differs from [`LICENSE`](LICENSE), the `LICENSE` and any 
 | Keep using it after the 30 days | **Yes** |
 | Use it for teaching, assessment or grading (even in the first 30 days) | **Yes** |
 | Use it for client work, in a business or in an institution (even in the first 30 days) | **Yes** |
+| Build it into your own app, tool or product (for example with the library in `mcp-server/`) | **Yes**, and a written agreement: see below |
 | Copy or share it, publish a modified version, offer it as a service or API, or use it to train or build a competing product | Not allowed without the author's written permission |
 
 This follows sections 2, 3 and 5 of the `LICENSE`.
@@ -42,7 +43,8 @@ list yet: price and terms are agreed with the author, case by case.
    of the agreement, it is arranged privately once the terms are agreed. Nothing is paid through this page.
 
 You can use the same route to ask for permission to do something the `LICENSE` does not allow, for example to include
-the software in your own product.
+the software in your own product. Building it into a product or service is not part of an ordinary licence (section 5 of
+the `LICENSE`); say in the request what the product is, who uses it and how the software is delivered to them.
 
 ## If you found the skill in a marketplace
 

@@ -1,17 +1,23 @@
 {
   "name": "photo-equation-solver-mcp",
   "version": "0.1.0",
-  "description": "Exact, offline maths for AI agents: an MCP server and a command line tool (equations, calculus, matrices, statistics, finance, geometry, units, chemistry, graphs).",
+  "description": "Exact, offline maths for AI agents and for programs that embed it: a library with structured results, an MCP server and a command line tool (equations, calculus, matrices, statistics, finance, geometry, units, chemistry, graphs).",
   "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "author": "Sobhan Shahbazi",
-  "main": "lib/mcp.js",
+  "main": "lib/api.js",
+  "types": "lib/api.d.ts",
+  "exports": {
+    ".": { "types": "./lib/api.d.ts", "default": "./lib/api.js" },
+    "./mcp": "./lib/mcp.js",
+    "./package.json": "./package.json"
+  },
   "bin": {
     "photo-equation-solver-mcp": "bin/server.js",
     "photo-equation-solver": "bin/cli.js"
   },
-  "files": ["bin", "lib", "LICENSE", "README.md"],
+  "files": ["bin", "lib", "examples", "LICENSE", "README.md"],
   "engines": { "node": ">=18" },
   "optionalDependencies": { "@napi-rs/canvas": "^1.1.0" },
-  "keywords": ["mcp", "model-context-protocol", "math", "solver", "calculus", "algebra", "agent-skill"]
+  "keywords": ["mcp", "model-context-protocol", "math", "solver", "calculus", "algebra", "agent-skill", "library", "embed", "typescript"]
 }

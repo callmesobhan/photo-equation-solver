@@ -57,7 +57,39 @@ node bin/cli.js --json "det([[1,2],[3,4]])"
 node bin/cli.js help finance
 ```
 
-Exit code 1 means the solver could not solve the input; the text says why.
+Exit code 1 means the solver could not solve the input (or, for several numbered problems, one of them); the text says why.
+`--json` prints the fields described under "As a library" below, as one JSON object.
+
+## As a library
+
+For programs that embed the solver (an app, a grader, a worksheet tool), `require('photo-equation-solver-mcp')`
+gives structured results instead of printed text. Node 18 or newer, no other packages, no network.
+
+```js
+const { solve } = require('photo-equation-solver-mcp');
+
+const r = await solve('2x^2 - 5x + 3 = 0');
+r.ok;          // true
+r.readAs;      // "2x² - 5x + 3 = 0"   how it was understood: show this to the user
+r.answer;      // ["x = 1", "x = 3/2 (= 1.5)"]
+r.working;     // ["Type: quadratic equation", ...]
+r.check;       // "substituting each solution back into the original equation gives equal sides"
+r.notes;       // things to be aware of
+r.needsReview; // true when the solver doubts how the input was read
+r.text;        // everything, exactly as the command line prints it
+```
+
+| Call | Returns |
+|---|---|
+| `solve(input, { solveFor })` | one `Result`. `input` may be an equation, an expression, a command such as `integrate(x^2, x, 0, 3)`, a short English question, or several problems numbered `1)` `2)`, one per line (then `r.kind === 'multiple'` and `r.problems` holds one result each). Never throws: a failure is a result with `ok: false` and the reason in `error`. |
+| `solveMany([...], { solveFor })` | an array of `Result`, one per input, in order |
+| `help(topic)` | `{ ok, topic, text }`: the syntax help for an area, or the list of areas |
+
+Types are in [`lib/api.d.ts`](lib/api.d.ts) (`Result`, `SolveOptions`); [`examples/embed.cjs`](examples/embed.cjs) and
+[`examples/typed.ts`](examples/typed.ts) are small programs that use them. The solver runs on the calling thread, so a
+hard problem blocks the event loop until it finishes: use a worker thread or a child process if your program must stay
+responsive. Putting the library into a product you distribute, or behind a service others use, is not covered by the
+evaluation terms: see [`LICENSING.md`](../LICENSING.md).
 
 ## Graphs
 
@@ -77,3 +109,7 @@ whose `SKILL.md` is under 2 KB.
 without the page. `dev/tests/mcp-test.mjs` runs a real stdio session (initialise, list, call, errors; stdout
 must be JSON lines only and stderr empty) with and without a canvas, and checks that every hand-written case gives
 the same text through this module as through the Gallery page.
+`dev/tests/api-test.mjs` tests the library: every hand-written case must split into fields with nothing left over and
+print back to exactly the text the solver printed; it also covers the shapes (several problems, refusals, help,
+`solveFor`, bad arguments), the `--json` output, the TypeScript declarations (compiled under `--strict`, and a wrong use
+must be rejected) and the example program.

@@ -73,6 +73,7 @@ else
 fi
 echo; echo "== 8zg. photo kit: the typed form of the ten handwritten test items gives the expected answers"; node photo-kit/check.mjs "$skill"
 echo; echo "== 8zh. MCP server: real stdio session (with and without a canvas) and parity of the Node module with the Gallery page on every hand-written case"; node mcp-test.mjs "$skill"
+echo; echo "== 8zj. embedding library: every hand-written case parses into fields and prints back to the exact solver text; shapes, --json, TypeScript declarations, example program"; node api-test.mjs
 echo; echo "== 12. packaging: the folder the Gallery app imports (SKILL.md at its root, scripts/index.html, nothing else) and its zip"; node "$here/package.mjs" "$tmp/photo-equation-solver.zip"
 echo; echo "== 8zi. package documentation: every command line in the Local / Agent SKILL.md files and the cheat sheet runs"; node packages-test.mjs
 echo; echo "== 14. skill packages (Local, Agent): assembled, structure and size checks, smoke tests of the assembled copies, zips"; node "$here/package-skills.mjs" "$tmp/dist"
