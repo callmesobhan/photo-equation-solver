@@ -22,6 +22,7 @@ conversion, finance, chemistry (molar mass, balancing equations), physics formul
 | MCP server and command line tool (for agents and editors) | [`mcp-server/`](mcp-server) |
 | Skill packages for local models and for agents | [`packages/local`](packages/local), [`packages/agent`](packages/agent) |
 | Source, build and tests | [`dev/`](dev) |
+| Agensi listing (text-only skill for agents) | [Photo Equation Solver: exact maths for your agent](https://www.agensi.io/skills/photo-equation-solver-exact-maths-for-your-agent) |
 | Licence | [`LICENSE`](LICENSE): proprietary, not free to use |
 
 ## Editions
@@ -38,7 +39,7 @@ The Local and Agent packages run the engine through `node scripts/bin/cli.js` or
 
 To hand the Agent edition to someone who uses Claude Code, `node dev/package-bundle.mjs` builds `photo-equation-solver-for-claude-code.zip`: they give it to Claude Code and say "install this" (it holds `INSTALL.md` and a small installer).
 
-For marketplaces that deliver text files only, [`packages/agensi`](packages/agensi) is the same instructions as a text-only skill: the engine is installed separately by the user (`reference/install.md`). `node dev/package-agensi.mjs` builds its zip.
+For marketplaces that deliver text files only, [`packages/agensi`](packages/agensi) is the same instructions as a text-only skill: the engine is installed separately by the user (`reference/install.md`). `node dev/package-agensi.mjs` builds its zip. This is the skill listed on [Agensi](https://www.agensi.io/skills/photo-equation-solver-exact-maths-for-your-agent); the listing is free, and the engine it uses stays under this repository's [licence](#licence).
 
 ## Licence
 
