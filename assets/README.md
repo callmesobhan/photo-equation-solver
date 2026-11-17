@@ -6,6 +6,7 @@
 | `logo-square.svg`, `logo-square-512.png` | the same logo as a full square, for places that crop it themselves (marketplace avatars) |
 | `hero.png` | top of the README: photo, text, exact answer |
 | `solves.png` | the "What it solves" grid in the README |
+| `teacher-kit.png` | the picture in `teacher-kit/README.md` and the root README: a worksheet, its key and the working checker |
 | `social-preview.png` | 1280 x 640 card for GitHub's social preview: *Settings -> General -> Social preview -> Edit -> Upload an image* |
 
 Every result shown in these pictures is printed by the real engine (`mcp-server/bin/cli.js`); none is typed by hand.

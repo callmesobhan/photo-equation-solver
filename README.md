@@ -49,7 +49,10 @@ conversion, finance, chemistry (molar mass, balancing equations), physics formul
 | Full docs (what it can do, install, notation, limits) | [`photo-equation-solver/README.md`](photo-equation-solver/README.md) |
 | MCP server and command line tool (for agents and editors) | [`mcp-server/`](mcp-server) |
 | Skill packages for local models and for agents | [`packages/local`](packages/local), [`packages/agent`](packages/agent) |
+| Library for embedding the solver in your own program (structured results, TypeScript types) | [`mcp-server/`](mcp-server#as-a-library) |
+| Teacher kit: worksheets with answer keys, and a student-working checker | [`teacher-kit/`](teacher-kit) |
 | Source, build and tests | [`dev/`](dev) |
+| Accuracy report, generated from a full run of the test suite | [`docs/ACCURACY.md`](docs/ACCURACY.md) |
 | Agensi listing (text-only skill for agents) | [Photo Equation Solver: exact maths for your agent](https://www.agensi.io/skills/photo-equation-solver-exact-maths-for-your-agent) |
 | Licence | [`LICENSE`](LICENSE): proprietary, not free to use |
 
@@ -66,6 +69,8 @@ One exact solver, packaged for three kinds of model:
 The Local and Agent packages run the engine through `node scripts/bin/cli.js` or the MCP server (`mcp-server/`).
 
 To hand the Agent edition to someone who uses Claude Code, `node dev/package-bundle.mjs` builds `photo-equation-solver-for-claude-code.zip`: they give it to Claude Code and say "install this" (it holds `INSTALL.md` and a small installer).
+
+**For teachers**, [`teacher-kit/`](teacher-kit) makes printable worksheets and answer keys from a seed (same seed, same sheet; every answer is computed by the solver and agrees with an independent calculation made when the problem was built) and checks a student's working line by line, naming the first wrong step. `node dev/package-teacher.mjs` builds its zip. Using it in teaching needs a licence: see [`LICENSING.md`](LICENSING.md).
 
 For marketplaces that deliver text files only, [`packages/agensi`](packages/agensi) is the same instructions as a text-only skill: the engine is installed separately by the user (`reference/install.md`). `node dev/package-agensi.mjs` builds its zip. This is the skill listed on [Agensi](https://www.agensi.io/skills/photo-equation-solver-exact-maths-for-your-agent); the listing is free, and the engine it uses stays under this repository's [licence](#licence).
 
@@ -99,7 +104,7 @@ Edit `dev/src/*.js`, never the generated `index.html`. See [`dev/README.md`](dev
 
 Tested on a desktop against independent oracles (sympy, scipy, numpy, pint, periodictable,
 numpy-financial), with fuzzing, and with the page loaded in offline Chromium exactly as the
-app calls it (details in the skill README).
+app calls it (details in the skill README). The [accuracy report](docs/ACCURACY.md) lists every battery with its counts, what each is compared with, and what the tests do not show.
 
 Tried on an iPhone with Gemma-4-E4B-it in Google AI Edge Gallery (GPU), by importing the folder, with typed
 problems and simulated handwritten photos.

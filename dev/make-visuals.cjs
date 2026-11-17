@@ -201,5 +201,50 @@ function socialHtml(r) {
 
   await shot('hero.png', heroHtml(frac, photoB64, '(x+1)/(x-1) = 3'), 1600, 620);
 
+  // ---------- teacher kit: sample files and the README picture ----------
+  const { spawnSync } = require('child_process');
+  const KIT = path.join(ROOT, 'teacher-kit');
+  const sample = path.join(KIT, 'examples', 'sample-worksheet.html');
+  fs.mkdirSync(path.dirname(sample), { recursive: true });
+  const ws = spawnSync('node', [path.join(KIT, 'bin', 'worksheet.js'), '--topics', 'linear,quadratic,system,inequality,derivative,integral', '--level', '2', '--count', '8', '--seed', '2026', '--title', 'Algebra and calculus practice', '--out', sample, '--working'], { encoding: 'utf8' });
+  if (ws.status !== 0) throw new Error('worksheet.js failed: ' + ws.stderr);
+  const workingFile = path.join(KIT, 'examples', 'sample-working.txt');
+  fs.writeFileSync(workingFile, '2(x + 3) = 14\n2x + 6 = 14\n2x = 20\nx = 10\n');
+  const rep = spawnSync('node', [path.join(KIT, 'bin', 'check-working.js'), workingFile], { encoding: 'utf8' });
+  if (rep.status !== 1) throw new Error('check-working.js should have found a wrong step: ' + rep.stdout + rep.stderr);
+  fs.writeFileSync(path.join(KIT, 'examples', 'sample-working-report.txt'), rep.stdout);
+
+  const tp = await browser.newPage({ viewport: { width: 760, height: 1000 } });
+  await tp.goto('file://' + sample);
+  await tp.waitForTimeout(200);
+  await tp.pdf({ path: path.join(KIT, 'examples', 'sample-worksheet.pdf'), format: 'A4', printBackground: true });
+  const top = await tp.screenshot({ clip: { x: 0, y: 0, width: 760, height: 470 } });
+  const keyTop = await tp.evaluate(() => document.querySelector('.key').getBoundingClientRect().top + window.scrollY);
+  const keyShot = await tp.screenshot({ fullPage: true, clip: { x: 0, y: keyTop, width: 760, height: 470 } });
+  await tp.close();
+  const panel = (title, cls, inner) => `<div class="p ${cls}"><div class="pt">${title}</div>${inner}</div>`;
+  await shot('teacher-kit.png', `<style>${css}
+      body { width:1600px; height:1060px; background:linear-gradient(135deg,#f4f8ff 0%,#e3eeff 100%); padding:34px 48px; }
+      h1 { font-size:38px; font-weight:800; letter-spacing:-.02em; color:${C.navy}; }
+      .sub { font-size:21px; color:${C.grey}; margin:4px 0 22px; }
+      .row { display:flex; gap:24px; margin-bottom:24px; }
+      .p { background:#fff; border-radius:16px; box-shadow:0 14px 40px rgba(5,20,60,.16); overflow:hidden; }
+      .half { width:740px; }
+      .full { width:1504px; }
+      .pt { font-size:18px; font-weight:700; color:${C.navy}; padding:14px 22px 10px; }
+      .p img { display:block; width:100%; border-top:1px solid ${C.line}; }
+      pre { font-family:${MONO}; font-size:18px; line-height:1.55; padding:16px 22px 22px; color:${C.ink}; white-space:pre-wrap; border-top:1px solid ${C.line}; }
+      .bad { color:#b3261e; font-weight:700; }
+    </style>
+    <h1>Teacher kit</h1>
+    <div class="sub">Worksheets and answer keys from a seed, and a checker that names the first wrong step.</div>
+    <div class="row">
+      ${panel('A worksheet', 'half', `<img src="data:image/png;base64,${top.toString('base64')}">`)}
+      ${panel('Its answer key', 'half', `<img src="data:image/png;base64,${keyShot.toString('base64')}">`)}
+    </div>
+    <div class="row">
+      ${panel("Checking a student's working: <span style=\"font-weight:400;color:#5f6368\">node bin/check-working.js working.txt</span>", 'full', `<pre>${esc(rep.stdout.replace(/\n+$/, '')).replace(/(\s*\d+\. [^\n]*WRONG[^\n]*)/, '<span class="bad">$1</span>').replace(/(Step 3 is the first[^\n]*)/, '<span class="bad">$1</span>')}</pre>`)}
+    </div>`, 1600, 1060);
+
   await browser.close();
 })().catch((e) => { console.error(e); process.exit(1); });
