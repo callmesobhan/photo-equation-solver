@@ -87,7 +87,15 @@ async function protocol(label, env, expectCanvas) {
   console.log((bad ? '' : '✓ ') + 'protocol (' + label + '): ' + msgs.length + ' replies checked');
 }
 
-await protocol('with canvas', {}, true);
+const req = createRequire(import.meta.url);
+let hasNaprsCanvas = false;
+try { req('@napi-rs/canvas'); hasNaprsCanvas = true; } catch {}
+
+if (hasNaprsCanvas) {
+  await protocol('with canvas', {}, true);
+} else {
+  console.log('✓ protocol (with canvas): skipped (@napi-rs/canvas optional dependency not installed)');
+}
 await protocol('without canvas', { PES_NO_CANVAS: '1' }, false);
 
 // 2. the Node module equals the Gallery page on every hand-written case

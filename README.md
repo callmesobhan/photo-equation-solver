@@ -10,6 +10,14 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/callmesobhan/photo-equation-solver/actions/workflows/ci.yml"><img src="https://github.com/callmesobhan/photo-equation-solver/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white" alt="Node 18+">
+  <img src="https://img.shields.io/badge/Offline-100%25%20Deterministic%20CAS-6366f1" alt="Offline CAS">
+  <img src="https://img.shields.io/badge/Editions-Pocket%20%7C%20Local%20%7C%20Agent%20%7C%20MCP-10b981" alt="Editions">
+  <a href="LICENSING.md"><img src="https://img.shields.io/badge/Licence-Proprietary%20(30--Day%20Eval)-f59e0b" alt="Licence"></a>
+</p>
+
+<p align="center">
   <a href="#editions">Editions</a> &middot;
   <a href="photo-equation-solver/README.md">Full docs</a> &middot;
   <a href="mcp-server">MCP server and command line</a> &middot;
@@ -55,6 +63,17 @@ conversion, finance, chemistry (molar mass, balancing equations), physics formul
 | Accuracy report, generated from a full run of the test suite | [`docs/ACCURACY.md`](docs/ACCURACY.md) |
 | Agensi listing (text-only skill for agents) | [Photo Equation Solver: exact maths for your agent](https://www.agensi.io/skills/photo-equation-solver-exact-maths-for-your-agent) |
 | Licence | [`LICENSE`](LICENSE): proprietary, not free to use |
+
+## Architecture
+
+```mermaid
+flowchart LR
+    A["📷 Photo / Handwritten / Text Input"] --> B["AI Vision / Language Model (Gemma 4 / Local LLM / Agent)"]
+    B -->|"Extracted Expression"| C["Deterministic Symbolic & Rational CAS Engine"]
+    C --> D["Exact Symbolic & Fraction Solver (Algebra, Calculus, ODEs, Linear Algebra, Stats)"]
+    D --> E["Self-Check & Substitution Verification"]
+    E --> F["Answer Card + Read-As Echo + SVG/PNG Plot"]
+```
 
 ## Editions
 
