@@ -1,11 +1,39 @@
-# Photo Equation Solver
+<p align="center">
+  <img src="assets/logo-512.png" alt="Photo Equation Solver logo: a camera viewfinder around x = 4" width="104">
+</p>
 
-Exact, offline maths for AI models. The model *reads* the maths, from a photo or from text; a self-contained
-solver does all the *calculating* with exact fractions and symbolic expressions, and echoes how the input was
-read so a misread digit is easy to spot. No internet, no cloud, no API key.
+<h1 align="center">Photo Equation Solver</h1>
+
+<p align="center">
+  <b>Exact, offline maths for AI models.</b><br>
+  The model reads the problem. The solver calculates.
+</p>
+
+<p align="center">
+  <a href="#editions">Editions</a> &middot;
+  <a href="photo-equation-solver/README.md">Full docs</a> &middot;
+  <a href="mcp-server">MCP server and command line</a> &middot;
+  <a href="https://www.agensi.io/skills/photo-equation-solver-exact-maths-for-your-agent">Agensi listing</a> &middot;
+  <a href="LICENSING.md">Get a licence</a>
+</p>
+
+<p align="center">
+  <img src="assets/hero.png" alt="A handwritten fraction equation is read by the model as the text (x+1)/(x-1) = 3, and the solver answers x = 2 and checks it by substituting back." width="100%">
+</p>
+
+> **Licence.** Free to read, and to try on your own devices for 30 days. Anything beyond that (ongoing use, teaching,
+> client work, business use) needs a paid licence: see [`LICENSING.md`](LICENSING.md) and [`LICENSE`](LICENSE).
+
+The model *reads* the maths, from a photo or from text; a self-contained solver does all the *calculating* with exact
+fractions and symbolic expressions, and echoes how the input was read so a misread digit is easy to spot. No internet,
+no cloud, no API key.
 
 It started as a skill for **Gemma 4 E4B** on a phone (Google AI Edge Gallery) and now comes in three editions
 (see [Editions](#editions)): one for phones, one for local models, one for capable agents.
+
+<p align="center">
+  <img src="assets/solves.png" alt="Nine example results printed by the engine: a quadratic, a system, an inequality, an integral, a limit, eigenvalues, a t-test, a bond price and a balanced chemical equation." width="100%">
+</p>
 
 It covers equations, systems and inequalities, calculus (integrals, derivatives, limits,
 series, tangent lines, curve study, areas and volumes), several-variable calculus, linear

@@ -108,6 +108,7 @@ Edit `src/`, then run `./run-all.sh`. Never edit the generated `index.html` by h
 | `packages-test.mjs` | every command line in the package `SKILL.md` files and the cheat sheet (98 of them) runs without an error in the engine |
 | `mcp-test.mjs` | the MCP server over a real stdio session (with and without a canvas) and parity: every hand-written case gives the same text through the Node module as through the Gallery page |
 | `../package.mjs` | not a test: checks the skill folder the way the app needs it (SKILL.md at the folder root with a matching name, `scripts/index.html`, no web references, SKILL.md under 2500 bytes) and writes the zip to import on the phone: `node dev/package.mjs out.zip` |
+| `make-visuals.cjs` | not a test: draws the pictures in `../assets` (logo, README hero, "what it solves" grid, GitHub social preview); every result in them is printed by the real engine: `node dev/make-visuals.cjs` (needs Playwright) |
 | `photo-kit/` | ten handwritten-style test pictures for the phone (generator, four finished images, expected answers, how to run them); `photo-kit/check.mjs` checks the expected answers against the solver |
 | `browser-test.cjs` | the built page in real Chromium, offline, called the way the app calls it (needs Playwright) |
 

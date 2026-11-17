@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Photo Equation Solver">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a73e8"/><stop offset="1" stop-color="#0842a0"/></linearGradient></defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g fill="none" stroke="#ffffff" stroke-width="20" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M92 168 V92 H168"/><path d="M344 92 H420 V168"/><path d="M420 344 V420 H344"/><path d="M168 420 H92 V344"/>
+  </g>
+  <g fill="none" stroke="#ffffff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M139 236 L195 304 M195 236 L139 304"/>
+    <path d="M222 252 H278 M222 288 H278"/>
+    <path d="M356 304 V204 L305 282 H385"/>
+  </g>
+</svg>
