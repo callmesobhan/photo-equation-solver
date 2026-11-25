@@ -10,7 +10,7 @@ without a separate written commercial license from the Licensor.
 1. DEFINITIONS
 
 "Software" means the source code, scripts, binaries, configuration files,
-documentation, examples, and tests in this repository (https://github.com/callmesobhan/photo-equation-solver), excluding
+documentation, examples, and tests in this repository (github.com/callmesobhan/photo-equation-solver), excluding
 Third-Party Material (Section 5).
 
 "Licensor" means Sobhan Shahbazi (GitHub: @callmesobhan).
@@ -48,7 +48,7 @@ for the following non-commercial purposes:
       Software includes a clear citation crediting the Licensor and repository:
 
           Sobhan Shahbazi (2026). photo-equation-solver.
-          Available at: https://github.com/callmesobhan/photo-equation-solver
+          Available at: github.com/callmesobhan/photo-equation-solver
 
 3. RESTRICTIONS & PROHIBITED USES
 
@@ -70,7 +70,7 @@ this License intact and clearly mark Your changes.
 Commercial licenses and enterprise permissions are available directly from the
 Licensor. To request a commercial license, open an issue on the repository or
 contact Sobhan Shahbazi via GitHub (@callmesobhan):
-  https://github.com/callmesobhan/photo-equation-solver
+  github.com/callmesobhan/photo-equation-solver
 
 5. THIRD-PARTY MATERIAL
 
