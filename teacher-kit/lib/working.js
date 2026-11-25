@@ -10,6 +10,7 @@
 
 const { equivalent, variablesOf } = require('./equiv.js');
 const { clean } = require('./verify.js');
+const { generateOcrVariants } = require('./ambiguity.js');
 
 const RELATION = /<=|>=|≤|≥|≠|<|>|=/;
 
@@ -101,14 +102,53 @@ const FINISHED = /^\s*[A-Za-z]\s*(?:=|<=|>=|≤|≥|<|>)\s*-?\d+(?:\.\d+)?(?:\s*
 /**
  * @param {object} api    the solver library
  * @param {string} text   the working: the problem on the first line, one step per following line
+ * @param {{ ocrTolerant?: boolean }} [options]
  */
-async function checkWorking(api, text) {
+async function checkWorking(api, text, options = {}) {
+  const ocrTolerant = Boolean(options && options.ocrTolerant);
   const lines = parseLines(text);
   if (lines.length < 2) throw new Error('Give at least two lines: the problem, then the first step.');
   const steps = [];
   let prev = null; // the previous comparable line
   let reference = null;
   const firstKind = lines[0].kind;
+  const problemVars = variablesOf(lines[0].text);
+
+  async function tryOcrRepair(stepObj, prevObj) {
+    if (!ocrTolerant || !prevObj) return false;
+    const variants = generateOcrVariants(stepObj.text, {
+      maxVariants: 14,
+      includeDigitSwaps: false,
+      expectedVars: problemVars,
+    });
+    for (const v of variants) {
+      if (prevObj.kind === 'expression') {
+        if (RELATION.test(v.text)) continue;
+        const q = await equivalent(api, prevObj.text, v.text);
+        if (q.equal === true) {
+          stepObj.kind = 'expression';
+          stepObj.status = 'ocr_likely';
+          stepObj.ocrRepair = { from: stepObj.text, to: v.text, kind: v.kind, edit: v.edit };
+          stepObj.reason = `likely OCR misread ('${stepObj.text}' -> '${v.text}', ${v.edit}); equal to the line above (${q.how})`;
+          return { repairedText: v.text };
+        }
+      } else {
+        if (!RELATION.test(v.text) || prevObj.solutions === undefined) continue;
+        const s = await solutionsOf(api, v.text);
+        if (s.sig !== null && s.sig === prevObj.solutions) {
+          stepObj.kind = /<=|>=|≤|≥|<|>/.test(v.text) ? 'inequality' : 'equation';
+          stepObj.status = 'ocr_likely';
+          stepObj.solutions = s.sig;
+          stepObj.lines = s.lines;
+          stepObj.shown = s.shown;
+          stepObj.ocrRepair = { from: stepObj.text, to: v.text, kind: v.kind, edit: v.edit };
+          stepObj.reason = `likely OCR misread ('${stepObj.text}' -> '${v.text}', ${v.edit}); same solutions as the line above`;
+          return { repairedText: v.text };
+        }
+      }
+    }
+    return false;
+  }
 
   for (let i = 0; i < lines.length; i++) {
     const L = lines[i];
@@ -183,23 +223,33 @@ async function checkWorking(api, text) {
       step.status = 'unknown';
       step.reason = 'an equation and an expression cannot be compared';
     }
+    if (step.status === 'wrong' || step.status === 'unknown') {
+      const repaired = await tryOcrRepair(step, prev);
+      if (repaired) {
+        prev = { ...step, text: repaired.repairedText };
+        continue;
+      }
+    }
     prev = { ...step };
   }
 
   const firstWrong = steps.find((s) => s.status === 'wrong');
   const firstExtra = steps.find((s) => s.status === 'extra');
   const firstUnknown = steps.find((s) => s.status === 'unknown');
+  const ocrSuspects = steps.filter((s) => s.status === 'ocr_likely').map((s) => s.n);
   const last = steps[steps.length - 1];
+  const lastEffectiveText = last.ocrRepair ? last.ocrRepair.to : last.text;
   const solving = firstKind !== 'expression';
   const unknowns = variablesOf(lines[0].text).length;
   // "finished" only makes sense for one unknown; with two or more, "solved for y" is as far as a step can go
-  const finished = solving && unknowns <= 1 ? (alternatives(last.text) || [last.text]).every((part) => FINISHED.test(part)) : null;
+  const finished = solving && unknowns <= 1 ? (alternatives(lastEffectiveText) || [lastEffectiveText]).every((part) => FINISHED.test(part)) : null;
   const finalMatches = solving && reference && last.solutions !== undefined ? last.solutions === reference.sig : null;
 
   let verdict;
   if (firstWrong) verdict = 'Step ' + firstWrong.n + ' is the first line that is not equivalent to the line before it.';
   else if (firstUnknown) verdict = 'No wrong step was found, but step ' + firstUnknown.n + ' could not be compared (' + firstUnknown.reason + ').';
   else if (firstExtra) verdict = 'No wrong step, but step ' + firstExtra.n + ' adds solutions (squaring or multiplying by an expression can do this): every solution has to be checked in the original problem.';
+  else if (ocrSuspects.length) verdict = 'No mathematical error was found, but step(s) ' + ocrSuspects.join(', ') + ' appear to contain an OCR transcription slip — verify the original handwriting.';
   else if (solving && finished === false) verdict = 'Every step is valid, but the problem is not finished: the last line is not a solution such as x = 4.';
   else verdict = 'Every step is valid.';
   let finalNote = null;
@@ -219,6 +269,7 @@ async function checkWorking(api, text) {
     firstWrong: firstWrong ? firstWrong.n : null,
     firstExtra: firstExtra ? firstExtra.n : null,
     firstUnknown: firstUnknown ? firstUnknown.n : null,
+    ocrSuspects,
     finished,
     finalMatches,
     verdict,
@@ -234,7 +285,7 @@ function formatReport(r) {
   out.push('');
   const width = Math.min(46, Math.max(...r.steps.map((s) => s.text.length)) + 2);
   for (const s of r.steps) {
-    const mark = { ok: 'ok     ', wrong: 'WRONG  ', extra: 'extra  ', unknown: 'unknown', start: 'start  ' }[s.status];
+    const mark = { ok: 'ok     ', wrong: 'WRONG  ', extra: 'extra  ', unknown: 'unknown', start: 'start  ', ocr_likely: 'ocr?   ' }[s.status];
     out.push(String(s.n).padStart(2) + '. ' + s.text.padEnd(width) + ' ' + mark + ' ' + s.reason);
   }
   out.push('');

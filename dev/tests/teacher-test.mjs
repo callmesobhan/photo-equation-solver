@@ -25,6 +25,7 @@ const { makeRng } = require(path.join(kit, 'lib', 'rng.js'));
 const { verify } = require(path.join(kit, 'lib', 'verify.js'));
 const { buildWorksheet, renderHtml, renderMarkdown, renderJson } = require(path.join(kit, 'lib', 'worksheet.js'));
 const { checkWorking, parseLines } = require(path.join(kit, 'lib', 'working.js'));
+const { solveAmbiguous, generateOcrVariants } = require(path.join(kit, 'lib', 'ambiguity.js'));
 const { F } = require(path.join(kit, 'lib', 'frac.js'));
 
 let bad = 0;
@@ -233,7 +234,45 @@ c = run('check-working.js', ['--problem', '2(x+3) = 14', '--step', '2x + 6 = 14'
 check(c.status === 0, 'cli check-working: --problem and --step');
 check(run('check-working.js', ['-'], 'x + 1 = 2\nx ≠ 3\n').status === 3, 'cli check-working: exit 3 when a line cannot be compared');
 check(run('check-working.js', []).status === 2 && run('check-working.js', ['-'], 'x = 1\n').status === 2, 'cli check-working: usage and too-short input exit 2');
+
+// ---------- 5. OCR-ambiguity branching & OCR-tolerant student working ----------
+const ambFrac = await solveAmbiguous(api, 'x + 1/2 = 3');
+check(ambFrac.ok && ambFrac.consensus === false && ambFrac.distinctAnswerCount >= 2 && /Ambiguous reading/.test(ambFrac.disambiguatingQuestion || ''), 'ambiguity: fraction-bar grouping detects distinct answers (5/2 vs 5)', JSON.stringify(ambFrac));
+
+const ambBracket = await solveAmbiguous(api, '2x + [6|8] = 14');
+check(ambBracket.ok && ambBracket.hasExplicitBrackets && ambBracket.distinctAnswerCount === 2, 'ambiguity: explicit VLM [a|b] brackets expand and solve both branches', JSON.stringify(ambBracket));
+
+const ambClean = await solveAmbiguous(api, '2x + 6 = 14');
+check(ambClean.ok && ambClean.consensus === true && ambClean.branches.length === 1, 'ambiguity: unambiguous equation reaches consensus', JSON.stringify(ambClean));
+
+const ocrGlyph = await checkWorking(api, '2(x + 3) = 14\n2x + 6 = l4\n2x = 8\nx = 4', { ocrTolerant: true });
+check(ocrGlyph.firstWrong === null && JSON.stringify(ocrGlyph.ocrSuspects) === '[2]' && ocrGlyph.steps[1].status === 'ocr_likely' && ocrGlyph.steps[2].status === 'ok' && ocrGlyph.finalMatches === true, 'ocr-tolerant: repairs l -> 1 without cascading false errors', JSON.stringify(ocrGlyph.steps));
+
+const ocrS5 = await checkWorking(api, '3x + 5 = 20\n3x = 1S\nx = 5', { ocrTolerant: true });
+check(ocrS5.firstWrong === null && ocrS5.steps[1].status === 'ocr_likely' && ocrS5.steps[2].status === 'ok', 'ocr-tolerant: repairs S -> 5 in student step', JSON.stringify(ocrS5.steps));
+
+const ocrFrac = await checkWorking(api, '(x + 1)/2 = 3\nx + 1/2 = 3\nx + 1 = 6\nx = 5', { ocrTolerant: true });
+check(ocrFrac.firstWrong === null && ocrFrac.steps[1].status === 'ocr_likely' && ocrFrac.steps[2].status === 'ok', 'ocr-tolerant: repairs dropped fraction-bar parentheses', JSON.stringify(ocrFrac.steps));
+
+// Negative guards: genuine student sign & arithmetic mistakes must NEVER be excused by --ocr-tolerant
+const realSignErr = await checkWorking(api, '3x + 5 = 2x - 7\n3x - 2x = -7 + 5\nx = -2', { ocrTolerant: true });
+check(realSignErr.firstWrong === 2 && realSignErr.steps[1].status === 'wrong', 'ocr-tolerant: genuine sign error is STILL marked WRONG', JSON.stringify(realSignErr.steps));
+
+const realArithErr = await checkWorking(api, '2(x + 3) = 14\n2x + 6 = 14\n2x = 20\nx = 10', { ocrTolerant: true });
+check(realArithErr.firstWrong === 3 && realArithErr.steps[2].status === 'wrong', 'ocr-tolerant: genuine arithmetic error is STILL marked WRONG', JSON.stringify(realArithErr.steps));
+
+check(generateOcrVariants('sin(x) + 1 = 2', { expectedVars: ['x'] }).every((v) => /sin\(/.test(v.text)), 'ambiguity: function names like sin() are protected from glyph edits');
+
+c = run('check-working.js', ['--ocr-tolerant', '--json', '-'], '2(x + 3) = 14\n2x + 6 = l4\n2x = 8\nx = 4\n');
+check(c.status === 0 && JSON.parse(c.stdout).ocrSuspects[0] === 2, 'cli check-working: --ocr-tolerant exits 0 and flags ocrSuspects', c.stdout + c.stderr);
+
+c = run('check-working.js', ['--ambiguous', 'x + 1/2 = 3', '--json']);
+check(c.status === 1 && JSON.parse(c.stdout).consensus === false, 'cli check-working: --ambiguous exits 1 on disagreement and prints JSON branches', c.stdout + c.stderr);
+
+c = run('check-working.js', ['--ambiguous', '2x + 6 = 14', '--json']);
+check(c.status === 0 && JSON.parse(c.stdout).consensus === true, 'cli check-working: --ambiguous exits 0 on consensus', c.stdout + c.stderr);
+
 fs.rmSync(tmp, { recursive: true, force: true });
-console.log((bad ? '' : '✓ ') + 'cli: worksheet.js and check-working.js (files, variants, formats, exit codes)');
+console.log((bad ? '' : '✓ ') + 'cli + ocr-ambiguity: worksheet.js, check-working.js, --ocr-tolerant, and --ambiguous verified');
 
 process.exit(bad ? 1 : 0);

@@ -92,6 +92,13 @@ You can also give the lines on the command line:
 `node bin/check-working.js --problem "2(x+3) = 14" --step "2x + 6 = 14" --step "2x = 20"`, or pipe them in with `-`.
 `--json` prints the same report as JSON.
 
+### OCR-Ambiguity Branching & Handwritten Equivalence (`--ocr-tolerant` / `--ambiguous`)
+
+When a vision model transcribes handwritten equations or student working from a photo, visual confusions (`l↔1`, `O↔0`, `S↔5`, `z↔2`, `b↔6`, `g↔9`, `×↔x`, or fraction-bar grouping like `x + 1/2 = 3` vs `(x + 1)/2 = 3`) cause single-pass solvers to silently solve the wrong problem or falsely accuse students of math mistakes:
+
+- **`--ocr-tolerant`** (`checkWorking(api, text, { ocrTolerant: true })`): before marking a step `WRONG` or `unknown`, checks whether a single visual-OCR or fraction-grouping slip (never `+ ↔ -` sign flips, which remain genuine math errors) restores exact mathematical equivalence with the previous step — reporting it as `ocr?` (`ocr_likely`) without cascading false errors onto subsequent steps.
+- **`--ambiguous "<expr>"`** (`solveAmbiguous(api, input)` in `lib/ambiguity.js`): solves every plausible visual/grouping reading — including explicit VLM uncertainty brackets like `2x + [5|S] = 14` or `[x+1/2 | (x+1)/2] = 3` — checks answer consensus, and auto-generates a one-line disambiguating question whenever branches yield different exact answers.
+
 How a line is judged:
 
 | The line is | It is right when | Reported as |
