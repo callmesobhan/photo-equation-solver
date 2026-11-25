@@ -8,9 +8,7 @@ Two small tools built on the exact solver in this repository:
 
 ![A worksheet, its answer key, and the working checker's report](../assets/teacher-kit.png)
 
-> **Licence.** Using this in teaching, assessment or grading needs a paid licence, even during the 30-day trial
-> (section 3 of the [`LICENSE`](../LICENSE)). See [`LICENSING.md`](../LICENSING.md) for how to ask. You can read the
-> code and try the tools on your own computer, only to decide whether to buy.
+> **Licence.** Free for personal use and non-commercial academic research (with citation). Commercial use — including commercial teaching, paid grading/edtech platforms, or business use — requires a commercial licence: see [`LICENSE`](../LICENSE) and [`LICENSING.md`](../LICENSING.md).
 
 Needs Node.js 18 or newer. No other packages, no network.
 

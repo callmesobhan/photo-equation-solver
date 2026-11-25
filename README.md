@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white" alt="Node 18+">
   <img src="https://img.shields.io/badge/Offline-100%25%20Deterministic%20CAS-6366f1" alt="Offline CAS">
   <img src="https://img.shields.io/badge/Editions-Pocket%20%7C%20Local%20%7C%20Agent%20%7C%20MCP-10b981" alt="Editions">
-  <a href="LICENSING.md"><img src="https://img.shields.io/badge/Licence-Proprietary%20(30--Day%20Eval)-f59e0b" alt="Licence"></a>
+  <a href="LICENSING.md"><img src="https://img.shields.io/badge/License-Non--Commercial%20(Research%20%26%20Personal)-f59e0b" alt="License"></a>
 </p>
 
 <p align="center">
@@ -29,8 +29,9 @@
   <img src="assets/hero.png" alt="A handwritten fraction equation is read by the model as the text (x+1)/(x-1) = 3, and the solver answers x = 2 and checks it by substituting back." width="100%">
 </p>
 
-> **Licence.** Free to read, and to try on your own devices for 30 days. Anything beyond that (ongoing use, teaching,
-> client work, business use) needs a paid licence: see [`LICENSING.md`](LICENSING.md) and [`LICENSE`](LICENSE).
+> **Licence.** Free for personal use and non-commercial academic/scientific research (with citation). Commercial use
+> (business use, client work, commercial teaching/edtech, SaaS/API, or commercial AI training) requires a paid licence:
+> see [`LICENSE`](LICENSE) and [`LICENSING.md`](LICENSING.md).
 
 The model *reads* the maths, from a photo or from text; a self-contained solver does all the *calculating* with exact
 fractions and symbolic expressions, and echoes how the input was read so a misread digit is easy to spot. No internet,
@@ -62,7 +63,7 @@ conversion, finance, chemistry (molar mass, balancing equations), physics formul
 | Source, build and tests | [`dev/`](dev) |
 | Accuracy report, generated from a full run of the test suite | [`docs/ACCURACY.md`](docs/ACCURACY.md) |
 | Agensi listing (text-only skill for agents) | [Photo Equation Solver: exact maths for your agent](https://www.agensi.io/skills/photo-equation-solver-exact-maths-for-your-agent) |
-| Licence | [`LICENSE`](LICENSE): proprietary, not free to use |
+| Licence | [`LICENSE`](LICENSE): Non-Commercial Personal & Academic Research License (citation required for research; commercial use requires a licence) |
 
 ## Architecture
 
@@ -95,9 +96,7 @@ For marketplaces that deliver text files only, [`packages/agensi`](packages/agen
 
 ## Licence
 
-This is **not** free software. The source is public so that you can read it and try it for up to 30 days; using it
-beyond that, or sharing it, needs a paid licence. See [`LICENSE`](LICENSE) for the exact terms, and [`LICENSING.md`](LICENSING.md) for how to ask for a licence. The install steps
-below are for evaluation or for licensed use.
+Released under the **Non-Commercial Personal & Academic Research License (NC-PARL 1.0)** ([`LICENSE`](LICENSE)). Free for personal use and non-commercial academic/scientific research with citation (`Sobhan Shahbazi (2026). photo-equation-solver. https://github.com/callmesobhan/photo-equation-solver`). Commercial use requires a separate written licence — see [`LICENSING.md`](LICENSING.md) for how to request one.
 
 ## Install in AI Edge Gallery
 
